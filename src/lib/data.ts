@@ -1,0 +1,607 @@
+import type {
+  Album,
+  Board,
+  ChoreographyVideo,
+  FeedItem,
+  NotificationItem,
+  StudioProject,
+  User,
+} from "./types";
+
+export const CURRENT_USER: User = {
+  id: "u1",
+  name: "Ananya Krishnan",
+  email: "ananya@aadalarchive.app",
+  handle: "ananya.krishnan",
+  avatar:
+    "https://images.unsplash.com/photo-1547153760-18fc86302687?w=400&q=80",
+  danceForm: "Bharatanatyam",
+  location: "Chennai, India",
+  bio: "Bharatanatyam dancer preserving lineage through movement, memory, and light.",
+  artisticStatement:
+    "I save ideas, practice videos, and performance memories in one warm place.",
+  userType: "dancer",
+  interests: [
+    "poses",
+    "abhinaya",
+    "mudras",
+    "costumes",
+    "choreography",
+    "event_albums",
+  ],
+  website: "https://ananya.dance",
+  socials: [{ label: "Instagram", url: "#" }],
+};
+
+export const CREATORS = [
+  { id: "c1", name: "Meera Subramanian", handle: "meera.abhinaya" },
+  { id: "c2", name: "Guru Lakshmi Priya", handle: "gurulakshmi" },
+  { id: "c3", name: "Arjun Photography", handle: "arjun.lens" },
+  { id: "c4", name: "Temple Stage Collective", handle: "temple.stage" },
+  { id: "c5", name: "Nandini Rao", handle: "nandini.nritta" },
+];
+
+const goldLabels = ["credit_required", "educational"] as const;
+
+export const FEED_ITEMS: FeedItem[] = [
+  {
+    id: "f1",
+    title: "Aramandi under temple light",
+    description: "Strong base, lifted gaze — rehearsal reference for varnam.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80",
+    mediaType: "image",
+    aspect: "tall",
+    creator: CREATORS[0],
+    danceForm: "Bharatanatyam",
+    category: "Poses",
+    credits: {
+      photographer: "Arjun Photography",
+      dancer: "Meera Subramanian",
+      labels: [...goldLabels],
+    },
+    tags: ["aramandi", "temple", "pose"],
+  },
+  {
+    id: "f2",
+    title: "Expression study — soft eyes",
+    description: "Soft eyes, held breath. A study for storytelling.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80",
+    mediaType: "image",
+    aspect: "portrait",
+    creator: CREATORS[1],
+    danceForm: "Bharatanatyam",
+    category: "Abhinaya",
+    credits: {
+      guru: "Guru Lakshmi Priya",
+      dancer: "Nandini Rao",
+      labels: ["do_not_copy", "credit_required"],
+    },
+    tags: ["expression", "eyes", "story"],
+  },
+  {
+    id: "f3",
+    title: "Silk costume study",
+    description: "Maroon silk with antique gold border for a full show.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=800&q=80",
+    mediaType: "image",
+    aspect: "square",
+    creator: CREATORS[4],
+    danceForm: "Bharatanatyam",
+    category: "Costumes",
+    credits: {
+      creator: "Nandini Rao",
+      labels: ["personal_reference", "credit_required"],
+    },
+    tags: ["costume", "silk", "maroon"],
+  },
+  {
+    id: "f4",
+    title: "Rhythm practice clip",
+    description: "Slow practice at 0.75x helps clear footwork.",
+    type: "video",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1535525153412-5a0942e1d4c9?w=800&q=80",
+    mediaType: "video",
+    aspect: "landscape",
+    creator: CREATORS[1],
+    danceForm: "Bharatanatyam",
+    category: "Choreography",
+    credits: {
+      choreographer: "Guru Lakshmi Priya",
+      labels: ["do_not_copy", "educational", "no_downloads"],
+    },
+    tags: ["practice", "rhythm", "footwork"],
+  },
+  {
+    id: "f5",
+    title: "Temple doorway frame",
+    description: "Photoshoot concept — dancer framed by carved arch.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=800&q=80",
+    mediaType: "image",
+    aspect: "tall",
+    creator: CREATORS[2],
+    danceForm: "Bharatanatyam",
+    category: "Photography",
+    credits: {
+      photographer: "Arjun Photography",
+      labels: ["public_sharing", "credit_required"],
+    },
+    tags: ["photoshoot", "temple", "arch"],
+  },
+  {
+    id: "f6",
+    title: "Temple jewelry set",
+    description: "Antique brass tone — maatal, oddiyanam, vanki.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+    mediaType: "image",
+    aspect: "square",
+    creator: CREATORS[3],
+    danceForm: "Bharatanatyam",
+    category: "Jewelry",
+    credits: {
+      creator: "Temple Stage Collective",
+      labels: ["personal_reference"],
+    },
+    tags: ["jewelry", "brass", "temple"],
+  },
+  {
+    id: "f7",
+    title: "Stage lamp lighting mood",
+    description: "Warm brass lamps for intimate recital atmosphere.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80",
+    mediaType: "image",
+    aspect: "landscape",
+    creator: CREATORS[3],
+    danceForm: "Bharatanatyam",
+    category: "Stage design",
+    credits: {
+      creator: "Temple Stage Collective",
+      labels: ["educational"],
+    },
+    tags: ["stage", "lighting", "lamps"],
+  },
+  {
+    id: "f8",
+    title: "Hand gesture study",
+    description: "Gentle finger placement for storytelling.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800&q=80",
+    mediaType: "image",
+    aspect: "portrait",
+    creator: CREATORS[0],
+    danceForm: "Bharatanatyam",
+    category: "Mudras",
+    credits: {
+      dancer: "Meera Subramanian",
+      labels: ["educational", "credit_required"],
+    },
+    tags: ["hands", "gesture", "story"],
+  },
+  {
+    id: "f9",
+    title: "Show poster idea",
+    description: "Deep maroon field with a gold border.",
+    type: "poster",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
+    mediaType: "image",
+    aspect: "tall",
+    creator: CREATORS[4],
+    danceForm: "Bharatanatyam",
+    category: "Posters",
+    credits: {
+      creator: "Nandini Rao",
+      labels: ["personal_reference"],
+    },
+    tags: ["poster", "show"],
+  },
+  {
+    id: "f10",
+    title: "Group ending formation",
+    description: "Diagonal lines opening into a circle.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=800&q=80",
+    mediaType: "image",
+    aspect: "landscape",
+    creator: CREATORS[3],
+    danceForm: "Bharatanatyam",
+    category: "Choreography",
+    credits: {
+      choreographer: "Temple Stage Collective",
+      labels: ["do_not_copy", "credit_required"],
+    },
+    tags: ["group", "formation", "ending"],
+  },
+  {
+    id: "f11",
+    title: "Backstage — alankaram",
+    description: "Final flowers and sindoor before curtain.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1460723237034-039a4bfd5065?w=800&q=80",
+    mediaType: "image",
+    aspect: "portrait",
+    creator: CREATORS[2],
+    danceForm: "Bharatanatyam",
+    category: "Makeup",
+    credits: {
+      photographer: "Arjun Photography",
+      labels: ["credit_required"],
+    },
+    tags: ["backstage", "makeup", "alankaram"],
+  },
+  {
+    id: "f12",
+    title: "Outdoor temple performance",
+    description: "Evening recital under carved gopuram silhouette.",
+    type: "image",
+    mediaUrl:
+      "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80",
+    mediaType: "image",
+    aspect: "landscape",
+    creator: CREATORS[0],
+    danceForm: "Bharatanatyam",
+    category: "Performance",
+    credits: {
+      dancer: "Meera Subramanian",
+      photographer: "Arjun Photography",
+      labels: ["public_sharing", "credit_required"],
+    },
+    tags: ["performance", "temple", "outdoor"],
+  },
+];
+
+export const BOARDS: Board[] = [
+  {
+    id: "b1",
+    title: "Show ideas",
+    description: "Looks, costumes, and stage ideas for my next performance.",
+    cover: FEED_ITEMS[8].mediaUrl,
+    privacy: "private",
+    itemIds: ["f9", "f3", "f6", "f7"],
+    tags: ["show", "ideas"],
+    collaborative: true,
+    notes: {
+      f3: "Try this with warmer stage light.",
+    },
+  },
+  {
+    id: "b2",
+    title: "Expression studies",
+    description: "Eyes, breath, and soft emotion studies.",
+    cover: FEED_ITEMS[1].mediaUrl,
+    privacy: "private",
+    itemIds: ["f2", "f8"],
+    tags: ["expressions"],
+    collaborative: false,
+    notes: {
+      f2: "Try this angle with a stronger look.",
+    },
+  },
+  {
+    id: "b3",
+    title: "Costume ideas",
+    description: "Silk colors, borders, and draping ideas.",
+    cover: FEED_ITEMS[2].mediaUrl,
+    privacy: "public",
+    itemIds: ["f3", "f6"],
+    tags: ["costume", "jewelry"],
+    collaborative: false,
+    notes: {},
+  },
+  {
+    id: "b4",
+    title: "Temple photo ideas",
+    description: "Places, frames, and warm evening light.",
+    cover: FEED_ITEMS[4].mediaUrl,
+    privacy: "invite_only",
+    itemIds: ["f5", "f1", "f12"],
+    tags: ["photos", "temple"],
+    collaborative: true,
+    notes: {},
+  },
+];
+
+export const ALBUMS: Album[] = [
+  {
+    id: "a1",
+    name: "My first full show — 2025",
+    date: "2025-12-14",
+    venue: "Narada Gana Sabha",
+    location: "Chennai",
+    danceForm: "Bharatanatyam",
+    description:
+      "Performance Story — from first practice to the final bow.",
+    cover: FEED_ITEMS[11].mediaUrl,
+    privacy: "private",
+    category: "First full show",
+    sections: [
+      "inspiration",
+      "preparation",
+      "rehearsal",
+      "costume",
+      "makeup",
+      "backstage",
+      "on_stage",
+      "audience",
+      "after",
+    ],
+    itemIds: ["f1", "f3", "f4", "f11", "f12"],
+    contributors: ["Arjun Photography", "Meera Subramanian"],
+  },
+  {
+    id: "a2",
+    name: "Temple festival evening",
+    date: "2025-08-22",
+    venue: "Kapaleeshwarar Temple",
+    location: "Mylapore, Chennai",
+    danceForm: "Bharatanatyam",
+    description: "Stage Memories from a warm evening performance.",
+    cover: FEED_ITEMS[4].mediaUrl,
+    privacy: "unlisted",
+    category: "Festival",
+    sections: ["rehearsal", "on_stage", "after"],
+    itemIds: ["f5", "f7", "f12"],
+    contributors: ["Temple Stage Collective"],
+  },
+  {
+    id: "a3",
+    name: "Autumn practice days",
+    date: "2025-10-01",
+    venue: "Home studio",
+    location: "Chennai",
+    danceForm: "Bharatanatyam",
+    description: "Private practice clips with teacher notes.",
+    cover: FEED_ITEMS[3].mediaUrl,
+    privacy: "private",
+    category: "Practice",
+    sections: ["rehearsal", "preparation"],
+    itemIds: ["f4", "f1"],
+    contributors: ["Guru Lakshmi Priya"],
+  },
+];
+
+export const CHOREOGRAPHY: ChoreographyVideo[] = [
+  {
+    id: "ch1",
+    title: "Varnam — Pallavi demonstration",
+    description:
+      "Lineage reference. Do not copy choreography without permission from guru.",
+    mediaUrl: FEED_ITEMS[3].mediaUrl,
+    poster: FEED_ITEMS[3].mediaUrl,
+    danceForm: "Bharatanatyam",
+    composition: "Varnam in Todi",
+    choreographer: "Guru Lakshmi Priya",
+    dancers: ["Ananya Krishnan"],
+    guru: "Guru Lakshmi Priya",
+    music: "Traditional — nattuvangam & mridangam",
+    difficulty: "advanced",
+    duration: "4:32",
+    tags: ["varnam", "pallavi", "nritta"],
+    privacy: "private",
+    allowDownload: false,
+    notes: [
+      {
+        id: "n1",
+        time: 42,
+        text: "Hold this pose for one more beat.",
+        category: "timing",
+        author: "Guru Lakshmi Priya",
+        private: false,
+      },
+      {
+        id: "n2",
+        time: 118,
+        text: "Softer eyes here — gentle, not dramatic.",
+        category: "expression",
+        author: "Guru Lakshmi Priya",
+        private: false,
+      },
+    ],
+    relatedBoardIds: ["b1"],
+    relatedAlbumIds: ["a3"],
+  },
+  {
+    id: "ch2",
+    title: "Adavu series — Tatta & Natta",
+    description: "Beginner practice reference with mirror-friendly framing.",
+    mediaUrl: FEED_ITEMS[0].mediaUrl,
+    poster: FEED_ITEMS[0].mediaUrl,
+    danceForm: "Bharatanatyam",
+    composition: "Adavu practice",
+    choreographer: "Ananya Krishnan",
+    dancers: ["Ananya Krishnan"],
+    guru: "Guru Lakshmi Priya",
+    music: "Metronome — 80 BPM",
+    difficulty: "beginner",
+    duration: "6:10",
+    tags: ["adavu", "tatta", "natta"],
+    privacy: "invite_only",
+    allowDownload: false,
+    notes: [],
+    relatedBoardIds: [],
+    relatedAlbumIds: ["a3"],
+  },
+  {
+    id: "ch3",
+    title: "Tillana — group formation draft",
+    description: "Work-in-progress. Version 3 of circular exit.",
+    mediaUrl: FEED_ITEMS[9].mediaUrl,
+    poster: FEED_ITEMS[9].mediaUrl,
+    danceForm: "Bharatanatyam",
+    composition: "Tillana in Kalyani",
+    choreographer: "Ananya Krishnan",
+    dancers: ["Ensemble"],
+    guru: "Guru Lakshmi Priya",
+    music: "Tillana — Kalyani",
+    difficulty: "intermediate",
+    duration: "3:45",
+    tags: ["tillana", "formation", "group"],
+    privacy: "private",
+    allowDownload: false,
+    notes: [
+      {
+        id: "n3",
+        time: 90,
+        text: "Second diagonal opens too early — wait for the teermanam.",
+        category: "formation",
+        author: "Ananya Krishnan",
+        private: true,
+      },
+    ],
+    relatedBoardIds: ["b1"],
+    relatedAlbumIds: ["a1"],
+  },
+];
+
+export const PROJECTS: StudioProject[] = [
+  {
+    id: "p1",
+    title: "New Varnam Production — 2027",
+    status: "choreography",
+    description:
+      "Research, music, costume, and movement notebook for forthcoming production.",
+    cover: FEED_ITEMS[0].mediaUrl,
+    collaborators: ["Guru Lakshmi Priya", "Meera Subramanian"],
+    referenceImageIds: ["f1", "f2", "f8"],
+    videoIds: ["ch1"],
+    notes: [
+      "Open with temple-lamp silhouette.",
+      "Costume: deep maroon with brass border.",
+      "Abhinaya arc: longing → resolve → devotion.",
+    ],
+  },
+  {
+    id: "p2",
+    title: "Padam — Moonlit Waiting",
+    status: "research",
+    description: "Abhinaya-focused padam study.",
+    cover: FEED_ITEMS[1].mediaUrl,
+    collaborators: ["Guru Lakshmi Priya"],
+    referenceImageIds: ["f2", "f8"],
+    videoIds: [],
+    notes: ["Collect karuna references.", "Music: slow vilambit."],
+  },
+];
+
+export const NOTIFICATIONS: NotificationItem[] = [
+  {
+    id: "nt1",
+    type: "album",
+    title: "New photos in your album",
+    body: "Arjun Photography added 12 backstage photos.",
+    time: "2h ago",
+    read: false,
+  },
+  {
+    id: "nt2",
+    type: "choreography",
+    title: "Teacher left a Rhythm Note",
+    body: "A note about timing was added at 0:42.",
+    time: "5h ago",
+    read: false,
+  },
+  {
+    id: "nt3",
+    type: "board",
+    title: "Collection invite",
+    body: "Meera invited you to share Costume ideas.",
+    time: "1d ago",
+    read: true,
+  },
+  {
+    id: "nt4",
+    type: "processing",
+    title: "Your video is ready",
+    body: "Group ending draft finished preparing.",
+    time: "2d ago",
+    read: true,
+  },
+];
+
+export const INTERESTS = [
+  { id: "poses", label: "Poses" },
+  { id: "abhinaya", label: "Expressions" },
+  { id: "mudras", label: "Hand gestures" },
+  { id: "costumes", label: "Costumes" },
+  { id: "jewelry", label: "Jewelry" },
+  { id: "makeup", label: "Makeup" },
+  { id: "choreography", label: "Dance steps" },
+  { id: "rehearsal", label: "Practice" },
+  { id: "stage_design", label: "Stage design" },
+  { id: "photography", label: "Dance photos" },
+  { id: "event_albums", label: "Event albums" },
+  { id: "classical_videos", label: "Dance videos" },
+] as const;
+
+export const USER_TYPES = [
+  { id: "dancer", label: "Dancer" },
+  { id: "choreographer", label: "Choreographer" },
+  { id: "teacher", label: "Teacher" },
+  { id: "photographer", label: "Photographer" },
+  { id: "costume_designer", label: "Costume artist" },
+  { id: "makeup_artist", label: "Makeup artist" },
+  { id: "jewelry_designer", label: "Jewelry designer" },
+  { id: "enthusiast", label: "Dance friend" },
+] as const;
+
+export const DANCE_FORMS = [
+  "Bharatanatyam",
+  "Kathak",
+  "Odissi",
+  "Kuchipudi",
+  "Mohiniyattam",
+  "Kathakali",
+  "Manipuri",
+  "Sattriya",
+  "Contemporary",
+] as const;
+
+export const CATEGORIES = [
+  "Poses",
+  "Abhinaya",
+  "Mudras",
+  "Costumes",
+  "Jewelry",
+  "Makeup",
+  "Choreography",
+  "Rehearsal",
+  "Stage design",
+  "Photography",
+  "Posters",
+  "Performance",
+] as const;
+
+export function getFeedItem(id: string) {
+  return FEED_ITEMS.find((i) => i.id === id);
+}
+
+export function getBoard(id: string) {
+  return BOARDS.find((b) => b.id === id);
+}
+
+export function getAlbum(id: string) {
+  return ALBUMS.find((a) => a.id === id);
+}
+
+export function getChoreography(id: string) {
+  return CHOREOGRAPHY.find((c) => c.id === id);
+}
+
+export function getProject(id: string) {
+  return PROJECTS.find((p) => p.id === id);
+}
