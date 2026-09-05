@@ -15,18 +15,19 @@ export default function LoginPage() {
           priority
           sizes="55vw"
         />
-        <div className="absolute inset-0 bg-gradient-to-r from-obsidian/30 via-maroon/40 to-obsidian/90" />
+        <div className="absolute inset-0 bg-gradient-to-r from-maroon/30 via-temple/50 to-parchment" />
         <div className="absolute inset-0 kolam-bg opacity-20" />
         <div className="absolute bottom-12 left-12 right-12">
-          <p className="font-inscription text-[0.7rem] text-gold">AADAL ARCHIVE</p>
-          <p className="font-display mt-4 text-4xl font-light text-ivory">
-            A digital temple stage for your archive.
+          <p className="font-inscription text-[0.7rem] text-brass">AADAL ARCHIVE</p>
+          <p className="font-script mt-3 text-3xl text-ivory">Tradition & Grace</p>
+          <p className="font-display mt-2 text-4xl text-ivory">
+            A warm temple stage for your archive.
           </p>
         </div>
       </aside>
 
-      <div className="relative flex flex-col justify-center bg-charcoal px-6 py-12 md:px-12">
-        <div className="absolute left-0 top-0 hidden h-full w-px bg-gradient-to-b from-transparent via-gold/50 to-transparent lg:block" />
+      <div className="relative flex flex-col justify-center bg-paper px-6 py-12 md:px-12">
+        <div className="absolute left-0 top-0 hidden h-full w-px bg-gradient-to-b from-transparent via-gold to-transparent lg:block" />
         <div className="mx-auto w-full max-w-md">
           <div className="mb-6 lg:hidden">
             <div className="relative mb-6 h-36 overflow-hidden border border-[var(--border-gold)]">
@@ -34,28 +35,28 @@ export default function LoginPage() {
                 src="https://images.unsplash.com/photo-1547153760-18fc86302687?w=800&q=80"
                 alt=""
                 fill
-                className="object-cover object-top opacity-70"
+                className="object-cover object-top"
                 sizes="100vw"
               />
             </div>
           </div>
-          <Link href="/" className="font-inscription text-[0.65rem] text-gold">
+          <Link href="/" className="font-inscription text-[0.65rem] text-temple">
             AADAL ARCHIVE
           </Link>
           <div className="mt-6 flex justify-center lg:justify-start">
             <SalangaiLoader size={48} label="" />
           </div>
-          <h1 className="font-display mt-6 text-4xl font-light text-ivory">
+          <h1 className="font-display mt-6 text-4xl font-medium text-ink">
             Welcome back
           </h1>
-          <p className="mt-2 text-sm text-sandalwood">
+          <p className="mt-2 text-sm text-ink-soft">
             Return to your dance space.
           </p>
           <form className="mt-8 space-y-4" action="/discover">
             <Input label="Email" id="email" type="email" required placeholder="you@email.com" />
             <Input label="Password" id="password" type="password" required placeholder="••••••••" />
             <div className="flex justify-end">
-              <Link href="/forgot-password" className="text-xs text-gold hover:underline">
+              <Link href="/forgot-password" className="text-xs text-temple hover:underline">
                 Forgot password
               </Link>
             </div>
@@ -76,9 +77,9 @@ export default function LoginPage() {
               Continue with Apple
             </Button>
           </div>
-          <p className="mt-8 text-center text-sm text-sandalwood">
+          <p className="mt-8 text-center text-sm text-ink-soft">
             New to Aadal Archive?{" "}
-            <Link href="/signup" className="text-gold hover:underline">
+            <Link href="/signup" className="text-temple hover:underline">
               Create account
             </Link>
           </p>

@@ -61,8 +61,8 @@ export default function DiscoverPage() {
             onClick={() => setCategory(cat)}
             className={`shrink-0 border px-3 py-2 text-xs tracking-[0.1em] uppercase transition-colors ${
               category === cat
-                ? "border-gold bg-gold/10 text-gold"
-                : "border-[var(--border-gold)] text-sandalwood hover:border-brass/60"
+                ? "border-temple bg-temple/10 text-temple"
+                : "border-[var(--border-gold)] bg-paper text-bronze hover:border-temple/50"
             }`}
           >
             {cat}

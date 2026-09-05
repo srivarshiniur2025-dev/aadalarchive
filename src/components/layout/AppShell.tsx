@@ -68,11 +68,11 @@ export function AppShell({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="min-h-screen">
-      <header className="sticky top-0 z-40 border-b border-[var(--border-gold)] bg-charcoal/95 backdrop-blur-md">
+      <header className="sticky top-0 z-40 border-b border-[var(--border-gold)] bg-paper/95 shadow-sm backdrop-blur-md">
         <div className="mx-auto flex max-w-[1440px] items-center justify-between gap-4 px-4 py-3 md:px-8 lg:px-12">
           <Link
             href="/discover"
-            className="font-inscription text-[0.65rem] text-gold"
+            className="font-inscription text-[0.65rem] text-temple"
           >
             AADAL ARCHIVE
           </Link>
@@ -88,16 +88,16 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   className={cn(
                     "inline-flex items-center gap-2 rounded-[var(--radius-sm)] px-3 py-2 text-sm transition-colors duration-200",
                     active
-                      ? "text-gold"
-                      : "text-sandalwood hover:text-ivory",
+                      ? "bg-temple/10 text-temple"
+                      : "text-ink-soft hover:text-temple",
                   )}
                 >
-                  <Icon className={cn("h-4 w-4", active && "text-gold")} />
-                  <span className="label-ui normal-case tracking-[0.08em]">
+                  <Icon className={cn("h-4 w-4", active && "text-temple")} />
+                  <span className="label-ui normal-case tracking-[0.08em] !text-inherit">
                     {item.label}
                   </span>
                   {active ? (
-                    <span className="ml-0.5 h-1 w-1 rounded-full bg-gold" />
+                    <span className="ml-0.5 h-1.5 w-1.5 rounded-full bg-gold" />
                   ) : null}
                 </Link>
               );
@@ -108,7 +108,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               href="/explore"
               title="Discover"
               aria-label="Search and discover"
-              className="rounded-[var(--radius-sm)] p-2.5 text-sandalwood transition-colors hover:text-gold"
+              className="rounded-[var(--radius-sm)] p-2.5 text-bronze transition-colors hover:text-temple"
             >
               <Icons.Search className="h-5 w-5" />
             </Link>
@@ -124,8 +124,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 Create
               </button>
               {createOpen ? (
-                <div className="absolute right-0 top-12 z-50 w-72 border border-[var(--border-gold)] bg-charcoal p-2 shadow-2xl">
-                  <p className="px-3 pb-2 pt-1 text-xs text-sandalwood">
+                <div className="absolute right-0 top-12 z-50 w-72 border border-[var(--border-gold)] bg-paper p-2 shadow-2xl">
+                  <p className="px-3 pb-2 pt-1 text-xs text-bronze">
                     Upload photos, videos, collections, or albums
                   </p>
                   {createOptions.map((opt) => {
@@ -135,14 +135,14 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                         key={opt.href + opt.label}
                         href={opt.href}
                         onClick={() => setCreateOpen(false)}
-                        className="flex items-start gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 transition-colors hover:bg-temple/30"
+                        className="flex items-start gap-3 rounded-[var(--radius-sm)] px-3 py-2.5 transition-colors hover:bg-temple/10"
                       >
-                        <Icon className="mt-0.5 h-4 w-4 shrink-0 text-gold" />
+                        <Icon className="mt-0.5 h-4 w-4 shrink-0 text-temple" />
                         <span>
-                          <span className="block text-sm text-ivory">
+                          <span className="block text-sm text-ink">
                             {opt.label}
                           </span>
-                          <span className="block text-xs text-sandalwood">
+                          <span className="block text-xs text-bronze">
                             {opt.hint}
                           </span>
                         </span>
@@ -156,7 +156,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               href="/notifications"
               title="Notifications"
               aria-label="Notifications"
-              className="rounded-[var(--radius-sm)] p-2.5 text-sandalwood transition-colors hover:text-gold"
+              className="rounded-[var(--radius-sm)] p-2.5 text-bronze transition-colors hover:text-temple"
             >
               <Icons.Notifications className="h-5 w-5" />
             </Link>
@@ -164,7 +164,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               href="/settings"
               title="Settings"
               aria-label="Settings"
-              className="hidden rounded-[var(--radius-sm)] p-2.5 text-sandalwood transition-colors hover:text-gold sm:inline-flex"
+              className="hidden rounded-[var(--radius-sm)] p-2.5 text-bronze transition-colors hover:text-temple sm:inline-flex"
             >
               <Icons.Settings className="h-5 w-5" />
             </Link>
@@ -172,7 +172,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               href="/profile"
               title="Profile"
               aria-label="Profile"
-              className="ml-1 flex h-9 w-9 items-center justify-center rounded-full border border-gold/40 bg-temple/40 text-xs text-gold"
+              className="ml-1 flex h-9 w-9 items-center justify-center rounded-full border-2 border-gold bg-temple text-xs text-ivory"
             >
               AK
             </Link>
@@ -185,7 +185,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       </main>
 
       <nav
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border-gold)] bg-charcoal/95 backdrop-blur-md lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-[var(--border-gold)] bg-paper/95 backdrop-blur-md lg:hidden"
         aria-label="Mobile"
         style={{ paddingBottom: "env(safe-area-inset-bottom)" }}
       >
@@ -198,7 +198,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="-mt-5 flex h-14 w-14 items-center justify-center rounded-full border border-brass bg-gradient-to-br from-temple to-maroon text-brass shadow-[0_8px_28px_rgba(100,28,37,0.45)]"
+                    className="-mt-5 flex h-14 w-14 items-center justify-center rounded-full border-2 border-gold bg-gradient-to-br from-temple to-maroon text-ivory shadow-[0_8px_28px_rgba(139,35,50,0.4)]"
                     aria-label={item.label}
                     title={item.label}
                   >
@@ -214,7 +214,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   title={item.label}
                   className={cn(
                     "flex min-h-11 min-w-11 flex-col items-center justify-center gap-0.5 px-2 py-1 text-[0.62rem]",
-                    active ? "text-gold" : "text-sandalwood",
+                    active ? "text-temple" : "text-bronze",
                   )}
                 >
                   <Icon className="h-5 w-5" />

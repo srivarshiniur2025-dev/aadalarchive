@@ -1,51 +1,74 @@
 import Link from "next/link";
+import { Slot } from "@radix-ui/react-slot";
+import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
+
+const buttonVariants = cva(
+  "inline-flex items-center justify-center gap-2 font-medium transition-all duration-200 disabled:pointer-events-none disabled:opacity-50 cursor-pointer",
+  {
+    variants: {
+      variant: {
+        primary:
+          "rounded-[var(--radius-sm)] border border-gold bg-temple px-5 py-2.5 text-xs uppercase tracking-[0.1em] text-ivory hover:border-brass hover:bg-maroon",
+        secondary:
+          "rounded-[var(--radius-sm)] border border-[var(--border-gold)] bg-paper px-5 py-2.5 text-xs uppercase tracking-[0.08em] text-ink hover:border-temple hover:bg-temple/10",
+        ghost:
+          "rounded-[var(--radius-sm)] px-3 py-2 text-bronze tracking-[0.06em] hover:text-temple",
+        vermilion:
+          "rounded-[var(--radius-sm)] border border-vermilion/45 bg-vermilion/10 px-5 py-2.5 text-temple hover:bg-vermilion/20",
+        doorway: "btn-doorway",
+        ivory:
+          "rounded-[var(--radius-sm)] border border-brass/50 bg-ivory px-5 py-2.5 text-xs uppercase tracking-[0.08em] text-ink hover:bg-paper",
+      },
+      size: {
+        default: "",
+        sm: "px-3 py-2 text-[0.65rem]",
+        lg: "px-7 py-3 text-sm",
+      },
+    },
+    defaultVariants: {
+      variant: "primary",
+      size: "default",
+    },
+  },
+);
 
 export function Button({
   children,
   href,
   variant = "primary",
+  size = "default",
   className,
   type = "button",
   onClick,
   disabled,
   ariaLabel,
+  asChild = false,
 }: {
   children: React.ReactNode;
   href?: string;
-  variant?: "primary" | "secondary" | "ghost" | "vermilion" | "doorway" | "ivory";
   className?: string;
   type?: "button" | "submit";
   onClick?: () => void;
   disabled?: boolean;
   ariaLabel?: string;
-}) {
-  const styles = {
-    primary:
-      "border border-gold bg-temple/80 text-ivory tracking-[0.1em] uppercase text-xs hover:bg-temple hover:border-brass",
-    secondary:
-      "border border-[var(--border-gold)] bg-transparent text-ivory tracking-[0.08em] uppercase text-xs hover:border-brass hover:bg-maroon/40",
-    ghost: "text-sandalwood hover:text-gold tracking-[0.06em]",
-    vermilion:
-      "border border-vermilion/45 bg-vermilion/15 text-ivory hover:bg-vermilion/25",
-    doorway: "btn-doorway",
-    ivory:
-      "border border-bronze/40 bg-ivory text-obsidian tracking-[0.08em] uppercase text-xs hover:bg-[#f7ecda]",
-  };
-
-  const classes = cn(
-    variant === "doorway"
-      ? styles.doorway
-      : "inline-flex items-center justify-center gap-2 rounded-[var(--radius-sm)] px-5 py-2.5 font-medium transition-all duration-200 disabled:opacity-50",
-    variant !== "doorway" && styles[variant],
-    className,
-  );
+  asChild?: boolean;
+} & VariantProps<typeof buttonVariants>) {
+  const classes = cn(buttonVariants({ variant, size }), className);
 
   if (href) {
     return (
       <Link href={href} className={classes} aria-label={ariaLabel}>
         {children}
       </Link>
+    );
+  }
+
+  if (asChild) {
+    return (
+      <Slot className={classes} onClick={onClick} aria-label={ariaLabel}>
+        {children}
+      </Slot>
     );
   }
 
@@ -62,6 +85,8 @@ export function Button({
   );
 }
 
+export { buttonVariants };
+
 export function SectionHeading({
   eyebrow,
   title,
@@ -75,18 +100,13 @@ export function SectionHeading({
 }) {
   return (
     <div className={cn(align === "center" && "text-center")}>
-      {eyebrow ? <p className="label-ui mb-3 text-gold">{eyebrow}</p> : null}
-      <h2 className="font-display text-3xl font-medium tracking-[0.02em] text-ivory md:text-4xl">
+      {eyebrow ? <p className="font-script mb-2 text-2xl text-temple">{eyebrow}</p> : null}
+      <h2 className="font-display text-3xl font-medium tracking-[0.02em] text-ink md:text-4xl">
         {title}
       </h2>
-      <div
-        className={cn(
-          "gold-rule mt-4",
-          align === "center" && "mx-auto",
-        )}
-      />
+      <div className={cn("gold-rule mt-4", align === "center" && "mx-auto")} />
       {subtitle ? (
-        <p className="mt-4 max-w-2xl text-base leading-relaxed text-sandalwood md:text-lg">
+        <p className="mt-4 max-w-2xl text-base leading-relaxed text-ink-soft md:text-lg">
           {subtitle}
         </p>
       ) : null}
@@ -110,9 +130,9 @@ export function EmptyState({
       <div className="kolam-bg absolute inset-0 opacity-35" />
       <div className="relative">
         <EmptyIllustration kind={illustration} />
-        <h3 className="font-display mt-5 text-2xl text-ivory">{title}</h3>
+        <h3 className="font-display mt-5 text-2xl text-ink">{title}</h3>
         {description ? (
-          <p className="mx-auto mt-2 max-w-md text-sm text-sandalwood">
+          <p className="mx-auto mt-2 max-w-md text-sm text-ink-soft">
             {description}
           </p>
         ) : null}
@@ -147,7 +167,13 @@ function EmptyIllustration({
   if (kind === "curtain") {
     return (
       <svg viewBox="0 0 96 56" className="mx-auto h-10 w-20 text-temple" aria-hidden>
-        <path d="M8 8c12 18 12 30 0 40M28 8c12 18 12 30 0 40M48 8c12 18 12 30 0 40M68 8c12 18 12 30 0 40M88 8c-8 14-8 28 0 40" fill="none" stroke="currentColor" strokeWidth="1.4" opacity="0.7" />
+        <path
+          d="M8 8c12 18 12 30 0 40M28 8c12 18 12 30 0 40M48 8c12 18 12 30 0 40M68 8c12 18 12 30 0 40M88 8c-8 14-8 28 0 40"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth="1.4"
+          opacity="0.7"
+        />
       </svg>
     );
   }
@@ -181,7 +207,7 @@ const privacyLabels: Record<string, string> = {
 export function PrivacyBadge({ privacy }: { privacy: string }) {
   const label = privacyLabels[privacy] ?? privacy.replaceAll("_", " ");
   return (
-    <span className="label-ui inline-flex items-center rounded-[var(--radius-sm)] border border-[var(--border-gold)] bg-obsidian/55 px-2.5 py-1 text-[0.62rem] text-sandalwood">
+    <span className="label-ui inline-flex items-center rounded-[var(--radius-sm)] border border-[var(--border-gold)] bg-paper px-2.5 py-1 text-[0.62rem] text-bronze">
       {label}
     </span>
   );
@@ -207,7 +233,7 @@ export function Input({
   rows?: number;
 }) {
   const fieldClass =
-    "w-full rounded-[var(--radius-sm)] border border-[var(--border-bronze)] bg-charcoal/50 px-3 py-3.5 text-sm text-ivory placeholder:text-sandalwood/50 focus:border-gold focus:outline-none";
+    "w-full rounded-[var(--radius-sm)] border border-[var(--border-bronze)] bg-paper px-3 py-3.5 text-sm text-ink placeholder:text-bronze/70 focus:border-temple focus:outline-none";
 
   return (
     <label className="block space-y-1.5" htmlFor={id}>
@@ -249,10 +275,10 @@ export function PageIntro({
   return (
     <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
       <div>
-        <h1 className="font-display text-3xl font-medium text-ivory md:text-4xl">
+        <h1 className="font-display text-3xl font-medium text-ink md:text-4xl">
           {greeting}
         </h1>
-        <p className="mt-2 text-sm italic text-sandalwood md:text-base">
+        <p className="mt-2 text-sm italic text-ink-soft md:text-base">
           {subtitle}
         </p>
       </div>

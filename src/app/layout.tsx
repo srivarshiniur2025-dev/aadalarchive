@@ -1,15 +1,10 @@
 import type { Metadata, Viewport } from "next";
-import { Cormorant_Garamond, Cinzel, Outfit } from "next/font/google";
+import { Cormorant_Garamond, Outfit, Great_Vibes, Cinzel } from "next/font/google";
+import { AppProviders } from "@/components/providers/AppProviders";
 import "./globals.css";
 
 const display = Cormorant_Garamond({
   variable: "--font-display",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
-const inscription = Cinzel({
-  variable: "--font-inscription",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
 });
@@ -20,25 +15,37 @@ const body = Outfit({
   weight: ["300", "400", "500", "600", "700"],
 });
 
+const inscription = Cinzel({
+  variable: "--font-inscription",
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+});
+
+const script = Great_Vibes({
+  variable: "--font-script",
+  subsets: ["latin"],
+  weight: ["400"],
+});
+
 export const metadata: Metadata = {
   title: {
     default: "Aadal Archive — Where movement becomes memory",
     template: "%s · Aadal Archive",
   },
   description:
-    "Discover inspiration, shape choreography, preserve performances, and share your artistic journey. A premium visual platform for Bharatanatyam and classical dance.",
+    "A modern visual world for Bharatanatyam dancers — discover inspiration, save ideas, practice, and preserve every performance.",
   keywords: [
     "Bharatanatyam",
     "classical dance",
-    "choreography",
+    "Aadal Archive",
     "dance archive",
-    "arangetram",
-    "moodboard",
+    "practice videos",
+    "choreography",
   ],
 };
 
 export const viewport: Viewport = {
-  themeColor: "#120e0c",
+  themeColor: "#15161A",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
@@ -52,10 +59,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${display.variable} ${inscription.variable} ${body.variable} h-full antialiased`}
+      className={`${display.variable} ${body.variable} ${inscription.variable} ${script.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col font-[family-name:var(--font-body)]">
-        {children}
+      <body className="flex min-h-full flex-col font-[family-name:var(--font-body)]">
+        <AppProviders>{children}</AppProviders>
       </body>
     </html>
   );
