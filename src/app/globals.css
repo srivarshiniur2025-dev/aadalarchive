@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /* ============================================================
-   Aadal Archive — Global Design System
+   AadalArchive — Global Design System
    Premium · cinematic · temple-inspired · gold as accent only
    ============================================================ */
 
@@ -470,6 +470,17 @@ img {
   }
 }
 
+@keyframes fadeRise {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .hero-petal {
   animation: hero-petal-drift 11s var(--ease-silk) infinite;
 }
@@ -540,6 +551,10 @@ img {
   .group:hover .card-image-drift {
     transform: none !important;
   }
+
+  [class*="animate-[fadeRise"] {
+    animation: none !important;
+  }
 }
 
 .safe-bottom {
@@ -549,6 +564,51 @@ img {
 .scrollbar-thin {
   scrollbar-width: thin;
   scrollbar-color: var(--gold-muted) transparent;
+}
+
+/* ---------- Temple architecture shell ---------- */
+
+.temple-arch-shell {
+  isolation: isolate;
+}
+
+.temple-arch-shell::before {
+  content: none;
+}
+
+.temple-arch-shell::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 12% 18% 0;
+  z-index: 0;
+  border-radius: 50% 50% 0 0;
+  background: radial-gradient(ellipse at 50% 28%, rgba(229, 169, 60, 0.16), transparent 62%);
+  filter: blur(28px);
+}
+
+.temple-niche-hover {
+  transition: transform 420ms var(--ease-dance);
+}
+
+.temple-niche-hover:hover {
+  transform: translateY(-4px);
+}
+
+.temple-niche-hover:hover .temple-niche-media {
+  transform: scale(1.04);
+}
+
+.temple-niche-media {
+  transition: transform 700ms var(--ease-silk);
+  will-change: transform;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .temple-niche-hover:hover,
+  .temple-niche-hover:hover .temple-niche-media {
+    transform: none !important;
+  }
 }
 
 @media (max-width: 768px) {

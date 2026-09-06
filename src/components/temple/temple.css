@@ -1,0 +1,41 @@
+.temple-frame {
+  isolation: isolate;
+  background: transparent;
+}
+
+/* Soft gold glow in the opening only — never a rectangular box */
+.temple-frame::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 22% 26% 12%;
+  z-index: 0;
+  border-radius: 50% 50% 14% 14%;
+  background: radial-gradient(
+    ellipse at 50% 35%,
+    rgba(229, 169, 60, 0.12),
+    transparent 70%
+  );
+  filter: blur(16px);
+}
+
+.temple-frame-glow {
+  filter: drop-shadow(0 0 16px rgba(229, 169, 60, 0.18));
+}
+
+.temple-niche-media {
+  transition: transform 700ms var(--ease-silk, cubic-bezier(0.22, 1, 0.36, 1));
+  will-change: transform;
+}
+
+.temple-frame-glow .temple-niche-media,
+.group:hover .temple-niche-media {
+  transform: scale(1.045);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .temple-niche-media,
+  .group:hover .temple-niche-media {
+    transform: none !important;
+  }
+}

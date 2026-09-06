@@ -1,65 +1,88 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { FadeRise } from "@/components/ui/Motion";
-import { TempleArchBorder, TempleArchClip } from "./TempleArch";
+import { Button } from "@/components/design-system";
 
 export function StoriesCtaSection() {
   return (
     <section
-      className="relative isolate overflow-hidden bg-charcoal"
+      className="relative isolate overflow-hidden bg-[#15161A]"
       aria-labelledby="stories-heading"
     >
-      <div className="ds-container-wide relative grid min-h-[70svh] items-center gap-10 py-20 lg:min-h-[80svh] lg:grid-cols-[1fr_1.15fr] lg:gap-12 lg:py-24">
-        <FadeRise className="relative z-10 max-w-md">
-          <p className="label-ui">People · Places · Practice · Performances · Memories</p>
+      {/* Full-bleed cinematic plate */}
+      <div className="absolute inset-0" aria-hidden>
+        <Image
+          src="/landing/cinematic-temple-corridor.png"
+          alt=""
+          fill
+          sizes="100vw"
+          className="object-cover object-[55%_40%] opacity-35 brightness-[0.55]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-r from-[#15161A] via-[#15161A]/85 to-[#15161A]/55" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_70%_50%,rgba(243,130,34,0.12),transparent_55%)]" />
+      </div>
+
+      <div className="ds-container-wide relative grid min-h-[78svh] items-center gap-12 py-20 lg:min-h-[85svh] lg:grid-cols-[1.05fr_0.95fr] lg:gap-10 lg:py-24">
+        <FadeRise className="relative z-10 max-w-lg">
+          <div className="inline-flex items-center gap-3">
+            <span className="h-px w-8 bg-gold/50" aria-hidden />
+            <p className="label-ui">People · Places · Practice · Performances · Memories</p>
+          </div>
           <h2
             id="stories-heading"
-            className="mt-6 font-display text-[clamp(2.2rem,4.5vw,3.4rem)] font-medium leading-[1.08] tracking-[-0.02em] text-cream"
+            className="mt-6 font-display text-[clamp(2.5rem,5.2vw,3.9rem)] font-medium leading-[1.03] tracking-[-0.02em] text-cream"
           >
-            Where Stories
+            Where
+            <br />
+            Stories
             <br />
             <span className="italic text-gold">Dance On</span>
           </h2>
-          <div className="ornament-line mt-8" aria-hidden />
+          <p className="mt-6 max-w-sm text-[0.95rem] leading-relaxed text-cream/55">
+            Preserve the movement, memories and moments that make your dance yours.
+          </p>
+          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Button href="/signup" size="md">
+              Create Your Archive
+            </Button>
+            <Link
+              href="/explore"
+              className="inline-flex items-center gap-2 px-2 text-sm font-medium text-cream/70 transition-colors hover:text-gold"
+            >
+              Explore Inspiration
+              <span aria-hidden>→</span>
+            </Link>
+          </div>
         </FadeRise>
 
-        <div className="relative mx-auto aspect-[4/5] w-full max-w-[420px] lg:ml-auto lg:max-w-[480px]">
-          <TempleArchClip className="absolute inset-0">
-            <Image
-              src="/landing/cinematic-temple-corridor.png"
-              alt="Dancer silhouette in temple light"
-              fill
-              sizes="(max-width: 1024px) 90vw, 40vw"
-              className="object-cover object-[50%_20%] brightness-[0.55] contrast-125"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-charcoal via-transparent to-charcoal/30" />
-            <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_45%,rgba(229,169,60,0.2),transparent_55%)]" />
-          </TempleArchClip>
-          <TempleArchBorder variant="cta" />
-
-          <FadeRise
-            delay={0.12}
-            className="absolute inset-x-0 bottom-[12%] z-[2] px-8 text-center sm:px-10"
+        <FadeRise
+          delay={0.1}
+          className="relative aspect-[4/5] w-full max-w-[440px] justify-self-center overflow-hidden border border-gold/20 shadow-[0_40px_80px_rgba(0,0,0,0.5)] lg:max-w-[480px] lg:justify-self-end"
+        >
+          <Image
+            src="/landing/hero-dancer.png"
+            alt="Dancer silhouette in warm light"
+            fill
+            sizes="(max-width:1024px) 90vw, 40vw"
+            className="object-cover object-[50%_12%] brightness-[0.75] contrast-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#15161A]/80 via-transparent to-[#15161A]/30" />
+          <div className="pointer-events-none absolute inset-4 border border-gold/15" aria-hidden />
+          <svg
+            className="pointer-events-none absolute inset-x-[18%] top-6 h-8 w-[64%] text-gold/40"
+            viewBox="0 0 200 32"
+            fill="none"
+            aria-hidden
           >
-            <p className="font-display text-lg leading-snug text-cream/85 sm:text-xl">
-              Not just a dancer.
-              <br />
-              <span className="italic text-gold">A part of a timeless story.</span>
-            </p>
-            <svg
-              viewBox="0 0 28 28"
-              className="mx-auto mt-4 h-5 w-5 text-gold opacity-80"
-              fill="none"
+            <path
+              d="M16 28 C16 28 50 6 100 6 C150 6 184 28 184 28"
               stroke="currentColor"
-              strokeWidth="1.1"
-              aria-hidden
-            >
-              <path d="M14 24c0-3.5 2.4-5.8 2.4-9.5 0 0-2.4 1.2-2.4 3.6 0-2.4-2.4-3.6-2.4-3.6 0 3.7 2.4 6 2.4 9.5Z" />
-              <path d="M14 17.2c-2.6-1.1-5-1-7.2.3 2.2 1.1 4.6 2.1 7.2 2.1s5-1 7.2-2.1c-2.2-1.3-4.6-1.4-7.2-.3Z" />
-            </svg>
-          </FadeRise>
-        </div>
+              strokeWidth="1.2"
+            />
+          </svg>
+        </FadeRise>
       </div>
     </section>
   );

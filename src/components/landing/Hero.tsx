@@ -4,152 +4,189 @@ import Image from "next/image";
 import Link from "next/link";
 import { Button } from "@/components/design-system";
 import { cn } from "@/lib/utils";
-import { TempleArchBorder, TempleArchClip, TempleLamp } from "./TempleArch";
-
-const VALUES = ["TRADITION", "CREATIVITY", "COMMUNITY", "FOREVER"] as const;
-
-function LotusOrnament({ className }: { className?: string }) {
-  return (
-    <svg
-      viewBox="0 0 28 28"
-      className={cn("h-5 w-5 text-gold", className)}
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.1"
-      aria-hidden
-    >
-      <path d="M14 24c0-3.5 2.4-5.8 2.4-9.5 0 0-2.4 1.2-2.4 3.6 0-2.4-2.4-3.6-2.4-3.6 0 3.7 2.4 6 2.4 9.5Z" />
-      <path d="M14 17.2c-2.6-1.1-5-1-7.2.3 2.2 1.1 4.6 2.1 7.2 2.1s5-1 7.2-2.1c-2.2-1.3-4.6-1.4-7.2-.3Z" />
-      <path d="M14 15c1.8-2.6 2.3-5 1.6-7.6-.9 2.2-1.8 4.4-1.6 7.6-.3-3.2-1.2-5.4-2.4-7.6-.5 2.6.2 5 2.4 7.6Z" />
-      <path d="M14 6.2s-1 2.2 0 4.2c1-2 0-4.2 0-4.2Z" fill="currentColor" stroke="none" />
-    </svg>
-  );
-}
 
 function PlayGlyph() {
   return (
     <span
-      className="inline-flex h-8 w-8 items-center justify-center rounded-full border border-gold/55 text-gold"
+      className="inline-flex h-9 w-9 items-center justify-center rounded-full border border-gold/50 text-gold"
       aria-hidden
     >
-      <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[8px] border-y-transparent border-l-gold" />
+      <span className="ml-0.5 h-0 w-0 border-y-[5px] border-l-[9px] border-y-transparent border-l-gold" />
     </span>
   );
 }
 
-function HeroArchScene() {
+/**
+ * Single cinematic doorway — one composed scene, soft-faded into the page.
+ */
+function HeroTempleStage({ className }: { className?: string }) {
   return (
-    <div className="relative mx-auto aspect-[3/4] w-full max-w-[480px] lg:max-w-[520px]">
-      {/* Soft temple glow — flat, no parallax */}
+    <div className={cn("relative mx-auto w-full max-w-[540px]", className)}>
       <div
-        className="pointer-events-none absolute inset-[12%] rounded-full opacity-80 blur-3xl"
-        style={{
-          background:
-            "radial-gradient(circle at 50% 42%, rgba(229,169,60,0.28), rgba(14,98,122,0.12) 50%, transparent 70%)",
-        }}
+        className="pointer-events-none absolute left-1/2 top-[20%] h-[65%] w-[72%] -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(229,169,60,0.1),transparent_68%)] blur-3xl"
         aria-hidden
       />
 
-      <TempleArchClip className="absolute inset-0 z-[1]">
+      <div
+        className="relative aspect-[4/5] w-full overflow-hidden"
+        style={{
+          WebkitMaskImage:
+            "radial-gradient(ellipse 78% 82% at 50% 48%, #000 42%, transparent 78%)",
+          maskImage:
+            "radial-gradient(ellipse 78% 82% at 50% 48%, #000 42%, transparent 78%)",
+        }}
+      >
         <Image
           src="/landing/hero-dancer.png"
-          alt="Bharatanatyam dancer framed by a carved temple arch"
+          alt="Bharatanatyam dancer framed by a South Indian temple entrance"
           fill
           priority
-          sizes="(max-width: 1024px) 90vw, 42vw"
-          className="object-cover object-[50%_15%]"
+          sizes="(max-width:1024px) 85vw, 40vw"
+          className="object-cover object-[50%_20%] brightness-[1.18] contrast-[1.08]"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-charcoal/75 via-transparent to-charcoal/20" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_50%_40%,rgba(229,169,60,0.12),transparent_55%)]" />
-      </TempleArchClip>
 
-      <TempleArchBorder variant="hero" className="z-[2]" />
-
-      {/* Floor lamps — part of the arch scene, not floating stickers */}
-      <div className="absolute bottom-[4%] left-[18%] z-[3] drop-shadow-[0_12px_20px_rgba(0,0,0,0.55)]">
-        <TempleLamp tall />
-      </div>
-      <div className="absolute bottom-[4%] right-[18%] z-[3] drop-shadow-[0_12px_20px_rgba(0,0,0,0.55)]">
-        <TempleLamp />
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_42%,transparent_40%,rgba(21,22,26,0.35)_72%,#15161A_92%)]"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 bottom-0 h-[28%] bg-gradient-to-t from-[#15161A] via-[#15161A]/75 to-transparent"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 left-0 w-[16%] bg-gradient-to-r from-[#15161A] to-transparent"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-y-0 right-0 w-[12%] bg-gradient-to-l from-[#15161A] to-transparent"
+          aria-hidden
+        />
       </div>
     </div>
   );
 }
 
+/**
+ * PAGE 1 — Hero
+ * Editorial copy left · temple doorway right.
+ * Side pillars are mounted by LandingPage around this section.
+ */
 export function Hero() {
   return (
     <section
-      className="relative isolate overflow-hidden bg-charcoal"
-      aria-label="AadalCanvas hero"
+      id="hero"
+      className="relative isolate scroll-mt-20 overflow-hidden bg-[#15161A]"
+      aria-label="AadalArchive hero"
     >
       <div className="pointer-events-none absolute inset-0" aria-hidden>
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_75%_35%,rgba(14,98,122,0.16),transparent_55%)]" />
-        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_15%_70%,rgba(229,169,60,0.08),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_68%_38%,rgba(229,169,60,0.06),transparent_48%)]" />
       </div>
 
-      <div className="ds-container-wide relative grid min-h-[calc(100svh-4.5rem)] items-center gap-12 py-14 lg:min-h-[calc(100svh-5.25rem)] lg:grid-cols-[minmax(0,0.95fr)_minmax(0,1.1fr)] lg:gap-10 lg:py-16 xl:gap-14">
-        <div className="relative z-10 max-w-xl lg:max-w-[28rem]">
-          <h1 className="font-display text-[clamp(2.35rem,5vw,3.85rem)] font-medium leading-[1.08] tracking-[-0.02em] text-cream">
-            Aadal Connects
+      <div className="ds-container-wide relative z-10 grid items-center gap-8 pt-20 pb-10 lg:min-h-svh lg:grid-cols-[minmax(0,0.44fr)_minmax(0,0.56fr)] lg:gap-10 lg:pt-[4.75rem] lg:pb-8 xl:gap-14">
+        <div className="relative z-20 order-2 max-w-md lg:order-1 lg:max-w-none">
+          <p className="text-[0.65rem] font-medium tracking-[0.22em] text-cream/42">
+            DISCOVER · CREATE · PERFORM · PRESERVE
+          </p>
+
+          <h1 className="mt-5 font-display text-[clamp(2.45rem,4.6vw,3.75rem)] font-medium leading-[1.08] tracking-[-0.025em] text-cream">
+            Aadal
+            <br />
+            Connects
             <br />
             <span className="italic text-gold">Generations</span>
           </h1>
 
-          <p className="mt-6 max-w-[24rem] text-[0.95rem] leading-relaxed text-cream/58 sm:text-base">
-            A creative space to find inspiration, plan, practice, showcase and preserve your dance
-            journey.
+          <p className="mt-5 max-w-[20.5rem] text-[0.92rem] leading-[1.7] text-cream/52">
+            A creative space to find inspiration, plan, practice, showcase and preserve
+            your dance journey.
           </p>
 
-          <div className="mt-9 flex flex-col gap-3 sm:flex-row sm:items-center">
+          <p className="mt-4 font-display text-[0.9rem] italic text-cream/62">
+            Where every movement becomes a memory.
+          </p>
+
+          <div className="mt-8 flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-5">
             <Button href="/signup" size="md">
               Start Your Journey
               <span aria-hidden>→</span>
             </Button>
             <Link
-              href="/choreography"
-              className="inline-flex items-center gap-3 px-2 py-2 text-sm font-medium tracking-wide text-cream/70 transition-colors hover:text-gold"
+              href="/#explore"
+              className="inline-flex items-center gap-3 py-2 text-sm font-medium tracking-wide text-cream/65 transition-colors hover:text-gold"
             >
               <PlayGlyph />
               Watch the Story
             </Link>
           </div>
-
-          <p className="mt-10 font-display text-base italic text-cream/45 sm:text-lg">
-            “Movement is a language older than words.”
-          </p>
         </div>
 
-        <div className="relative z-10 flex items-center justify-center lg:justify-end">
-          <HeroArchScene />
-
-          <aside
-            className="absolute right-0 top-1/2 hidden -translate-y-1/2 flex-col items-center gap-4 xl:flex"
-            aria-label="Brand values"
-          >
-            <LotusOrnament className="mb-1 opacity-90" />
-            {VALUES.map((word, i) => (
-              <span key={word} className="flex flex-col items-center gap-4">
-                <span
-                  className="text-[0.58rem] font-medium tracking-[0.28em] text-cream/40"
-                  style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
-                >
-                  {word}
-                </span>
-                {i < VALUES.length - 1 ? (
-                  <span className="h-4 w-px bg-gradient-to-b from-gold/40 to-transparent" aria-hidden />
-                ) : null}
-              </span>
-            ))}
-          </aside>
+        <div className="relative z-10 order-1 flex justify-center lg:order-2 lg:justify-end">
+          <HeroTempleStage />
         </div>
-      </div>
-
-      <div className="relative z-10 flex items-center justify-center gap-3 px-5 pb-8 xl:hidden">
-        <LotusOrnament className="opacity-80" />
-        <p className="text-[0.58rem] font-medium tracking-[0.16em] text-cream/40">
-          TRADITION · CREATIVITY · COMMUNITY · FOREVER
-        </p>
       </div>
     </section>
+  );
+}
+
+/** Hero-only edge pillars — absolute to the hero stage (not fixed across the page). */
+export function LandingSidePillars() {
+  const pillarSrc = "/temple/clean/pillar-edge.png?v=hq2";
+
+  const sharedFilter =
+    "sepia(0.45) saturate(1.25) hue-rotate(2deg) brightness(0.9) contrast(1.06)";
+
+  return (
+    <>
+      <div
+        className="pointer-events-none absolute inset-y-0 left-0 z-[40] hidden w-[110px] overflow-hidden lg:block xl:w-[128px] 2xl:w-[144px]"
+        aria-hidden
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={pillarSrc}
+          alt=""
+          draggable={false}
+          className="select-none"
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "115%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "left center",
+            transform: "scaleX(-1)",
+            opacity: 0.7,
+            filter: `${sharedFilter} drop-shadow(8px 0 18px rgba(0,0,0,0.55))`,
+          }}
+        />
+        <div className="absolute inset-y-0 right-0 w-[45%] bg-gradient-to-l from-[#15161A] via-[#15161A]/50 to-transparent" />
+      </div>
+
+      <div
+        className="pointer-events-none absolute inset-y-0 right-0 z-[40] hidden w-[110px] overflow-hidden lg:block xl:w-[128px] 2xl:w-[144px]"
+        aria-hidden
+      >
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={pillarSrc}
+          alt=""
+          draggable={false}
+          className="select-none"
+          style={{
+            position: "absolute",
+            top: 0,
+            right: 0,
+            width: "115%",
+            height: "100%",
+            objectFit: "cover",
+            objectPosition: "left center",
+            opacity: 0.7,
+            filter: `${sharedFilter} drop-shadow(-8px 0 18px rgba(0,0,0,0.55))`,
+          }}
+        />
+        <div className="absolute inset-y-0 left-0 w-[45%] bg-gradient-to-r from-[#15161A] via-[#15161A]/50 to-transparent" />
+      </div>
+    </>
   );
 }

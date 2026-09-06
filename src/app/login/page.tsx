@@ -78,7 +78,7 @@ export default function LoginPage() {
             </Button>
           </div>
           <p className="mt-8 text-center text-sm text-ink-soft">
-            New to Aadal Archive?{" "}
+            New to AadalArchive?{" "}
             <Link href="/signup" className="text-temple hover:underline">
               Create account
             </Link>
