@@ -161,7 +161,7 @@ export default function LoginPage() {
             Return to the archive where every movement becomes a memory.
           </p>
 
-          <form className="mt-9 space-y-3.5 text-left" action="/discover">
+          <form className="mt-9 space-y-3.5 text-left" action="/home">
             <label className="relative block" htmlFor="email">
               <span className="sr-only">Email address</span>
               <MailIcon className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gold/70" />
@@ -232,7 +232,7 @@ export default function LoginPage() {
           </div>
 
           <Link
-            href="/discover"
+            href="/home"
             className="inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-cream/18 bg-transparent px-6 py-3 text-[0.88rem] text-cream/75 transition-colors hover:border-gold/35 hover:text-cream"
           >
             <GoogleMark />

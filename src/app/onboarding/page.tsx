@@ -34,7 +34,7 @@ export default function OnboardingPage() {
 
   function next() {
     if (step < steps.length - 1) setStep((s) => s + 1);
-    else router.push("/discover");
+    else router.push("/home");
   }
 
   return (

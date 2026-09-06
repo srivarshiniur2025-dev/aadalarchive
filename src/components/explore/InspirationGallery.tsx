@@ -2,7 +2,7 @@
 
 import type { FeedItem } from "@/lib/types";
 import { InspirationCard } from "./InspirationCard";
-import { ExploreSlimPillars } from "./ExploreChrome";
+import { ExploreEdgePillars } from "./ExploreChrome";
 
 /** Categories / tags that get a temple-niche treatment (~20–30%). */
 const NICHE_IDS = new Set(["f5", "f6", "f8", "f9"]);
@@ -13,7 +13,7 @@ export function InspirationGallery({ items }: { items: FeedItem[] }) {
       id="inspiration-gallery"
       className="relative mx-auto max-w-[1320px] px-5 py-10 sm:px-8 lg:px-12 lg:py-14"
     >
-      <ExploreSlimPillars />
+      <ExploreEdgePillars />
 
       <div className="relative z-[1] lg:px-16 xl:px-20">
         <div className="mb-6 flex items-end justify-between gap-4">
