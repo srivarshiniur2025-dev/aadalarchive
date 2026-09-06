@@ -89,33 +89,46 @@ export function CreateSection() {
   return (
     <section id="create" className={cn(styles.section, "scroll-mt-20")} aria-labelledby="create-heading">
       <div className={styles.inner}>
-        <div>
-          <p className={styles.eyebrow}>Save · Organize · Create</p>
-          <h2 id="create-heading" className={styles.title}>
-            Turn Inspiration
-            <br />
-            Into <em className={styles.titleEm}>Ideas</em>
-          </h2>
-          <p className={styles.copy}>
-            Create your own boards for every performance, idea and dream. Bring together the
-            visuals, references and details that inspire your dance journey.
-          </p>
-
-          <div className={styles.divider} aria-hidden>
-            <span className={styles.rule} />
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-              <path d="M12 20c-3-1.5-5-4.5-5-8 2 1 3.5 2.5 5 5 1.5-2.5 3-4 5-5 0 3.5-2 6.5-5 8z" />
-              <path d="M12 12c-1.5-2-1.5-5 0-8 1.5 3 1.5 6 0 8z" />
-            </svg>
-            <span className={styles.ruleRight} />
+        <div className={styles.left}>
+          <div className={styles.silhouette} aria-hidden>
+            <Image
+              src="/landing/create-dancer-silhouette.png"
+              alt=""
+              width={327}
+              height={322}
+              className={styles.silhouetteImg}
+              priority
+            />
           </div>
 
-          <Link href="/signup" className={styles.cta}>
-            Create a Board
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
-              <path d="M5 12h14M13 6l6 6-6 6" />
-            </svg>
-          </Link>
+          <div className={styles.copyBlock}>
+            <p className={styles.eyebrow}>Save · Organize · Create</p>
+            <h2 id="create-heading" className={styles.title}>
+              Turn Inspiration
+              <br />
+              Into <em className={styles.titleEm}>Ideas</em>
+            </h2>
+            <p className={styles.copy}>
+              Create your own boards for every performance, idea and dream. Bring together the
+              visuals, references and details that inspire your dance journey.
+            </p>
+
+            <div className={styles.divider} aria-hidden>
+              <span className={styles.rule} />
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
+                <path d="M12 20c-3-1.5-5-4.5-5-8 2 1 3.5 2.5 5 5 1.5-2.5 3-4 5-5 0 3.5-2 6.5-5 8z" />
+                <path d="M12 12c-1.5-2-1.5-5 0-8 1.5 3 1.5 6 0 8z" />
+              </svg>
+              <span className={styles.ruleRight} />
+            </div>
+
+            <Link href="/signup" className={styles.cta}>
+              Create a Board
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden>
+                <path d="M5 12h14M13 6l6 6-6 6" />
+              </svg>
+            </Link>
+          </div>
         </div>
 
         <div className={styles.moodWrap}>
