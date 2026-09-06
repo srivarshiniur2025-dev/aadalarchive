@@ -17,10 +17,12 @@ export function ExploreContent({
   id = "explore",
   className,
   showFooter = true,
+  showCta = true,
 }: {
   id?: string;
   className?: string;
   showFooter?: boolean;
+  showCta?: boolean;
 }) {
   const [category, setCategory] = useState<ExploreCategory>("All");
 
@@ -37,7 +39,7 @@ export function ExploreContent({
       <ExploreHeader active={category} onChange={setCategory} />
       <FeaturedInspiration />
       <ExploreCollections activeCategory={category} />
-      <ExploreCTA />
+      {showCta ? <ExploreCTA /> : null}
       {showFooter ? <ExploreFooter /> : null}
     </div>
   );

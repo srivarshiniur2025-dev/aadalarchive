@@ -4,13 +4,11 @@ import { TEMPLE } from "@/components/temple";
 import { cn } from "@/lib/utils";
 
 /**
- * Explore intro pillars — same pillar-edge asset as before.
- * Sized for the Explore header only (full shaft, not cropped capitals).
+ * Explore / Create edge pillars — dancer-carved temple shafts from design asset.
  */
 export function ExploreEdgePillars({ className }: { className?: string }) {
-  const src = "/temple/clean/pillar-edge.png?v=hq2";
-  const filter =
-    "sepia(0.45) saturate(1.25) hue-rotate(2deg) brightness(0.9) contrast(1.06)";
+  const leftSrc = "/temple/clean/pillar-dancer-left.png?v=1";
+  const rightSrc = "/temple/clean/pillar-dancer-right.png?v=1";
 
   return (
     <div
@@ -22,33 +20,32 @@ export function ExploreEdgePillars({ className }: { className?: string }) {
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={src}
+        src={leftSrc}
         alt=""
         draggable={false}
-        className="absolute top-0 left-0 h-full w-[88px] select-none object-cover object-left xl:w-[100px]"
+        className="absolute top-0 left-0 h-full w-[88px] select-none object-contain object-left xl:w-[104px]"
         style={{
-          transform: "scaleX(-1)",
-          opacity: 0.78,
-          filter: `${filter} drop-shadow(8px 0 18px rgba(0,0,0,0.55))`,
+          opacity: 0.92,
+          filter: "drop-shadow(8px 0 18px rgba(0,0,0,0.55))",
           maskImage:
-            "linear-gradient(to right, rgba(0,0,0,0.95) 55%, transparent 100%)",
+            "linear-gradient(to right, rgba(0,0,0,1) 70%, transparent 100%)",
           WebkitMaskImage:
-            "linear-gradient(to right, rgba(0,0,0,0.95) 55%, transparent 100%)",
+            "linear-gradient(to right, rgba(0,0,0,1) 70%, transparent 100%)",
         }}
       />
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
-        src={src}
+        src={rightSrc}
         alt=""
         draggable={false}
-        className="absolute top-0 right-0 h-full w-[88px] select-none object-cover object-left xl:w-[100px]"
+        className="absolute top-0 right-0 h-full w-[88px] select-none object-contain object-right xl:w-[104px]"
         style={{
-          opacity: 0.78,
-          filter: `${filter} drop-shadow(-8px 0 18px rgba(0,0,0,0.55))`,
+          opacity: 0.92,
+          filter: "drop-shadow(-8px 0 18px rgba(0,0,0,0.55))",
           maskImage:
-            "linear-gradient(to left, rgba(0,0,0,0.95) 55%, transparent 100%)",
+            "linear-gradient(to left, rgba(0,0,0,1) 70%, transparent 100%)",
           WebkitMaskImage:
-            "linear-gradient(to left, rgba(0,0,0,0.95) 55%, transparent 100%)",
+            "linear-gradient(to left, rgba(0,0,0,1) 70%, transparent 100%)",
         }}
       />
     </div>

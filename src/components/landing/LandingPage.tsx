@@ -5,6 +5,9 @@ import { SiteHeader } from "./SiteHeader";
 import { Hero, LandingSidePillars } from "./Hero";
 import { StatsBar } from "./StatsBar";
 import { ExploreContent } from "@/components/explore/ExploreContent";
+import { CreateSection } from "./CreateSection";
+import { ContactSection } from "./ContactSection";
+import { SiteFooter } from "./SiteFooter";
 
 /** Clears hero edge pillars (viewport gutters — hero stage only). */
 const PILLAR_GUTTER =
@@ -56,8 +59,14 @@ export function LandingPage() {
         </div>
 
         {/* Explore archive — no hero pillars */}
-        <ExploreContent id="explore" />
+        <ExploreContent id="explore" showCta={false} showFooter={false} />
+
+        <CreateSection />
+
+        <ContactSection />
       </main>
+
+      <SiteFooter />
     </div>
   );
 }

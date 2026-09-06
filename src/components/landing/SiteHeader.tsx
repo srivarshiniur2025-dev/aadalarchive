@@ -9,6 +9,8 @@ import { cn } from "@/lib/utils";
 const NAV_LINKS = [
   { href: "/#hero", label: "Home", hash: "hero" },
   { href: "/#explore", label: "Explore", hash: "explore" },
+  { href: "/#create", label: "Create", hash: "create" },
+  { href: "/#contact", label: "Contact", hash: "contact" },
 ] as const;
 
 function LogoMark({ className }: { className?: string }) {

@@ -63,8 +63,8 @@ export function ExploreFooter() {
         {[
           { href: "/#hero", label: "Home" },
           { href: "/#explore", label: "Explore" },
+          { href: "/#create", label: "Create" },
           { href: "/signup", label: "Sign Up" },
-          { href: "/login", label: "Log In" },
         ].map((l) => (
           <Link key={l.label} href={l.href} className="hover:text-gold">
             {l.label}
