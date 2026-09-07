@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { GoldOrnament } from "./ExploreChrome";
 import { FIGMA_CTA_BG } from "./figmaExplore";
 import { cn } from "@/lib/utils";
@@ -50,14 +51,17 @@ export function ExploreCTA() {
 export function ExploreFooter() {
   return (
     <footer className="flex flex-wrap items-center justify-between gap-6 border-t border-gold/10 px-5 py-8 sm:px-10">
-      <div>
-        <p className="font-display text-[0.85rem] font-semibold text-cream">
-          AadalArchive
-        </p>
-        <p className="mt-0.5 text-[0.5rem] uppercase tracking-[0.14em] text-gold/70">
-          Discover · Create · Perform · Preserve
-        </p>
-      </div>
+      <Link href="/#hero" className="inline-flex items-center gap-2.5">
+        <BrandLogo size={32} decorative />
+        <div>
+          <p className="font-display text-[0.85rem] font-semibold text-cream">
+            AadalArchive
+          </p>
+          <p className="mt-0.5 text-[0.5rem] uppercase tracking-[0.14em] text-gold/70">
+            Discover · Create · Perform · Preserve
+          </p>
+        </div>
+      </Link>
 
       <nav className="flex flex-wrap gap-7 text-[0.85rem] text-cream/50">
         {[

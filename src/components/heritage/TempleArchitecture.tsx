@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { cn } from "@/lib/utils";
 
 /** Thin vertical carved pillar — edge of doorway, not a photo collage */
@@ -118,26 +119,7 @@ export function OrnamentalCorner({
 /** Institutional seal for AadalArchive wordmark */
 export function ArchiveSeal({ className }: { className?: string }) {
   return (
-    <svg viewBox="0 0 48 48" className={cn("h-11 w-11", className)} fill="none" aria-hidden>
-      <circle cx="24" cy="24" r="22" stroke="#A9823D" strokeWidth="0.9" opacity="0.7" />
-      <circle cx="24" cy="24" r="18.5" stroke="#E5A93C" strokeWidth="0.55" opacity="0.35" />
-      {/* Lotus / mudra seal */}
-      <path
-        d="M24 34c0-4.2 2.6-7 2.6-11.2 0 0-2.6 1.5-2.6 4.4 0-2.9-2.6-4.4-2.6-4.4C21.4 27 24 29.8 24 34Z"
-        fill="#E5A93C"
-        fillOpacity="0.9"
-      />
-      <path
-        d="M24 24.5c-3.2-1.3-5.8-1.1-8.2.3 2.4 1.3 5 2.5 8.2 2.5s5.8-1.2 8.2-2.5c-2.4-1.4-5-1.6-8.2-.3Z"
-        stroke="#F0C56A"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-      <path d="M17.5 19.5c1.8-1.4 3.5-2 6.5-2s4.7.6 6.5 2" stroke="#A9823D" strokeWidth="0.7" opacity="0.7" />
-      {/* Tiny kalasha tip */}
-      <path d="M24 10.5v3" stroke="#E5A93C" strokeWidth="0.8" />
-      <circle cx="24" cy="10" r="1.1" fill="#E5A93C" fillOpacity="0.85" />
-    </svg>
+    <BrandLogo size={44} decorative className={cn("h-11 w-auto", className)} />
   );
 }
 

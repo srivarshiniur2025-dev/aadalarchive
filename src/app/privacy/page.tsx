@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
 import Link from "next/link";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 
 export const metadata: Metadata = {
   title: "Privacy Policy — AadalArchive",
@@ -56,12 +57,15 @@ export default function PrivacyPolicyPage() {
 
       <header className="relative z-[1] border-b border-[#A8752B]/25 bg-[#15161A]/90 backdrop-blur-md">
         <div className="mx-auto flex max-w-3xl items-center justify-between gap-4 px-5 py-4 sm:px-8">
-          <Link href="/" className="group inline-flex flex-col leading-none">
-            <span className="font-display text-xl tracking-[0.02em] text-[#F4EBDD] transition-colors group-hover:text-[#E5A93C]">
-              AadalArchive
-            </span>
-            <span className="mt-1.5 font-inscription text-[0.5rem] tracking-[0.18em] text-[#A8752B]">
-              Classical Dance Archive
+          <Link href="/" className="group inline-flex items-center gap-3 leading-none">
+            <BrandLogo size={40} priority decorative />
+            <span className="flex flex-col leading-none">
+              <span className="font-display text-xl tracking-[0.02em] text-[#F4EBDD] transition-colors group-hover:text-[#E5A93C]">
+                AadalArchive
+              </span>
+              <span className="mt-1.5 font-inscription text-[0.5rem] tracking-[0.18em] text-[#A8752B]">
+                Classical Dance Archive
+              </span>
             </span>
           </Link>
           <nav className="flex items-center gap-4 text-sm text-[#D8C6A7]/60">

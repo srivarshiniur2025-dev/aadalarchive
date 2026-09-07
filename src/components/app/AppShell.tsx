@@ -151,7 +151,7 @@ function SidebarBody({
           <OrnamentalCorner position="tr" />
           <OrnamentalCorner position="bl" />
           <OrnamentalCorner position="br" />
-          <ArchiveSeal className="h-10 w-10 shrink-0" />
+          <ArchiveSeal className="h-10 w-auto shrink-0" />
           <span className="min-w-0 leading-none">
             <span className="block font-display text-[1.08rem] tracking-[0.02em] text-[#F4EBDD]">
               AadalArchive

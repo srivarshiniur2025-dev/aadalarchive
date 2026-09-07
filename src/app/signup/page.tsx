@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { useActionState, useState } from "react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { cn } from "@/lib/utils";
 import { signInDemoAction, signInWithGoogleAction, signUpAction, type AuthActionState } from "@/lib/auth/actions";
 
@@ -134,18 +135,8 @@ export default function SignupPage() {
             </div>
           </div>
 
-          <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center" aria-hidden>
-            <Image
-              src="/landing/create-dancer-silhouette.png"
-              alt=""
-              width={48}
-              height={48}
-              className="h-11 w-11 object-contain"
-              style={{
-                filter:
-                  "brightness(0) saturate(100%) invert(72%) sepia(58%) saturate(1200%) hue-rotate(360deg) brightness(1.05)",
-              }}
-            />
+          <div className="mx-auto mb-3 flex justify-center">
+            <BrandLogo size={56} priority decorative />
           </div>
 
           <Link

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useActionState } from "react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { Button, Input } from "@/components/ui/Primitives";
 import { forgotPasswordAction, type AuthActionState } from "@/lib/auth/actions";
 
@@ -16,7 +17,10 @@ export default function ForgotPasswordPage() {
         <Link href="/login" className="text-xs text-gold hover:underline">
           ← Back to sign in
         </Link>
-        <h1 className="font-display mt-4 text-4xl text-ivory">Reset password</h1>
+        <div className="mt-6 flex justify-center">
+          <BrandLogo size={52} decorative />
+        </div>
+        <h1 className="font-display mt-4 text-center text-4xl text-ivory">Reset password</h1>
         <p className="mt-2 text-sm text-muted">
           We will send a graceful recovery link to your email.
         </p>

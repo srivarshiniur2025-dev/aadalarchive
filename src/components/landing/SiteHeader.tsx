@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useId, useState } from "react";
 import { Button } from "@/components/design-system";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
@@ -12,32 +13,6 @@ const NAV_LINKS = [
   { href: "/#create", label: "Create", hash: "create" },
   { href: "/#contact", label: "Contact", hash: "contact" },
 ] as const;
-
-function LogoMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 40 40" className={cn("h-9 w-9 sm:h-10 sm:w-10", className)} fill="none" aria-hidden>
-      <circle cx="20" cy="20" r="18.5" stroke="#E5A93C" strokeOpacity="0.35" strokeWidth="0.8" />
-      <path
-        d="M20 31c0-4.5 3-7.5 3-12 0 0-3 1.5-3 4.5 0-3-3-4.5-3-4.5 0 4.5 3 7.5 3 12Z"
-        fill="#E5A93C"
-        fillOpacity="0.9"
-      />
-      <path
-        d="M20 22c-3.2-1.4-6.2-1.2-9 0.4 2.8 1.4 5.8 2.6 9 2.6s6.2-1.2 9-2.6c-2.8-1.6-5.8-1.8-9-0.4Z"
-        stroke="#E5A93C"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-      <path
-        d="M20 19.5c2.2-3.2 2.8-6.2 2-9.5-1.4 2.8-2.6 5.5-2 9.5-0.6-4-1.8-6.7-3.2-9.5-0.6 3.3 0.2 6.3 3.2 9.5Z"
-        stroke="#E5A93C"
-        strokeWidth="1"
-        strokeLinejoin="round"
-      />
-      <path d="M20 8.5c0 0-1.2 2.8 0 5.2 1.2-2.4 0-5.2 0-5.2Z" fill="#F0C56A" />
-    </svg>
-  );
-}
 
 function SearchIcon({ className }: { className?: string }) {
   return (
@@ -124,7 +99,12 @@ export function SiteHeader({
               aria-label="AadalArchive home"
               onClick={(e) => onNavClick(e, "hero")}
             >
-              <LogoMark className="transition-transform duration-300 group-hover:scale-[1.04]" />
+              <BrandLogo
+                size={44}
+                priority
+                decorative
+                className="transition-transform duration-300 group-hover:scale-[1.04]"
+              />
               <span className="flex flex-col leading-none">
                 <span className="font-display text-[1.35rem] tracking-[0.02em] text-cream transition-colors group-hover:text-gold sm:text-[1.5rem]">
                   AadalArchive

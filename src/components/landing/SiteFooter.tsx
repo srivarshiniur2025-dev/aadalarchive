@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { FadeRise } from "@/components/ui/Motion";
-import { cn } from "@/lib/utils";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 
 const FOOTER_LINKS = [
   { href: "/#hero", label: "Home" },
@@ -18,25 +18,6 @@ const SOCIALS = [
   { href: "https://instagram.com", label: "Instagram", icon: InstagramIcon },
   { href: "https://youtube.com", label: "YouTube", icon: YouTubeIcon },
 ] as const;
-
-function LogoMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 40 40" className={cn("h-9 w-9", className)} fill="none" aria-hidden>
-      <circle cx="20" cy="20" r="18.5" stroke="#E5A93C" strokeOpacity="0.35" strokeWidth="0.8" />
-      <path
-        d="M20 31c0-4.5 3-7.5 3-12 0 0-3 1.5-3 4.5 0-3-3-4.5-3-4.5 0 4.5 3 7.5 3 12Z"
-        fill="#E5A93C"
-        fillOpacity="0.9"
-      />
-      <path
-        d="M20 22c-3.2-1.4-6.2-1.2-9 0.4 2.8 1.4 5.8 2.6 9 2.6s6.2-1.2 9-2.6c-2.8-1.6-5.8-1.8-9-0.4Z"
-        stroke="#E5A93C"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -69,7 +50,7 @@ export function SiteFooter() {
         <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
           <div className="max-w-sm">
             <Link href="/#hero" className="group inline-flex items-center gap-3">
-              <LogoMark />
+              <BrandLogo size={40} decorative className="transition-transform duration-300 group-hover:scale-[1.04]" />
               <span className="flex flex-col leading-none">
                 <span className="font-display text-2xl tracking-[0.02em] text-[#F4EBDD] transition-colors group-hover:text-gold">
                   AadalArchive

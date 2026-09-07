@@ -1,6 +1,7 @@
 "use client";
 
 import { useActionState, useMemo, useState } from "react";
+import { BrandLogo } from "@/components/brand/BrandLogo";
 import { Button, Input } from "@/components/ui/Primitives";
 import { KolamRing } from "@/components/animations/Motifs";
 import { DANCE_FORMS, INTERESTS, USER_TYPES } from "@/lib/data";
@@ -43,10 +44,15 @@ export default function OnboardingPage() {
     <div className="relative min-h-screen px-4 py-10">
       <div className="pointer-events-none absolute inset-0 kolam-bg opacity-25" />
       <div className="relative mx-auto max-w-2xl">
-        <p className="font-inscription text-[0.65rem] tracking-[0.28em] text-gold">
-          AADAL ARCHIVE
-        </p>
-        <p className="mt-2 text-sm text-sandalwood">Welcome to your dance space.</p>
+        <div className="flex items-center gap-3">
+          <BrandLogo size={40} decorative />
+          <div>
+            <p className="font-inscription text-[0.65rem] tracking-[0.28em] text-gold">
+              AADAL ARCHIVE
+            </p>
+            <p className="mt-1 text-sm text-sandalwood">Welcome to your dance space.</p>
+          </div>
+        </div>
         <div className="mt-4 flex gap-2">
           {steps.map((label, i) => (
             <div
