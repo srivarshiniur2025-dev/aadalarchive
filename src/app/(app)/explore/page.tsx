@@ -53,7 +53,7 @@ const BASE_ROOMS: Room[] = [
     name: "Temples",
     desc: "Architecture as stage and frame.",
     image: "/explore/categories/temples.jpg",
-    q: "South Indian temple architecture",
+    q: "South Indian temple gopuram Dravidian architecture",
     span: "",
   },
   {

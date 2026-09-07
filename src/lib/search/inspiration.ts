@@ -261,6 +261,9 @@ export async function searchInspirations(input: {
     .filter((item) => {
       if (seen.has(item.id)) return false;
       seen.add(item.id);
+      // Prefer South Indian temple context — drop obvious Taj Mahal / Mughal mausoleum hits
+      const hay = `${item.title} ${(item.tags || []).join(" ")}`.toLowerCase();
+      if (/taj\s*mahal|\bagra\b|mughal mausoleum/.test(hay)) return false;
       return true;
     })
     .slice(0, limit);

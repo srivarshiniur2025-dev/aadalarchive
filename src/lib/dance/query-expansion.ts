@@ -22,7 +22,7 @@ const INTENT_SUFFIX: Record<DanceIntent, string[]> = {
   MUSIC: ["classical music performance", "rhythm dance", "concert stage"],
   STORYTELLING: ["narrative dance", "devotional dance mood", "expressive storytelling"],
   PORTFOLIO: ["dance portfolio photography", "dancer portrait", "press photography"],
-  RESEARCH: ["classical dance heritage", "temple architecture", "cultural archive"],
+  RESEARCH: ["classical dance heritage", "South Indian temple gopuram", "cultural archive"],
   JEWELLERY: ["temple jewellery", "classical dance ornaments", "gold jewellery dance"],
   LIGHTING: ["stage lighting dance", "theatrical lighting", "spotlight performance"],
   MAKEUP: ["classical dance makeup", "stage makeup", "performance eye makeup"],
@@ -40,11 +40,34 @@ function uniq(list: string[]): string[] {
   return out;
 }
 
+/** Steer temple searches toward Dravidian / South Indian architecture (not Taj Mahal). */
+function southIndianizeTempleQuery(q: string): string {
+  const lower = q.toLowerCase();
+  if (!/temple|gopuram|mandapa|dravidian|chola|meenakshi|brihadeeswara|hampi/.test(lower)) {
+    return q;
+  }
+  if (/taj|agra|mughal|marble mausoleum/.test(lower)) {
+    return "South Indian temple gopuram Dravidian architecture Tamil Nadu";
+  }
+  if (/south indian|dravidian|gopuram|meenakshi|thanjavur|madurai|hampi|chola|tamil|kerala|karnataka/.test(lower)) {
+    return q;
+  }
+  return `South Indian ${q} gopuram carved stone temple`;
+}
+
+const SOUTH_INDIAN_TEMPLE_QUERIES = [
+  "South Indian temple gopuram Dravidian architecture",
+  "Meenakshi temple Madurai gopuram",
+  "Brihadeeswara temple Thanjavur",
+  "Hampi stone temple carved pillars",
+  "Tamil Nadu temple corridor carved pillars",
+];
+
 /** Expand a dancer query into multiple API-ready search phrases. */
 export function expandDanceQuery(rawQuery: string, ctx: ExpansionContext = {}): string[] {
   const form = normalizeDanceForm(ctx.danceForm);
   const intent = ctx.intent || detectIntent(rawQuery);
-  const q = rawQuery.trim();
+  const q = southIndianizeTempleQuery(rawQuery.trim());
   const facets = facetsForForm(form);
   const expansions: string[] = [];
 
@@ -54,7 +77,7 @@ export function expandDanceQuery(rawQuery: string, ctx: ExpansionContext = {}): 
     const generic =
       q.split(/\s+/).length <= 2 &&
       !new RegExp(form.split(/\s+/)[0], "i").test(q) &&
-      !/indian|classical|temple|dance/i.test(q);
+      !/indian|classical|temple|dance|gopuram/i.test(q);
     if (generic) {
       expansions.push(`${form} ${q}`);
     }
@@ -63,13 +86,13 @@ export function expandDanceQuery(rawQuery: string, ctx: ExpansionContext = {}): 
   }
 
   for (const suffix of INTENT_SUFFIX[intent].slice(0, 3)) {
-    expansions.push(`${form} ${suffix}`);
+    expansions.push(southIndianizeTempleQuery(`${form} ${suffix}`));
   }
 
   // Interest-aware expansions
   for (const interest of ctx.interests || []) {
     const mapped = INTEREST_QUERY_MAP[interest] || INTEREST_QUERY_MAP[interest.toLowerCase()];
-    if (mapped) expansions.push(`${form} ${mapped}`);
+    if (mapped) expansions.push(southIndianizeTempleQuery(`${form} ${mapped}`));
   }
 
   // Facet expansions for current form
@@ -80,7 +103,7 @@ export function expandDanceQuery(rawQuery: string, ctx: ExpansionContext = {}): 
   }
 
   if (ctx.category) {
-    expansions.push(`${form} ${ctx.category}`);
+    expansions.push(southIndianizeTempleQuery(`${form} ${ctx.category}`));
   }
 
   if (ctx.projectHint) {
@@ -90,6 +113,10 @@ export function expandDanceQuery(rawQuery: string, ctx: ExpansionContext = {}): 
 
   for (const title of (ctx.boardTitles || []).slice(0, 3)) {
     expansions.push(`${form} ${title}`);
+  }
+
+  if (/temple|gopuram|architecture/i.test(q) || intent === "RESEARCH") {
+    expansions.push(...SOUTH_INDIAN_TEMPLE_QUERIES);
   }
 
   return uniq(expansions).slice(0, 10);

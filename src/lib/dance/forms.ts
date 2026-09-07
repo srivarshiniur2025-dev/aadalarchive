@@ -32,7 +32,7 @@ export const FORM_FACETS: Record<string, DanceFacet[]> = {
     { id: "salangai", label: "Salangai", query: "salangai ankle bells Bharatanatyam" },
     { id: "stage", label: "Stage", query: "Bharatanatyam stage performance" },
     { id: "photo", label: "Photography", query: "Bharatanatyam dance photography" },
-    { id: "temple", label: "Temple", query: "South Indian temple architecture dance" },
+    { id: "temple", label: "Temple", query: "South Indian temple gopuram carved pillars" },
     { id: "varnam", label: "Varnam mood", query: "classical Indian dance stage composition" },
   ],
   Kathak: [
@@ -100,7 +100,7 @@ const FALLBACK_FACETS: DanceFacet[] = [
   { id: "classical", label: "Classical", query: "Indian classical dance performance" },
   { id: "costume", label: "Costume", query: "Indian classical dance costume" },
   { id: "photo", label: "Photography", query: "Indian classical dance photography" },
-  { id: "temple", label: "Temple", query: "Indian temple architecture" },
+  { id: "temple", label: "Temple", query: "South Indian temple gopuram Dravidian architecture" },
   { id: "stage", label: "Stage", query: "classical dance stage performance" },
   { id: "expression", label: "Expression", query: "classical dance expression portrait" },
 ];
@@ -139,7 +139,7 @@ export const INTEREST_QUERY_MAP: Record<string, string> = {
   rhythm: "classical dance rhythm footwork",
   storytelling: "classical dance storytelling expression",
   textiles: "Indian silk textile costume",
-  temple_architecture: "South Indian temple architecture",
+  temple_architecture: "South Indian temple gopuram Dravidian architecture",
   lighting: "stage lighting dance performance",
   hair: "classical dance hair ornament",
   nritta: "classical dance nritta movement",

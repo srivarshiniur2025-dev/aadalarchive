@@ -24,11 +24,14 @@ export async function GET(request: Request) {
     );
   }
 
-  if (!process.env.UNSPLASH_ACCESS_KEY && !process.env.PEXELS_API_KEY) {
+  const hasUnsplash = Boolean(process.env.UNSPLASH_ACCESS_KEY?.trim());
+  const hasPexels = Boolean(process.env.PEXELS_API_KEY?.trim());
+
+  if (!hasUnsplash && !hasPexels) {
     return NextResponse.json(
       {
         error:
-          "Unable to load inspiration right now. Image search API keys are not configured.",
+          "Unable to load inspiration right now. Add UNSPLASH_ACCESS_KEY and PEXELS_API_KEY to .env.local (or your host env), then restart the server.",
         results: [],
         hasMore: false,
       },
