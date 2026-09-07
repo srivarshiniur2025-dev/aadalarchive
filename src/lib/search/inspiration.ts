@@ -1,6 +1,6 @@
 export type InspirationResult = {
   id: string;
-  provider: "unsplash" | "pexels";
+  provider: "unsplash" | "pexels" | "pinterest";
   externalId: string;
   title: string;
   imageUrl: string;
@@ -17,7 +17,7 @@ export type InspirationResult = {
   /** @deprecated use creatorName */
   creator?: string;
   /** @deprecated use provider */
-  source?: "unsplash" | "pexels" | "cache";
+  source?: "unsplash" | "pexels" | "pinterest" | "cache";
 };
 
 export type InspirationSearchResponse = {
@@ -49,6 +49,7 @@ async function searchUnsplash(
   q: string,
   page: number,
   limit: number,
+  color?: string,
 ): Promise<{ results: InspirationResult[]; totalPages: number }> {
   const key = process.env.UNSPLASH_ACCESS_KEY;
   if (!key) return { results: [], totalPages: 0 };
@@ -57,6 +58,7 @@ async function searchUnsplash(
   url.searchParams.set("query", q);
   url.searchParams.set("page", String(page));
   url.searchParams.set("per_page", String(limit));
+  if (color) url.searchParams.set("color", color);
 
   const res = await fetch(url.toString(), {
     headers: {
@@ -181,6 +183,31 @@ async function searchPexels(
   return { results, totalPages };
 }
 
+async function searchPinterest(
+  q: string,
+  limit: number,
+): Promise<{ results: InspirationResult[]; totalPages: number }> {
+  try {
+    const { fetchPinterestPins, mapPinterestPin, isPinterestConfigured } = await import(
+      "@/lib/pinterest"
+    );
+    if (!isPinterestConfigured()) return { results: [], totalPages: 0 };
+
+    const { pins } = await fetchPinterestPins(q, limit);
+    const results: InspirationResult[] = [];
+    for (const pin of pins) {
+      const mapped = mapPinterestPin(pin);
+      if (mapped) results.push(mapped);
+    }
+
+    return { results, totalPages: results.length > 0 ? 1 : 0 };
+  } catch (err) {
+    if (err instanceof Error && err.message === "RATE_LIMITED") throw err;
+    console.error("Pinterest search", err);
+    return { results: [], totalPages: 0 };
+  }
+}
+
 export async function searchInspirations(input: {
   query: string;
   category?: string;
@@ -192,13 +219,23 @@ export async function searchInspirations(input: {
   page?: number;
   limit?: number;
 }): Promise<InspirationSearchResponse> {
-  const { detectIntent, relevanceKeywords } = await import("@/lib/dance/intents");
+  const {
+    detectIntent,
+    relevanceKeywords,
+    extractColors,
+    unsplashColorsForQuery,
+    CLASSICAL_DANCE_RE,
+    OFF_TOPIC_DANCE_RE,
+  } = await import("@/lib/dance/intents");
   const { expandDanceQuery, queryForPage } = await import("@/lib/dance/query-expansion");
 
   const page = input.page ?? 1;
   const limit = Math.min(input.limit ?? 30, 40);
-  const intent = detectIntent(input.query || input.category || "");
+  const userQuery = input.query || input.category || "";
+  const intent = detectIntent(userQuery);
   const expand = input.expand !== false;
+  const colors = extractColors(userQuery);
+  const unsplashColors = unsplashColorsForQuery(userQuery);
 
   const expansions = expand
     ? expandDanceQuery(input.query || "", {
@@ -213,14 +250,21 @@ export async function searchInspirations(input: {
 
   const { primary, secondary } = queryForPage(expansions, page);
   const perProvider = Math.ceil(limit / 2);
-  const keywords = relevanceKeywords(intent, input.query || input.category || primary);
+  const keywords = relevanceKeywords(intent, userQuery || primary);
 
   const providers: string[] = [];
-  // Same topic on both providers — secondary is only a close variant
+  const perPin = Math.max(6, Math.ceil(limit / 3));
   const searches = [
-    searchUnsplash(primary, page, perProvider),
+    searchUnsplash(primary, page, perProvider, unsplashColors[0]),
     searchPexels(secondary || primary, page, perProvider),
+    // Pinterest partner/user search — page 1 primarily (bookmark pagination later)
+    page === 1 ? searchPinterest(primary, perPin) : Promise.resolve({ results: [] as InspirationResult[], totalPages: 0 }),
   ];
+
+  // Extra Unsplash pass for a second color (e.g. blue + red costumes)
+  if (unsplashColors[1] && page === 1) {
+    searches.push(searchUnsplash(primary, page, Math.ceil(perProvider / 2), unsplashColors[1]));
+  }
 
   if (page > 1 && expansions.length > 2) {
     const third = expansions[(page + 1) % expansions.length];
@@ -244,6 +288,9 @@ export async function searchInspirations(input: {
     if (s.results.some((r) => r.provider === "pexels") && !providers.includes("pexels")) {
       providers.push("pexels");
     }
+    if (s.results.some((r) => r.provider === "pinterest") && !providers.includes("pinterest")) {
+      providers.push("pinterest");
+    }
   }
 
   let merged: InspirationResult[] = [];
@@ -259,11 +306,13 @@ export async function searchInspirations(input: {
   const scored = merged
     .map((item) => {
       const hay = `${item.title} ${(item.tags || []).join(" ")}`.toLowerCase();
-      // Prefer South Indian temple context — drop obvious Taj Mahal / Mughal hits
+
       if (/taj\s*mahal|\bagra\b|mughal mausoleum/.test(hay)) {
         return { item, score: -100 };
       }
-      // Hard rejects for clearly off-topic jewellery / mudra / costume noise
+      if (OFF_TOPIC_DANCE_RE.test(hay)) {
+        return { item, score: -100 };
+      }
       if (intent === "JEWELLERY" && /diamond ring|wedding ring|engagement|watch\b|bracelet fashion/.test(hay) && !/indian|temple|dance|traditional|jhumka|gold/.test(hay)) {
         return { item, score: -50 };
       }
@@ -276,27 +325,54 @@ export async function searchInspirations(input: {
       if (intent === "TEMPLE" && /taj|mosque|church|cathedral|pagoda china|japanese shrine/.test(hay) && !/gopuram|dravidian|tamil|madurai|thanjavur|hampi|south indian/.test(hay)) {
         return { item, score: -40 };
       }
+
+      // Soft classical gate: demote results with no Indian/classical dance signal
+      const classicalHit =
+        CLASSICAL_DANCE_RE.test(hay) ||
+        /indian|bharata|traditional attire|temple|saree|sari|anjali|arangetram/.test(hay);
+      const danceHit = /dance|dancer|costume|mudra|performance|recital/.test(hay);
+
       let score = 0;
+      if (!classicalHit && intent !== "TEMPLE") score -= 8;
+      if (!danceHit && intent !== "TEMPLE" && intent !== "JEWELLERY") score -= 6;
+      if (classicalHit) score += 8;
+      if (danceHit) score += 3;
+
       for (const kw of keywords) {
         if (hay.includes(kw)) score += kw.length > 5 ? 3 : 2;
       }
-      // Prefer portrait/close subjects for mudras & jewellery
+
+      // Color matches for costume / outfit searches
+      if (colors.length) {
+        let colorHits = 0;
+        for (const c of colors) {
+          if (hay.includes(c)) colorHits += 1;
+        }
+        if (colorHits === 0) score -= 6;
+        else score += colorHits * 5;
+        if (colorHits === colors.length) score += 4;
+      }
+
       if ((intent === "MUDRAS" || intent === "JEWELLERY" || intent === "SALANGAI") && item.height >= item.width) score += 1;
-      // Boost explicit topic words in titles
       if (intent === "MUDRAS" && /mudra|hasta|hand gesture|hands/.test(hay)) score += 6;
       if (intent === "JEWELLERY" && /jewel|necklace|jhumka|ornament|earring|gold/.test(hay)) score += 6;
       if (intent === "SALANGAI" && /ghungroo|salangai|ankle|bell|nupur|feet|foot/.test(hay)) score += 6;
       if (intent === "TEMPLE" && /gopuram|temple|carved|pillar|dravidian/.test(hay)) score += 5;
-      if ((intent === "COSTUME" || intent === "ABHINAYA" || intent === "PERFORMANCE") && /bharatanatyam|kuchipudi|kathak|odissi|classical dance|indian dancer/.test(hay)) score += 4;
+      if ((intent === "COSTUME" || intent === "ABHINAYA" || intent === "PERFORMANCE") && /bharatanatyam|kuchipudi|kathak|odissi|classical dance|indian dancer/.test(hay)) {
+        score += 6;
+      }
       return { item, score };
     })
-    .filter((row) => row.score > -50);
+    .filter((row) => row.score > -40);
 
   scored.sort((a, b) => b.score - a.score);
 
-  // Keep stronger matches first; if stock APIs are thin, still return softer matches
-  const strong = scored.filter((r) => r.score >= 2);
-  const ranked = (strong.length >= Math.min(8, limit / 2) ? strong : scored).map((r) => r.item);
+  // Prefer classical-relevant hits; only fall back if the pool is thin
+  const classicalEnough = scored.filter((r) => r.score >= 4);
+  const ranked = (classicalEnough.length >= Math.min(6, Math.ceil(limit / 3))
+    ? classicalEnough
+    : scored
+  ).map((r) => r.item);
 
   const seen = new Set<string>();
   const results = ranked

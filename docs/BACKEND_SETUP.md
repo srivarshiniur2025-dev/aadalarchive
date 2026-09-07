@@ -22,7 +22,20 @@ Fill in Supabase values. Optionally add:
 
 - `UNSPLASH_ACCESS_KEY` — https://unsplash.com/oauth/applications
 - `PEXELS_API_KEY` — https://www.pexels.com/api/
+- `PINTEREST_APP_ID` / `PINTEREST_APP_SECRET` / `PINTEREST_ACCESS_TOKEN` — https://developers.pinterest.com/
 - `NEXT_PUBLIC_SITE_URL=http://localhost:3000`
+
+### Pinterest Discover source
+
+1. Create an app at https://developers.pinterest.com/
+2. Set redirect URI to `{NEXT_PUBLIC_SITE_URL}/api/pinterest/oauth/callback`
+3. Request scopes `pins:read` and `boards:read`
+4. Put `PINTEREST_APP_ID` and `PINTEREST_APP_SECRET` in `.env.local`
+5. Open `/api/pinterest/oauth` while signed into Pinterest, approve, then paste the shown tokens into `.env.local` (and Vercel)
+6. Set `PINTEREST_SEARCH_MODE=user` (default). Use `partner` only if Pinterest granted partner pin search beta access
+7. Restart the server / redeploy
+
+Discover will then interleave Pinterest pins with Unsplash and Pexels. Without a token, Unsplash/Pexels continue to work alone.
 
 ## 3. Apply the database schema
 

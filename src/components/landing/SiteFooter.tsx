@@ -11,6 +11,7 @@ const FOOTER_LINKS = [
   { href: "/#explore", label: "Events" },
   { href: "/discover", label: "Community" },
   { href: "/#contact", label: "Contact" },
+  { href: "/privacy", label: "Privacy" },
 ] as const;
 
 const SOCIALS = [

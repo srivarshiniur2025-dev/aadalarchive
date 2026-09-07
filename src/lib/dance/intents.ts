@@ -108,6 +108,50 @@ export function intentLabel(intent: DanceIntent): string {
   return intent.replace(/_/g, " ").toLowerCase().replace(/^\w/, (c) => c.toUpperCase());
 }
 
+/** Named colors dancers commonly search for in costumes. */
+const COLOR_ALIASES: Array<{ name: string; patterns: RegExp[]; unsplash?: string }> = [
+  { name: "red", patterns: [/\bred\b/, /\bmaroon\b/, /\bcrimson\b/], unsplash: "red" },
+  { name: "blue", patterns: [/\bblue\b/, /\bnavy\b/, /\bindigo\b/], unsplash: "blue" },
+  { name: "green", patterns: [/\bgreen\b/, /\bemerald\b/], unsplash: "green" },
+  { name: "yellow", patterns: [/\byellow\b/], unsplash: "yellow" },
+  { name: "orange", patterns: [/\borange\b/, /\bsaffron\b/], unsplash: "orange" },
+  { name: "purple", patterns: [/\bpurple\b/, /\bviolet\b/, /\blavender\b/], unsplash: "purple" },
+  { name: "pink", patterns: [/\bpink\b/, /\bmagenta\b/], unsplash: "magenta" },
+  { name: "gold", patterns: [/\bgold\b/, /\bgolden\b/], unsplash: "yellow" },
+  { name: "white", patterns: [/\bwhite\b/, /\bivory\b/, /\bcream\b/], unsplash: "white" },
+  { name: "black", patterns: [/\bblack\b/], unsplash: "black" },
+  { name: "teal", patterns: [/\bteal\b/, /\bturquoise\b/, /\baqua\b/], unsplash: "teal" },
+];
+
+export function extractColors(query: string): string[] {
+  const q = query.toLowerCase();
+  const hits: Array<{ name: string; index: number }> = [];
+  for (const c of COLOR_ALIASES) {
+    for (const p of c.patterns) {
+      const m = q.match(p);
+      if (m && m.index != null) {
+        hits.push({ name: c.name, index: m.index });
+        break;
+      }
+    }
+  }
+  hits.sort((a, b) => a.index - b.index);
+  return hits.map((h) => h.name);
+}
+
+export function unsplashColorsForQuery(query: string): string[] {
+  const names = extractColors(query);
+  return names
+    .map((name) => COLOR_ALIASES.find((c) => c.name === name)?.unsplash)
+    .filter((c): c is string => Boolean(c));
+}
+
+export const CLASSICAL_DANCE_RE =
+  /bharatanatyam|kuchipudi|kathak|odissi|mohiniyattam|manipuri|sattriya|kathakali|chhau|indian classical|classical indian|classical dance|south indian dance/;
+
+export const OFF_TOPIC_DANCE_RE =
+  /ballet|ballroom|hip[\s-]?hop|breakdance|break dance|salsa|tango|flamenco|cheerleader|broadway|jazz dance|tap dance|pole dance|belly dance|folklorico|waltz|foxtrot|contemporary ballet|irish dance|scottish dance|ballerina/;
+
 /** Keywords used to rank / keep stock-photo results on-topic. */
 export function relevanceKeywords(intent: DanceIntent, query: string): string[] {
   const qWords = query
@@ -118,12 +162,24 @@ export function relevanceKeywords(intent: DanceIntent, query: string): string[] 
   const byIntent: Record<DanceIntent, string[]> = {
     INSPIRATION: ["dance", "dancer", "classical", "bharatanatyam", "india", "indian"],
     CHOREOGRAPHY: ["dance", "dancer", "choreography", "movement", "classical", "stage"],
-    COSTUME: ["costume", "saree", "sari", "silk", "dance", "dancer", "outfit", "traditional"],
-    PHOTOGRAPHY: ["dance", "dancer", "photography", "portrait", "pose"],
-    STAGE: ["stage", "theatre", "theater", "performance", "backdrop", "dance"],
-    PERFORMANCE: ["performance", "stage", "recital", "dance", "dancer"],
-    PRACTICE: ["practice", "rehearsal", "studio", "dance", "training"],
-    ABHINAYA: ["expression", "abhinaya", "face", "eyes", "dance", "portrait", "emotion"],
+    COSTUME: [
+      "costume",
+      "saree",
+      "sari",
+      "silk",
+      "dance",
+      "dancer",
+      "outfit",
+      "traditional",
+      "bharatanatyam",
+      "classical",
+      "indian",
+    ],
+    PHOTOGRAPHY: ["dance", "dancer", "photography", "portrait", "pose", "classical", "indian"],
+    STAGE: ["stage", "theatre", "theater", "performance", "backdrop", "dance", "classical"],
+    PERFORMANCE: ["performance", "stage", "recital", "dance", "dancer", "classical", "indian"],
+    PRACTICE: ["practice", "rehearsal", "studio", "dance", "training", "classical"],
+    ABHINAYA: ["expression", "abhinaya", "face", "eyes", "dance", "portrait", "emotion", "classical"],
     MUDRAS: ["mudra", "hasta", "hand", "gesture", "fingers", "dance", "bharatanatyam", "classical"],
     SALANGAI: ["salangai", "ghungroo", "ghunghru", "ankle", "bell", "nupur", "feet", "dance"],
     TEMPLE: [
@@ -144,8 +200,8 @@ export function relevanceKeywords(intent: DanceIntent, query: string): string[] 
       "hampi",
     ],
     MUSIC: ["music", "rhythm", "tabla", "mridangam", "concert", "classical", "dance"],
-    STORYTELLING: ["story", "expression", "devotional", "dance", "narrative"],
-    PORTFOLIO: ["portrait", "dancer", "portfolio", "headshot", "dance"],
+    STORYTELLING: ["story", "expression", "devotional", "dance", "narrative", "classical"],
+    PORTFOLIO: ["portrait", "dancer", "portfolio", "headshot", "dance", "classical"],
     RESEARCH: ["temple", "heritage", "classical", "dance", "culture", "india"],
     JEWELLERY: [
       "jewellery",
@@ -166,7 +222,7 @@ export function relevanceKeywords(intent: DanceIntent, query: string): string[] 
     MAKEUP: ["makeup", "make-up", "eyes", "bindi", "face", "dance", "stage"],
   };
 
-  return Array.from(new Set([...byIntent[intent], ...qWords]));
+  return Array.from(new Set([...byIntent[intent], ...qWords, ...extractColors(query)]));
 }
 
 const STOP = new Set([

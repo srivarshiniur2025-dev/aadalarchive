@@ -1,4 +1,9 @@
-import { detectIntent, type DanceIntent } from "./intents";
+import {
+  detectIntent,
+  extractColors,
+  type DanceIntent,
+  CLASSICAL_DANCE_RE,
+} from "./intents";
 import { INTEREST_QUERY_MAP, normalizeDanceForm } from "./forms";
 
 export type ExpansionContext = {
@@ -34,7 +39,7 @@ const TOPIC_QUERIES: Record<DanceIntent, (form: string) => string[]> = {
   ],
   COSTUME: (form) => [
     `${form} silk costume performance`,
-    `${form} dance costume traditional`,
+    `${form} classical dance costume traditional`,
     `Indian classical dance costume silk`,
     `${form} dancer costume stage`,
   ],
@@ -134,13 +139,25 @@ function isGenericQuery(q: string, form: string): boolean {
   return false;
 }
 
+/** Force every search phrase into Indian classical dance scope. */
+export function scopeToClassicalDance(q: string, form: string): string {
+  const trimmed = q.trim();
+  if (!trimmed) return `${form} Indian classical dance`;
+  if (CLASSICAL_DANCE_RE.test(trimmed) || new RegExp(form.split(/\s+/)[0], "i").test(trimmed)) {
+    if (!/indian|classical|bharata|kathak|odissi|kuchipudi/i.test(trimmed)) {
+      return `${trimmed} Indian classical dance`;
+    }
+    return trimmed;
+  }
+  return `${form} ${trimmed} Indian classical dance`;
+}
+
 /** Steer temple architecture searches toward Dravidian / South Indian (not Taj Mahal). */
 function southIndianizeTempleQuery(q: string): string {
   const lower = q.toLowerCase();
   if (!/temple|gopuram|mandapa|dravidian|chola|meenakshi|brihadeeswara|hampi|architecture/.test(lower)) {
     return q;
   }
-  // Jewellery queries that mention temple must stay jewellery
   if (/jewel|ornament|necklace|jhumka|haar/.test(lower)) return q;
   if (/taj|agra|mughal|marble mausoleum/.test(lower)) {
     return "South Indian temple gopuram Dravidian architecture Tamil Nadu";
@@ -151,58 +168,62 @@ function southIndianizeTempleQuery(q: string): string {
   return `South Indian ${q} gopuram carved stone temple`;
 }
 
+function colorCostumeQueries(form: string, colors: string[], raw: string): string[] {
+  const colorPhrase = colors.join(" ");
+  return [
+    `${form} ${colorPhrase} costume`,
+    `Indian classical dance ${colorPhrase} costume`,
+    `${form} ${colorPhrase} silk costume performance`,
+    `Bharatanatyam ${colorPhrase} dance costume`,
+    scopeToClassicalDance(raw, form),
+  ];
+}
+
 /**
  * Expand a dancer query into a small set of on-topic API phrases.
- * Specific topics (mudras, jewellery, etc.) stay locked — no board/interest pollution.
+ * Always scoped to Indian classical dance. Color costume searches keep color terms.
  */
 export function expandDanceQuery(rawQuery: string, ctx: ExpansionContext = {}): string[] {
   const form = normalizeDanceForm(ctx.danceForm);
   const intent = ctx.intent || detectIntent([rawQuery, ctx.category].filter(Boolean).join(" "));
   const raw = (rawQuery || ctx.category || "").trim();
   const q = southIndianizeTempleQuery(raw);
+  const colors = extractColors(q);
   const expansions: string[] = [];
   const topicPhrases = TOPIC_QUERIES[intent](form).map(southIndianizeTempleQuery);
   const shortTopic = !q || q.split(/\s+/).length <= 2;
 
-  // Short topic words ("mudras", "jewellery") are weak for stock APIs —
-  // lead with crafted phrases, then keep the user's words as support.
-  if (shortTopic && intent !== "INSPIRATION") {
-    expansions.push(...topicPhrases);
-    if (q) {
-      expansions.push(q);
-      if (!new RegExp(form.split(/\s+/)[0], "i").test(q)) {
-        expansions.push(`${form} ${q}`);
-      }
-    }
+  // Color + costume: never drop the color words into generic costume searches
+  if (intent === "COSTUME" && colors.length > 0) {
+    expansions.push(...colorCostumeQueries(form, colors, q));
+  } else if (shortTopic && intent !== "INSPIRATION") {
+    expansions.push(...topicPhrases.map((p) => scopeToClassicalDance(p, form)));
+    if (q) expansions.push(scopeToClassicalDance(q, form));
   } else {
     if (q && !isGenericQuery(q, form)) {
-      expansions.push(q);
-      if (!new RegExp(form.split(/\s+/)[0], "i").test(q)) {
-        expansions.push(`${form} ${q}`);
-      }
+      expansions.push(scopeToClassicalDance(q, form));
     }
-    expansions.push(...topicPhrases);
+    // Keep topic variants, but after the user query so color/detail stays primary
+    expansions.push(...topicPhrases.map((p) => scopeToClassicalDance(p, form)));
   }
 
-  // Category hint only when it reinforces the same topic
   if (ctx.category) {
     const catIntent = detectIntent(ctx.category);
     if (catIntent === intent || isGenericQuery(q, form)) {
-      expansions.push(southIndianizeTempleQuery(`${form} ${ctx.category}`));
+      expansions.push(scopeToClassicalDance(`${form} ${ctx.category}`, form));
     }
   }
 
-  // Soft personalization ONLY for open/generic browsing
   if (isGenericQuery(q, form)) {
     for (const interest of (ctx.interests || []).slice(0, 3)) {
       const mapped = INTEREST_QUERY_MAP[interest] || INTEREST_QUERY_MAP[interest.toLowerCase()];
-      if (mapped) expansions.push(`${form} ${mapped}`);
+      if (mapped) expansions.push(scopeToClassicalDance(`${form} ${mapped}`, form));
     }
     if (ctx.projectHint) {
-      expansions.push(`${form} ${ctx.projectHint}`);
+      expansions.push(scopeToClassicalDance(`${form} ${ctx.projectHint}`, form));
     }
     for (const title of (ctx.boardTitles || []).slice(0, 2)) {
-      expansions.push(`${form} ${title}`);
+      expansions.push(scopeToClassicalDance(`${form} ${title}`, form));
     }
   }
 
