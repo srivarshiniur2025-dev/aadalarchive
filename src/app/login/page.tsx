@@ -78,7 +78,7 @@ function EyeIcon({ open, className }: { open: boolean; className?: string }) {
 }
 
 const fieldClass =
-  "w-full rounded-lg border border-cream/12 bg-[#1c1d22] py-3.5 pl-11 pr-4 font-display text-[0.95rem] text-cream/90 placeholder:text-cream/30 outline-none transition-colors focus:border-gold/45";
+  "w-full border border-[#A8752B]/35 bg-[#1C1E24] py-3.5 pl-11 pr-4 font-display text-[0.95rem] text-[#F4EBDD]/90 placeholder:text-[#D8C6A7]/35 outline-none transition-colors focus:border-gold/55 focus:shadow-[inset_0_0_0_1px_rgba(229,169,60,0.2)]";
 
 const initialState: AuthActionState = {};
 
@@ -100,7 +100,17 @@ function LoginForm() {
         </p>
       ) : null}
 
-      <form className="mt-9 space-y-3.5 text-left" action={formAction}>
+      <form
+        className="mt-9 space-y-3.5 text-left"
+        action={formAction}
+        onSubmit={() => {
+          try {
+            sessionStorage.setItem("aa_archive_entrance", "1");
+          } catch {
+            /* ignore */
+          }
+        }}
+      >
         <input type="hidden" name="next" value={next} />
         <label className="relative block" htmlFor="email">
           <span className="sr-only">Email address</span>
@@ -171,7 +181,7 @@ function LoginForm() {
 
 export default function LoginPage() {
   return (
-    <div className="relative grid min-h-screen bg-[#15161A] lg:grid-cols-[0.45fr_0.55fr]">
+    <div className="relative grid min-h-screen bg-[#0D1012] lg:grid-cols-[0.45fr_0.55fr]">
       <aside className="relative hidden min-h-screen overflow-hidden lg:block">
         <Image
           src="/landing/login-temple-doorway.jpg"
@@ -182,22 +192,35 @@ export default function LoginPage() {
           sizes="45vw"
         />
         <div
-          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#15161A]/25 via-transparent to-[#15161A]/80"
+          className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#0D1012]/30 via-transparent to-[#0D1012]/85"
           aria-hidden
         />
         <div
-          className="pointer-events-none absolute inset-x-0 bottom-0 h-1/4 bg-gradient-to-t from-[#15161A]/50 to-transparent"
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_30%_70%,rgba(14,98,122,0.22),transparent_55%)]"
+          aria-hidden
+        />
+        <div
+          className="pointer-events-none absolute inset-4 border border-[#A8752B]/35 shadow-[inset_0_0_60px_rgba(0,0,0,0.35)]"
+          aria-hidden
+        />
+        <div
+          className="archive-diya-glow pointer-events-none absolute bottom-16 left-1/2 h-24 w-40 -translate-x-1/2 rounded-full bg-[radial-gradient(ellipse,rgba(229,169,60,0.28),transparent_70%)] blur-2xl"
           aria-hidden
         />
         <VerticalWords words={["Art", "Roots", "People", "Forever"]} side="left" />
       </aside>
 
       <div className="relative flex flex-col items-center justify-center px-6 py-14 sm:px-10 lg:px-14">
+        <div
+          className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_70%_20%,rgba(229,169,60,0.06),transparent_50%)]"
+          aria-hidden
+        />
         <VerticalWords words={["Dance", "Preserve", "Belong"]} side="right" />
 
-        <div className="w-full max-w-[380px] text-center">
+        <div className="archive-plaque relative w-full max-w-[400px] px-6 py-8 text-center sm:px-8">
+          <div className="pointer-events-none absolute inset-2 border border-gold/15" aria-hidden />
           <div className="mb-8 lg:hidden">
-            <div className="relative mb-6 h-40 overflow-hidden rounded-lg">
+            <div className="relative mb-6 h-40 overflow-hidden border border-[#A8752B]/35">
               <Image
                 src="/landing/login-temple-doorway.jpg"
                 alt=""
@@ -233,14 +256,14 @@ export default function LoginPage() {
 
           <LotusDivider className="mt-4" />
 
-          <h1 className="mt-8 font-display text-[clamp(2.4rem,4vw,3.15rem)] font-medium leading-[1.05] tracking-[-0.02em] text-cream">
+          <h1 className="mt-8 font-display text-[clamp(2.4rem,4vw,3.15rem)] font-medium leading-[1.05] tracking-[-0.02em] text-[#F4EBDD]">
             Welcome <em className="italic text-gold">Back</em>
           </h1>
 
-          <p className="mt-4 text-[0.62rem] font-medium uppercase tracking-[0.22em] text-cream/45">
+          <p className="mt-4 font-inscription text-[0.58rem] tracking-[0.22em] text-[#D8C6A7]/50">
             Continue your journey
           </p>
-          <p className="mx-auto mt-3 max-w-[28ch] font-display text-[0.9rem] leading-relaxed text-cream/42">
+          <p className="mx-auto mt-3 max-w-[28ch] font-display text-[0.9rem] leading-relaxed text-[#D8C6A7]/55">
             Return to the archive where every movement becomes a memory.
           </p>
 
@@ -283,11 +306,20 @@ function DemoLoginButton() {
           {state.error}
         </p>
       ) : null}
-      <form action={formAction}>
+      <form
+        action={formAction}
+        onSubmit={() => {
+          try {
+            sessionStorage.setItem("aa_archive_entrance", "1");
+          } catch {
+            /* ignore */
+          }
+        }}
+      >
         <button
           type="submit"
           disabled={pending}
-          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-gold/40 bg-[#30251A] px-6 py-3 text-[0.88rem] font-medium text-gold transition-colors hover:border-gold/70 hover:bg-[#3a2e22] disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center gap-2 border border-gold/40 bg-[#1C1E24] px-6 py-3 text-[0.88rem] font-medium text-gold transition-colors hover:border-gold/70 hover:bg-[#24262B] disabled:opacity-60"
         >
           {pending ? "Entering archive…" : "Continue as demo"}
         </button>
@@ -330,7 +362,7 @@ function GoogleMark() {
   return (
     <svg viewBox="0 0 24 24" className="h-4 w-4" aria-hidden>
       <path
-        fill="#EA4335"
+        fill="#D8C6A7"
         d="M12 10.2v3.6h5.1c-.2 1.2-1.5 3.5-5.1 3.5-3.1 0-5.6-2.5-5.6-5.6S8.9 6.1 12 6.1c1.7 0 2.9.7 3.6 1.3l2.4-2.4C16.6 3.7 14.5 2.7 12 2.7 6.9 2.7 2.7 6.9 2.7 12S6.9 21.3 12 21.3c5.5 0 9.1-3.8 9.1-9.2 0-.6-.1-1.1-.2-1.6H12z"
       />
     </svg>

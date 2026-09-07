@@ -57,19 +57,23 @@ function YouTubeIcon({ className }: { className?: string }) {
 
 export function SiteFooter() {
   return (
-    <footer className="relative bg-[#15161A] text-cream">
-      <div className="h-px w-full bg-gradient-to-r from-transparent via-gold/25 to-transparent" />
+    <footer className="relative bg-[#0D1012] text-[#F4EBDD]">
+      <div className="h-px w-full bg-gradient-to-r from-transparent via-[#A8752B]/45 to-transparent" />
+      <div
+        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_50%_0%,rgba(14,98,122,0.08),transparent_55%)]"
+        aria-hidden
+      />
 
-      <div className="mx-auto max-w-[1240px] px-[5vw] py-14 sm:py-16 lg:px-16">
+      <div className="relative mx-auto max-w-[1240px] px-[5vw] py-14 sm:py-16 lg:px-16">
         <div className="flex flex-col gap-12 lg:flex-row lg:items-start lg:justify-between lg:gap-16">
           <div className="max-w-sm">
             <Link href="/#hero" className="group inline-flex items-center gap-3">
               <LogoMark />
               <span className="flex flex-col leading-none">
-                <span className="font-display text-2xl tracking-[0.02em] text-cream transition-colors group-hover:text-gold">
+                <span className="font-display text-2xl tracking-[0.02em] text-[#F4EBDD] transition-colors group-hover:text-gold">
                   AadalArchive
                 </span>
-                <span className="mt-2 text-[0.55rem] font-medium tracking-[0.2em] text-cream/40">
+                <span className="mt-2 font-inscription text-[0.52rem] tracking-[0.2em] text-[#D8C6A7]/45">
                   Discover · Create · Perform · Preserve
                 </span>
               </span>
@@ -82,7 +86,7 @@ export function SiteFooter() {
                 <li key={link.label}>
                   <Link
                     href={link.href}
-                    className="text-sm font-medium tracking-wide text-cream/55 transition-colors hover:text-gold"
+                    className="text-sm font-medium tracking-wide text-[#D8C6A7]/60 transition-colors hover:text-gold"
                   >
                     {link.label}
                   </Link>
@@ -100,7 +104,7 @@ export function SiteFooter() {
                     target="_blank"
                     rel="noreferrer noopener"
                     aria-label={social.label}
-                    className="inline-flex h-10 w-10 items-center justify-center text-cream/50 transition-colors hover:text-gold"
+                    className="inline-flex h-10 w-10 items-center justify-center border border-[#A8752B]/30 text-[#D8C6A7]/55 transition-colors hover:border-gold/50 hover:text-gold"
                   >
                     <social.icon className="h-4 w-4" />
                   </a>
@@ -110,8 +114,11 @@ export function SiteFooter() {
           </div>
         </div>
 
-        <FadeRise className="mt-12 border-t border-gold/10 pt-8 text-center">
-          <p className="text-xs tracking-wide text-cream/30">
+        <FadeRise className="mt-12 border-t border-[#A8752B]/25 pt-8 text-center">
+          <p className="font-display text-base italic text-gold/85">
+            Dance today. Preserve always.
+          </p>
+          <p className="mt-3 text-xs tracking-wide text-[#77736D]">
             © {new Date().getFullYear()} AadalArchive
           </p>
         </FadeRise>

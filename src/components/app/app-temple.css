@@ -1,70 +1,164 @@
-/* Heritage studio materials — temple archive visual system */
+/* Inner temple chambers — authenticated app visual system
+   Palette locked: charcoal / gold / bronze / teal / ivory / sparse orange — no red */
 
 .app-shell {
-  --temple-brown: #211b15;
-  --dark-bronze: #30251a;
-  --muted-gold: #a9823d;
-  --parchment: #d8c7a3;
-  background:
-    radial-gradient(ellipse 50% 35% at 85% 0%, color-mix(in srgb, #0e627a 10%, transparent), transparent 55%),
-    radial-gradient(ellipse 40% 30% at 10% 100%, color-mix(in srgb, #e5a93c 5%, transparent), transparent 50%),
-    linear-gradient(180deg, #15161a 0%, #1a1714 50%, #15161a 100%);
+  --temple-brown: #1c1e24;
+  --dark-bronze: #24262b;
+  --muted-gold: #a8752b;
+  --parchment: #d8c6a7;
+  --deep-bronze: #6e4a1c;
   color: #f4ebdd;
+  background:
+    radial-gradient(ellipse 50% 35% at 88% 0%, color-mix(in srgb, #0e627a 11%, transparent), transparent 55%),
+    radial-gradient(ellipse 40% 30% at 8% 100%, color-mix(in srgb, #e5a93c 5%, transparent), transparent 50%),
+    linear-gradient(180deg, #0d1012 0%, #15161a 48%, #0d1012 100%);
+}
+
+/* Per-room atmospheres (applied on main via data-room) */
+.app-shell[data-room="home"] .app-main {
+  background:
+    radial-gradient(ellipse 55% 40% at 70% 12%, color-mix(in srgb, #e5a93c 7%, transparent), transparent 55%),
+    radial-gradient(ellipse 40% 35% at 15% 80%, color-mix(in srgb, #0e627a 10%, transparent), transparent 50%);
+}
+.app-shell[data-room="explore"] .app-main {
+  background:
+    radial-gradient(ellipse 45% 30% at 10% 20%, color-mix(in srgb, #a8752b 8%, transparent), transparent 50%),
+    radial-gradient(ellipse 50% 40% at 90% 70%, color-mix(in srgb, #16495a 12%, transparent), transparent 55%);
+}
+.app-shell[data-room="discover"] .app-main {
+  background:
+    radial-gradient(ellipse 50% 35% at 50% 0%, color-mix(in srgb, #e5a93c 6%, transparent), transparent 55%),
+    radial-gradient(ellipse 40% 40% at 80% 90%, color-mix(in srgb, #1c7b8f 8%, transparent), transparent 50%);
+}
+.app-shell[data-room="boards"] .app-main {
+  background: radial-gradient(ellipse 50% 40% at 30% 30%, color-mix(in srgb, #6e4a1c 14%, transparent), transparent 55%);
+}
+.app-shell[data-room="albums"] .app-main {
+  background:
+    radial-gradient(ellipse 45% 35% at 70% 20%, color-mix(in srgb, #d8c6a7 6%, transparent), transparent 50%),
+    radial-gradient(ellipse 40% 40% at 20% 80%, color-mix(in srgb, #a8752b 8%, transparent), transparent 55%);
+}
+.app-shell[data-room="choreography"] .app-main {
+  background:
+    radial-gradient(ellipse 50% 40% at 50% 10%, color-mix(in srgb, #16495a 16%, transparent), transparent 55%),
+    radial-gradient(ellipse 35% 30% at 80% 80%, color-mix(in srgb, #f38222 4%, transparent), transparent 50%);
+}
+.app-shell[data-room="studio"] .app-main {
+  background:
+    radial-gradient(ellipse 40% 50% at 8% 40%, color-mix(in srgb, #0e627a 14%, transparent), transparent 55%),
+    radial-gradient(ellipse 35% 30% at 90% 70%, color-mix(in srgb, #e5a93c 5%, transparent), transparent 50%);
+}
+.app-shell[data-room="profile"] .app-main {
+  background:
+    radial-gradient(ellipse 45% 40% at 50% 15%, color-mix(in srgb, #e5a93c 8%, transparent), transparent 55%),
+    radial-gradient(ellipse 40% 35% at 20% 85%, color-mix(in srgb, #16495a 10%, transparent), transparent 50%);
 }
 
 .app-sidebar {
-  /* Must stay fixed — `relative` overrides Tailwind `fixed` and pushes
-     main content below the fold (empty first viewport until you scroll). */
   position: fixed;
   top: 0;
   bottom: 0;
   left: 0;
   width: 248px;
   background:
-    radial-gradient(ellipse 90% 28% at 50% -5%, color-mix(in srgb, #a9823d 10%, transparent), transparent 50%),
-    linear-gradient(90deg, #1b1916 0%, #15161a 8%, #15161a 92%, #1b1916 100%),
-    linear-gradient(180deg, #1b1916 0%, #15161a 42%, #1b1916 100%);
-  border-right: 1px solid color-mix(in srgb, #a9823d 32%, transparent);
+    url("/temple/clean/pillar-edge.png") left center / 42px 100% no-repeat,
+    radial-gradient(ellipse 90% 28% at 50% -5%, color-mix(in srgb, #a8752b 12%, transparent), transparent 50%),
+    linear-gradient(90deg, #1c1e24 0%, #15161a 10%, #15161a 90%, #1c1e24 100%),
+    linear-gradient(180deg, #1c1e24 0%, #0d1012 42%, #1c1e24 100%);
+  border-right: 1px solid color-mix(in srgb, #a8752b 38%, transparent);
   box-shadow:
-    inset 12px 0 28px rgba(0, 0, 0, 0.28),
-    inset -12px 0 28px rgba(0, 0, 0, 0.28),
+    inset 14px 0 32px rgba(0, 0, 0, 0.32),
+    inset -10px 0 24px rgba(0, 0, 0, 0.22),
     inset 0 0 48px rgba(0, 0, 0, 0.4),
-    8px 0 28px rgba(0, 0, 0, 0.22);
+    10px 0 32px rgba(0, 0, 0, 0.28);
 }
 
-/* Carved granite grain — geometric, not photo noise */
+.app-sidebar::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='none' stroke='%23E5A93C' stroke-width='0.6'%3E%3Ccircle cx='40' cy='40' r='10'/%3E%3Cpath d='M40 20v40M20 40h40'/%3E%3C/g%3E%3C/svg%3E");
+  background-size: 96px;
+}
+
 .app-sidebar::after {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  opacity: 0.04;
+  opacity: 0.045;
   background-image:
     repeating-linear-gradient(
       0deg,
       transparent 0,
       transparent 11px,
-      color-mix(in srgb, #a9823d 55%, transparent) 11px,
-      color-mix(in srgb, #a9823d 55%, transparent) 12px
+      color-mix(in srgb, #a8752b 55%, transparent) 11px,
+      color-mix(in srgb, #a8752b 55%, transparent) 12px
     ),
     repeating-linear-gradient(
       90deg,
       transparent 0,
       transparent 17px,
-      color-mix(in srgb, #d8c7a3 25%, transparent) 17px,
-      color-mix(in srgb, #d8c7a3 25%, transparent) 18px
+      color-mix(in srgb, #d8c6a7 25%, transparent) 17px,
+      color-mix(in srgb, #d8c6a7 25%, transparent) 18px
     );
+}
+
+.app-topbar {
+  border-bottom: 1px solid color-mix(in srgb, #a8752b 28%, transparent);
+  background: color-mix(in srgb, #15161a 88%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  box-shadow: inset 0 -1px 0 color-mix(in srgb, #e5a93c 8%, transparent);
+}
+
+.app-create-btn {
+  display: inline-flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  min-height: 44px;
+  padding: 0.7rem 1rem;
+  border: 1px solid color-mix(in srgb, #e5a93c 55%, transparent);
+  background: linear-gradient(180deg, #f0c56a 0%, #e5a93c 52%, #a8752b 100%);
+  color: #0d1012;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #f4ebdd 35%, transparent),
+    0 8px 20px color-mix(in srgb, #e5a93c 22%, transparent);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1), filter 0.3s ease;
+}
+
+.app-create-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.04);
+}
+
+.app-create-menu {
+  border: 1px solid color-mix(in srgb, #a8752b 40%, transparent);
+  background:
+    linear-gradient(165deg, #24262b 0%, #1c1e24 100%);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #e5a93c 12%, transparent),
+    0 24px 50px rgba(0, 0, 0, 0.55);
 }
 
 .app-nav-active {
   position: relative;
   background: linear-gradient(
     90deg,
-    color-mix(in srgb, #30251a 85%, transparent) 0%,
-    color-mix(in srgb, #e5a93c 8%, transparent) 100%
+    color-mix(in srgb, #0e627a 22%, transparent) 0%,
+    color-mix(in srgb, #16495a 10%, transparent) 100%
   );
-  color: #e5a93c;
-  box-shadow: none;
+  color: #f4ebdd;
+  border: 1px solid color-mix(in srgb, #e5a93c 28%, transparent);
+  box-shadow: inset 0 0 18px color-mix(in srgb, #0e627a 12%, transparent);
   border-radius: 0;
 }
 
@@ -72,8 +166,8 @@
   content: "";
   position: absolute;
   left: 0;
-  top: 18%;
-  bottom: 18%;
+  top: 16%;
+  bottom: 16%;
   width: 2px;
   background: linear-gradient(180deg, transparent, #e5a93c, transparent);
   box-shadow: 0 0 10px color-mix(in srgb, #e5a93c 45%, transparent);
@@ -82,53 +176,69 @@
 .app-nav-active::after {
   content: "";
   position: absolute;
-  left: 2.6rem;
-  right: 0.75rem;
-  bottom: 0.35rem;
+  left: 2.4rem;
+  right: 0.6rem;
+  bottom: 0.3rem;
   height: 1px;
-  background: linear-gradient(90deg, color-mix(in srgb, #e5a93c 55%, transparent), transparent 85%);
-  opacity: 0.7;
+  background: linear-gradient(90deg, color-mix(in srgb, #e5a93c 50%, transparent), transparent 85%);
+  opacity: 0.65;
 }
 
 .app-nav-item {
   border-radius: 0;
-  transition: color 0.25s ease, background 0.25s ease;
+  border: 1px solid transparent;
+  transition: color 0.25s ease, background 0.25s ease, border-color 0.25s ease;
 }
 
 .app-nav-item:hover {
-  background: color-mix(in srgb, #30251a 55%, transparent);
-  color: #d8c7a3;
+  background: color-mix(in srgb, #24262b 70%, transparent);
+  color: #d8c6a7;
+  border-color: color-mix(in srgb, #a8752b 18%, transparent);
+}
+
+.app-profile-plaque {
+  border: 1px solid color-mix(in srgb, #a8752b 35%, transparent);
+  background: linear-gradient(165deg, #24262b 0%, #1c1e24 100%);
+  box-shadow: inset 0 1px 0 color-mix(in srgb, #e5a93c 12%, transparent);
+  transition: border-color 0.25s ease;
+}
+
+.app-profile-plaque:hover {
+  border-color: color-mix(in srgb, #e5a93c 45%, transparent);
 }
 
 .heritage-panel {
   position: relative;
-  border: 1px solid color-mix(in srgb, #a9823d 28%, transparent);
-  background: color-mix(in srgb, #211b15 55%, #15161a);
-  border-radius: 0.65rem;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.28);
+  border: 1px solid color-mix(in srgb, #a8752b 32%, transparent);
+  background:
+    linear-gradient(165deg, color-mix(in srgb, #24262b 88%, transparent) 0%, color-mix(in srgb, #1c1e24 92%, #15161a) 100%);
+  border-radius: 0;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #e5a93c 10%, transparent),
+    0 18px 44px rgba(0, 0, 0, 0.32);
 }
 
 .heritage-card {
   position: relative;
   overflow: hidden;
-  border: 1px solid color-mix(in srgb, #d8c7a3 10%, transparent);
-  background: #1a1714;
-  border-radius: 0.65rem;
-  transition: transform 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+  border: 1px solid color-mix(in srgb, #a8752b 28%, transparent);
+  background: #1c1e24;
+  border-radius: 0;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
 .heritage-card:hover {
-  transform: translateY(-2px);
-  border-color: color-mix(in srgb, #e5a93c 32%, transparent);
-  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.3);
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, #e5a93c 42%, transparent);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
 }
 
 .heritage-featured {
-  border: 1px solid color-mix(in srgb, #a9823d 40%, transparent);
-  border-radius: 0.65rem;
+  border: 1px solid color-mix(in srgb, #a8752b 42%, transparent);
+  border-radius: 0;
   box-shadow:
     0 0 0 1px color-mix(in srgb, #e5a93c 8%, transparent),
-    0 20px 48px rgba(0, 0, 0, 0.35);
+    0 22px 52px rgba(0, 0, 0, 0.38);
 }
 
 .heritage-corner {
@@ -165,12 +275,14 @@
 }
 
 .heritage-btn-primary {
-  border-radius: 0.45rem;
-  background: linear-gradient(180deg, #f0c56a 0%, #e5a93c 55%, #a9823d 100%);
-  color: #15161a;
+  border-radius: 0;
+  background: linear-gradient(180deg, #f0c56a 0%, #e5a93c 55%, #a8752b 100%);
+  color: #0d1012;
   font-weight: 600;
   border: 1px solid color-mix(in srgb, #e5a93c 55%, transparent);
-  box-shadow: 0 6px 18px color-mix(in srgb, #e5a93c 18%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #f4ebdd 30%, transparent),
+    0 6px 18px color-mix(in srgb, #e5a93c 18%, transparent);
   transition: transform 0.25s ease, filter 0.25s ease;
 }
 
@@ -180,10 +292,10 @@
 }
 
 .heritage-btn-secondary {
-  border-radius: 0.45rem;
-  background: color-mix(in srgb, #211b15 80%, transparent);
+  border-radius: 0;
+  background: color-mix(in srgb, #1c1e24 80%, transparent);
   color: #e5a93c;
-  border: 1px solid color-mix(in srgb, #a9823d 45%, transparent);
+  border: 1px solid color-mix(in srgb, #a8752b 45%, transparent);
   transition: background 0.25s ease, border-color 0.25s ease;
 }
 
@@ -193,21 +305,21 @@
 }
 
 .heritage-btn-ghost {
-  border-radius: 0.45rem;
+  border-radius: 0;
   background: transparent;
-  color: #d8c7a3;
+  color: #d8c6a7;
   border: 1px solid transparent;
   transition: color 0.25s ease, border-color 0.25s ease;
 }
 
 .heritage-btn-ghost:hover {
   color: #e5a93c;
-  border-color: color-mix(in srgb, #a9823d 35%, transparent);
+  border-color: color-mix(in srgb, #a8752b 35%, transparent);
 }
 
 .heritage-tab {
   position: relative;
-  color: color-mix(in srgb, #d8c7a3 55%, transparent);
+  color: color-mix(in srgb, #d8c6a7 55%, transparent);
   transition: color 0.25s ease;
 }
 
@@ -227,55 +339,177 @@
 
 .heritage-media {
   overflow: hidden;
-  border-radius: 0.55rem;
-  border: 1px solid color-mix(in srgb, #d8c7a3 10%, transparent);
+  border-radius: 0;
+  border: 1px solid color-mix(in srgb, #a8752b 22%, transparent);
+}
+
+/* Legacy class bridges — keep page markup working with chamber visuals */
+.studio-tile {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #a8752b 28%, transparent);
+  background: #1c1e24;
+  border-radius: 0;
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+}
+.studio-tile:hover {
+  transform: translateY(-3px);
+  border-color: color-mix(in srgb, #e5a93c 42%, transparent);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.35);
+}
+.studio-media {
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #a8752b 22%, transparent);
+}
+.studio-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 0;
+  background: linear-gradient(180deg, #f0c56a 0%, #e5a93c 55%, #a8752b 100%);
+  color: #0d1012;
+  font-weight: 600;
+  border: 1px solid color-mix(in srgb, #e5a93c 55%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #f4ebdd 30%, transparent),
+    0 6px 18px color-mix(in srgb, #e5a93c 18%, transparent);
+  transition: transform 0.25s ease, filter 0.25s ease;
+}
+.studio-btn:hover {
+  transform: translateY(-1px);
+  filter: brightness(1.05);
+}
+.studio-btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  border-radius: 0;
+  background: transparent;
+  color: #d8c6a7;
+  border: 1px solid color-mix(in srgb, #a8752b 35%, transparent);
+  transition: color 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+}
+.studio-btn-ghost:hover {
+  color: #e5a93c;
+  border-color: #e5a93c;
+  background: color-mix(in srgb, #e5a93c 8%, transparent);
+}
+.app-panel,
+.app-panel-soft {
+  position: relative;
+  border: 1px solid color-mix(in srgb, #a8752b 32%, transparent);
+  background:
+    linear-gradient(165deg, color-mix(in srgb, #24262b 88%, transparent) 0%, color-mix(in srgb, #1c1e24 92%, #15161a) 100%);
+  border-radius: 0;
+  box-shadow:
+    inset 0 1px 0 color-mix(in srgb, #e5a93c 10%, transparent),
+    0 18px 44px rgba(0, 0, 0, 0.32);
+}
+.media-zoom {
+  transition: transform 0.7s cubic-bezier(0.45, 0.05, 0.25, 1);
+}
+.group:hover .media-zoom {
+  transform: scale(1.04);
+}
+.archive-drawer-label {
+  background: color-mix(in srgb, #d8c6a7 12%, #1c1e24);
+  border: 1px solid color-mix(in srgb, #a8752b 35%, transparent);
+  color: #f4ebdd;
+}
+.photo-corner {
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  z-index: 2;
+  border-color: color-mix(in srgb, #e5a93c 55%, transparent);
+}
+.photo-corner-tl { top: 10px; left: 10px; border-top: 1.5px solid; border-left: 1.5px solid; }
+.photo-corner-tr { top: 10px; right: 10px; border-top: 1.5px solid; border-right: 1.5px solid; }
+.photo-corner-bl { bottom: 10px; left: 10px; border-bottom: 1.5px solid; border-left: 1.5px solid; }
+.photo-corner-br { bottom: 10px; right: 10px; border-bottom: 1.5px solid; border-right: 1.5px solid; }
+.explore-room-frame::after {
+  content: "";
+  position: absolute;
+  inset: 10px;
+  border: 1px solid color-mix(in srgb, #e5a93c 18%, transparent);
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.explore-room-frame:hover::after {
+  opacity: 1;
 }
 
 .heritage-media img,
 .heritage-media .hz {
-  transition: transform 0.55s ease;
+  transition: transform 0.7s cubic-bezier(0.45, 0.05, 0.25, 1);
 }
 
 .heritage-media:hover .hz,
 .group:hover .hz {
-  transform: scale(1.035);
+  transform: scale(1.04);
+}
+
+/* Home chamber hero */
+.chamber-hero {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, #a8752b 38%, transparent);
+  background: #1c1e24;
+  box-shadow:
+    inset 0 0 0 1px color-mix(in srgb, #e5a93c 8%, transparent),
+    0 24px 56px rgba(0, 0, 0, 0.4);
+}
+
+.chamber-hero-glow {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 50% 45% at 78% 40%, color-mix(in srgb, #e5a93c 14%, transparent), transparent 60%),
+    radial-gradient(ellipse 40% 50% at 20% 70%, color-mix(in srgb, #0e627a 16%, transparent), transparent 55%);
+}
+
+.chamber-quick-gold {
+  border-color: color-mix(in srgb, #e5a93c 40%, transparent);
+  background: linear-gradient(165deg, color-mix(in srgb, #e5a93c 12%, #1c1e24), #1c1e24);
+}
+.chamber-quick-teal {
+  border-color: color-mix(in srgb, #0e627a 45%, transparent);
+  background: linear-gradient(165deg, color-mix(in srgb, #0e627a 14%, #1c1e24), #1c1e24);
+}
+.chamber-quick-orange {
+  border-color: color-mix(in srgb, #f38222 35%, transparent);
+  background: linear-gradient(165deg, color-mix(in srgb, #f38222 10%, #1c1e24), #1c1e24);
+}
+.chamber-quick-ivory {
+  border-color: color-mix(in srgb, #d8c6a7 35%, transparent);
+  background: linear-gradient(165deg, color-mix(in srgb, #d8c6a7 8%, #1c1e24), #1c1e24);
 }
 
 .app-fade > * {
-  animation: heritage-fade 0.5s cubic-bezier(0.22, 1, 0.36, 1) both;
+  animation: heritage-fade 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
-.app-fade > *:nth-child(1) {
-  animation-delay: 0.02s;
-}
-.app-fade > *:nth-child(2) {
-  animation-delay: 0.06s;
-}
-.app-fade > *:nth-child(3) {
-  animation-delay: 0.1s;
-}
-.app-fade > *:nth-child(4) {
-  animation-delay: 0.14s;
-}
-.app-fade > *:nth-child(5) {
-  animation-delay: 0.18s;
-}
+.app-fade > *:nth-child(1) { animation-delay: 0.02s; }
+.app-fade > *:nth-child(2) { animation-delay: 0.07s; }
+.app-fade > *:nth-child(3) { animation-delay: 0.12s; }
+.app-fade > *:nth-child(4) { animation-delay: 0.17s; }
+.app-fade > *:nth-child(5) { animation-delay: 0.22s; }
 
 @keyframes heritage-fade {
-  from {
-    opacity: 0;
-    transform: translateY(8px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 @media (prefers-reduced-motion: reduce) {
   .app-fade > *,
   .heritage-card,
   .heritage-btn-primary,
-  .hz {
+  .hz,
+  .app-create-btn {
     animation: none !important;
     transition: none !important;
   }

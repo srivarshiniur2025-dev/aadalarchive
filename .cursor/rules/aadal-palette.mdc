@@ -11,20 +11,29 @@ Use this palette for all UI work. Do not introduce red, maroon, burgundy, crimso
 
 | Role | Hex | Use |
 |------|-----|-----|
-| Neutral charcoal | `#15161A` | App background |
-| Deep temple brown | `#211B15` | Sidebar, panels |
-| Dark bronze | `#30251A` | Elevated surfaces |
+| Soft black | `#0D1012` | Deepest background |
+| Deep charcoal | `#15161A` | App / page background |
+| Charcoal surface | `#1C1E24` | Panels, forms |
+| Elevated charcoal | `#24262B` | Elevated surfaces |
 | Antique gold | `#E5A93C` | Primary actions, active states |
-| Muted gold | `#A9823D` | Borders, labels, secondary gold |
-| Parchment | `#D8C7A3` | Secondary text |
-| Temple teal | `#0E627A` | Secondary accent |
-| Terracotta | `#F38222` | Sparse tertiary accent (~3%) |
+| Light gold | `#F0C56A` | Soft gold highlights |
+| Bronze gold | `#A8752B` | Borders, labels |
+| Deep bronze | `#6E4A1C` | Engraved depth |
 | Warm ivory | `#F4EBDD` | Primary text |
+| Soft beige | `#D8C6A7` | Secondary text |
+| Muted teal | `#0E627A` | Secondary accent |
+| Deep teal | `#16495A` | Shadow / veil |
+| Blue teal | `#1C7B8F` | Soft light accents |
+| Muted orange | `#F38222` | Sparse tertiary (~3%) |
+| Dark orange | `#A94D12` | Sparse tertiary depth |
+| Neutral grey | `#77736D` | Quiet meta text |
+
+Balance ≈ 55% charcoal/black · 20% ivory/beige · 15% gold/bronze · 7% teal · 3% orange.
 
 ## Iconography
 
 Use `HeritageIcons` from `src/components/heritage/HeritageIcons.tsx` for post-login UI — mudra, salangai, temple bell, doorway motifs. Never use emoji for actions.
 
-## Decoration
+## Decsheets
 
 Temple architecture frames content (5–10%). Prefer SVG/CSS ornaments and existing `/public/temple/clean/` assets. Content imagery first.

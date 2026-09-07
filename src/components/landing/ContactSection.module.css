@@ -3,7 +3,7 @@
   overflow: hidden;
   isolation: isolate;
   padding: clamp(6rem, 12vw, 9.5rem) 5vw clamp(4.5rem, 8vw, 6.5rem);
-  background: #15161a;
+  background: #0d1012;
 }
 
 .bg {

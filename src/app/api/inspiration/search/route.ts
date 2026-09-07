@@ -30,8 +30,7 @@ export async function GET(request: Request) {
   if (!hasUnsplash && !hasPexels) {
     return NextResponse.json(
       {
-        error:
-          "Unable to load inspiration right now. Add UNSPLASH_ACCESS_KEY and PEXELS_API_KEY to .env.local (or your host env), then restart the server.",
+        error: "The archive is gathering new references.",
         results: [],
         hasMore: false,
       },

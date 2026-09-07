@@ -35,7 +35,7 @@ export function LandingPage() {
   }, []);
 
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#15161A] text-cream">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#0D1012] text-[#F4EBDD]">
       <a
         href="#main"
         className="fixed left-4 top-4 z-[100] -translate-y-[200%] rounded-md bg-gold px-4 py-2 text-sm font-medium text-[#15161A] transition-transform focus:translate-y-0 focus:outline-none focus-visible:ring-2 focus-visible:ring-cream"

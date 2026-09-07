@@ -32,7 +32,7 @@ export function ExploreContent({
       data-figma-file={FIGMA_EXPLORE.fileKey}
       data-explore-layout="figma-make-v2"
       className={cn(
-        "relative z-0 scroll-mt-20 overflow-x-hidden bg-charcoal text-cream",
+        "relative z-0 scroll-mt-20 overflow-x-hidden bg-transparent text-[#F4EBDD]",
         className,
       )}
     >

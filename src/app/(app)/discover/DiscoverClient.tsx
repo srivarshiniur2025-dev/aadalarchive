@@ -11,6 +11,151 @@ import { intentLabel, type DanceIntent } from "@/lib/dance/intents";
 
 type BoardOption = { id: string; title: string; privacy?: string; tags?: string[] };
 
+const LOCAL_ARCHIVE_GALLERY: InspirationResult[] = [
+  {
+    id: "local:temples",
+    provider: "unsplash",
+    externalId: "local-temples",
+    title: "South Indian temple corridor",
+    imageUrl: "/explore/categories/temples.jpg",
+    thumbnailUrl: "/explore/categories/temples.jpg",
+    sourceUrl: "/explore",
+    creatorName: "AadalArchive",
+    creatorUrl: "/explore",
+    category: "Temples",
+    tags: ["temple", "architecture"],
+    width: 800,
+    height: 1200,
+    attributionRequired: false,
+  },
+  {
+    id: "local:costumes",
+    provider: "unsplash",
+    externalId: "local-costumes",
+    title: "Costume study",
+    imageUrl: "/explore/categories/costumes.jpg",
+    thumbnailUrl: "/explore/categories/costumes.jpg",
+    sourceUrl: "/explore",
+    creatorName: "AadalArchive",
+    creatorUrl: "/explore",
+    category: "Costumes",
+    tags: ["costume"],
+    width: 800,
+    height: 1000,
+    attributionRequired: false,
+  },
+  {
+    id: "local:hastas",
+    provider: "unsplash",
+    externalId: "local-hastas",
+    title: "Hasta / mudra study",
+    imageUrl: "/explore/categories/hastas.jpg",
+    thumbnailUrl: "/explore/categories/hastas.jpg",
+    sourceUrl: "/explore",
+    creatorName: "AadalArchive",
+    creatorUrl: "/explore",
+    category: "Mudras",
+    tags: ["hasta"],
+    width: 800,
+    height: 1000,
+    attributionRequired: false,
+  },
+  {
+    id: "local:expressions",
+    provider: "unsplash",
+    externalId: "local-expressions",
+    title: "Abhinaya expression study",
+    imageUrl: "/explore/categories/expressions.jpg",
+    thumbnailUrl: "/explore/categories/expressions.jpg",
+    sourceUrl: "/explore",
+    creatorName: "AadalArchive",
+    creatorUrl: "/explore",
+    category: "Abhinaya",
+    tags: ["expression"],
+    width: 800,
+    height: 1000,
+    attributionRequired: false,
+  },
+  {
+    id: "local:jewelry",
+    provider: "unsplash",
+    externalId: "local-jewelry",
+    title: "Temple jewellery reference",
+    imageUrl: "/explore/categories/jewelry.jpg",
+    thumbnailUrl: "/explore/categories/jewelry.jpg",
+    sourceUrl: "/explore",
+    creatorName: "AadalArchive",
+    creatorUrl: "/explore",
+    category: "Jewellery",
+    tags: ["jewellery"],
+    width: 800,
+    height: 1000,
+    attributionRequired: false,
+  },
+  {
+    id: "local:salangai",
+    provider: "unsplash",
+    externalId: "local-salangai",
+    title: "Salangai detail",
+    imageUrl: "/explore/categories/salangai.jpg",
+    thumbnailUrl: "/explore/categories/salangai.jpg",
+    sourceUrl: "/explore",
+    creatorName: "AadalArchive",
+    creatorUrl: "/explore",
+    category: "Salangai",
+    tags: ["salangai"],
+    width: 800,
+    height: 1000,
+    attributionRequired: false,
+  },
+  {
+    id: "local:poses",
+    provider: "unsplash",
+    externalId: "local-poses",
+    title: "Pose study",
+    imageUrl: "/explore/categories/poses.jpg",
+    thumbnailUrl: "/explore/categories/poses.jpg",
+    sourceUrl: "/explore",
+    creatorName: "AadalArchive",
+    creatorUrl: "/explore",
+    category: "Poses",
+    tags: ["pose"],
+    width: 800,
+    height: 1100,
+    attributionRequired: false,
+  },
+  {
+    id: "local:photography",
+    provider: "unsplash",
+    externalId: "local-photography",
+    title: "Stage lighting reference",
+    imageUrl: "/explore/categories/photography.jpg",
+    thumbnailUrl: "/explore/categories/photography.jpg",
+    sourceUrl: "/explore",
+    creatorName: "AadalArchive",
+    creatorUrl: "/explore",
+    category: "Photography",
+    tags: ["stage"],
+    width: 1000,
+    height: 700,
+    attributionRequired: false,
+  },
+];
+
+function friendlySearchError(raw?: string) {
+  if (!raw) return "The archive is gathering new references.";
+  if (/api key|not configured|UNSPLASH|PEXELS|503/i.test(raw)) {
+    return "The archive is gathering new references.";
+  }
+  if (/rate.?limit/i.test(raw)) {
+    return "The archive is resting briefly. Please try again in a moment.";
+  }
+  if (/network|fetch/i.test(raw)) {
+    return "The archive could not reach the outer libraries right now.";
+  }
+  return "The archive is gathering new references.";
+}
+
 type FilterChip = { id: string; label: string; query: string };
 
 type DiscoverContext = {
@@ -134,14 +279,20 @@ export function DiscoverClient({ seedQuery, initialProfile }: Props) {
         const data = (await res.json()) as InspirationSearchResponse & { error?: string };
         if (!res.ok) {
           if (!append) {
-            setResults([]);
-            setError(data.error || "Unable to load inspiration right now.");
+            setResults(LOCAL_ARCHIVE_GALLERY);
+            setError(friendlySearchError(data.error));
           }
           setHasMore(false);
           return;
         }
         const incoming = data.results || [];
         setIntent(data.intent || null);
+        if (!append && incoming.length === 0) {
+          setResults(LOCAL_ARCHIVE_GALLERY);
+          setError("The archive is gathering new references.");
+          setHasMore(false);
+          return;
+        }
         setResults((prev) => {
           if (!append) return incoming;
           const seen = new Set(prev.map((r) => r.id));
@@ -153,8 +304,8 @@ export function DiscoverClient({ seedQuery, initialProfile }: Props) {
       } catch (err) {
         if ((err as Error).name === "AbortError") return;
         if (!append) {
-          setResults([]);
-          setError("Network failure. Check your connection and retry.");
+          setResults(LOCAL_ARCHIVE_GALLERY);
+          setError(friendlySearchError("network"));
         }
         setHasMore(false);
       } finally {
@@ -424,17 +575,17 @@ export function DiscoverClient({ seedQuery, initialProfile }: Props) {
   return (
     <div className="mx-auto max-w-[1400px]">
       <header className="max-w-3xl">
-        <p className="text-[0.58rem] uppercase tracking-[0.2em] text-gold/70">
-          {initialProfile.name ? `Welcome back, ${initialProfile.name.split(" ")[0]}` : "Discover"}
+        <p className="font-inscription text-[0.55rem] tracking-[0.2em] text-[#A8752B]">
+          {initialProfile.name ? `Welcome back, ${initialProfile.name.split(" ")[0]}` : "Illuminated gallery"}
         </p>
-        <h2 className="mt-1 font-display text-[clamp(1.6rem,3vw,2.2rem)] text-cream">
+        <h2 className="mt-1 font-display text-[clamp(1.6rem,3vw,2.2rem)] text-[#F4EBDD]">
           Inspired by your practice
         </h2>
-        <p className="mt-2 text-sm text-cream/50">
-          <span className="text-gold/85">{danceForm}</span>
-          {interestLine ? <span className="text-cream/40"> · {interestLine}</span> : null}
+        <p className="mt-2 text-sm text-[#D8C6A7]/55">
+          <span className="text-[#E5A93C]/85">{danceForm}</span>
+          {interestLine ? <span className="text-[#D8C6A7]/40"> · {interestLine}</span> : null}
           {initialProfile.currentProject || ctx?.profile.currentProject ? (
-            <span className="text-cream/40">
+            <span className="text-[#D8C6A7]/40">
               {" "}
               · Project: {ctx?.profile.currentProject || initialProfile.currentProject}
             </span>
@@ -572,11 +723,14 @@ export function DiscoverClient({ seedQuery, initialProfile }: Props) {
           </span>
         ) : null}
         {error ? (
-          <span className="flex flex-wrap items-center gap-3 text-[#F38222]">
+          <span className="flex flex-wrap items-center gap-3 text-[#D8C6A7]/70">
             {error}
+            <span className="font-inscription text-[0.55rem] tracking-[0.14em] text-[#A8752B]">
+              Showing local archive rooms
+            </span>
             <button
               type="button"
-              className="border border-[#F38222]/40 px-2.5 py-1 text-[0.75rem] text-cream"
+              className="border border-[#A8752B]/40 px-2.5 py-1 text-[0.75rem] text-[#F4EBDD] hover:border-gold hover:text-gold"
               onClick={() => void fetchPage(activeQuery, activeCategory, 1, false)}
             >
               Retry

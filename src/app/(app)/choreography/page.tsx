@@ -179,8 +179,9 @@ function ChoreographyPageContent() {
     <div className="mx-auto max-w-6xl">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="font-display text-[clamp(1.6rem,3vw,2.2rem)] text-cream">Choreography</h2>
-          <p className="mt-2 text-sm text-cream/50">Store the movement. Return anytime.</p>
+          <p className="font-inscription text-[0.55rem] tracking-[0.2em] text-[#A8752B]">Movement film archive</p>
+          <h2 className="mt-1 font-display text-[clamp(1.6rem,3vw,2.2rem)] text-[#F4EBDD]">Choreography</h2>
+          <p className="mt-2 text-sm text-[#D8C6A7]/55">Store the movement. Return anytime.</p>
         </div>
         <button type="button" onClick={openUpload} className="studio-btn px-4 py-2.5">
           Upload choreography
@@ -194,10 +195,10 @@ function ChoreographyPageContent() {
             type="button"
             onClick={() => setFilter(f)}
             className={cn(
-              "shrink-0 rounded-lg border px-3.5 py-1.5 text-[0.78rem] transition-colors",
+              "heritage-tab shrink-0 border px-3.5 py-1.5 text-[0.78rem] transition-colors",
               filter === f
-                ? "border-gold/40 bg-gold/12 text-gold"
-                : "border-cream/[0.08] text-cream/45 hover:text-cream/70",
+                ? "heritage-tab-active border-[#E5A93C]/40 bg-[#16495A]/35 text-[#E5A93C]"
+                : "border-[#A8752B]/25 text-[#D8C6A7]/45 hover:text-[#D8C6A7]/70",
             )}
           >
             {f}
@@ -210,23 +211,24 @@ function ChoreographyPageContent() {
           <article key={video.id} className="studio-tile group overflow-hidden">
             <div className="relative aspect-video">
               <Image src={video.poster} alt="" fill className="media-zoom object-cover" sizes="33vw" />
-              <span className="absolute bottom-2 right-2 rounded bg-black/55 px-2 py-0.5 text-[0.68rem] text-cream/85">
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0D1012]/75 via-[#16495A]/20 to-transparent" />
+              <span className="absolute bottom-2 right-2 border border-[#A8752B]/45 bg-[#0D1012]/70 px-2 py-0.5 font-inscription text-[0.65rem] tracking-[0.08em] text-[#E5A93C]">
                 {video.duration}
               </span>
-              <span className="absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-gold/45 bg-gold/20 text-gold">
-                <span className="ml-0.5 h-0 w-0 border-y-[6px] border-l-[10px] border-y-transparent border-l-gold" />
+              <span className="absolute left-1/2 top-1/2 flex h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center border border-[#E5A93C]/55 bg-[#E5A93C]/18 text-[#E5A93C] shadow-[0_0_24px_rgba(229,169,60,0.2)]">
+                <span className="ml-0.5 h-0 w-0 border-y-[6px] border-l-[10px] border-y-transparent border-l-[#E5A93C]" />
               </span>
             </div>
-            <div className="p-4">
-              <h3 className="font-display text-lg text-cream">{video.title}</h3>
-              <p className="mt-1 text-[0.8rem] text-cream/45">
+            <div className="border-t border-[#A8752B]/25 p-4">
+              <h3 className="font-display text-lg text-[#F4EBDD]">{video.title}</h3>
+              <p className="mt-1 text-[0.8rem] text-[#D8C6A7]/50">
                 {video.composition} · {video.difficulty}
               </p>
               <div className="mt-4 flex flex-wrap gap-2 text-[0.7rem]">
-                <Link href="/studio" className="rounded-lg border border-gold/30 px-2.5 py-1 text-gold">
+                <Link href="/studio" className="border border-[#E5A93C]/35 px-2.5 py-1 text-[#E5A93C]">
                   Practice
                 </Link>
-                <span className="rounded-lg border border-cream/[0.08] px-2.5 py-1 text-cream/45">Save</span>
+                <span className="border border-[#A8752B]/25 px-2.5 py-1 text-[#D8C6A7]/45">Save</span>
               </div>
             </div>
           </article>
@@ -240,7 +242,7 @@ function ChoreographyPageContent() {
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="relative z-[1] max-h-[90vh] w-full max-w-lg overflow-y-auto rounded-xl border border-cream/[0.1] bg-[#12131a] p-5 shadow-2xl"
+            className="relative z-[1] max-h-[90vh] w-full max-w-lg overflow-y-auto border border-[#A8752B]/40 bg-[#1C1E24] p-5 shadow-2xl"
           >
             <div className="mb-4 flex items-start justify-between gap-3">
               <div>

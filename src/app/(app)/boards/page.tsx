@@ -113,8 +113,9 @@ function BoardsPageContent() {
     <div className="mx-auto max-w-6xl">
       <header className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h2 className="font-display text-[clamp(1.6rem,3vw,2.2rem)] text-cream">Boards</h2>
-          <p className="mt-2 text-sm text-cream/50">Arrange the ideas that move you.</p>
+          <p className="font-inscription text-[0.55rem] tracking-[0.2em] text-[#A8752B]">Archive drawers</p>
+          <h2 className="mt-1 font-display text-[clamp(1.6rem,3vw,2.2rem)] text-[#F4EBDD]">Boards</h2>
+          <p className="mt-2 text-sm text-[#D8C6A7]/55">Arrange the ideas that move you.</p>
         </div>
         <button type="button" onClick={openCreate} className="studio-btn px-4 py-2.5">
           Create a board
@@ -123,8 +124,8 @@ function BoardsPageContent() {
 
       {boards.length === 0 ? (
         <div className="app-panel mt-16 px-6 py-16 text-center">
-          <p className="font-display text-2xl text-cream">Your first board is waiting.</p>
-          <p className="mt-2 text-sm text-cream/50">
+          <p className="font-display text-2xl text-[#F4EBDD]">Your first board is waiting.</p>
+          <p className="mt-2 text-sm text-[#D8C6A7]/55">
             Save a pose, costume, or idea and begin your collection.
           </p>
           <button type="button" onClick={openCreate} className="studio-btn mt-6 px-4 py-2.5">
@@ -136,20 +137,27 @@ function BoardsPageContent() {
           {boards.map((board) => (
             <article key={board.id} className="studio-tile group overflow-hidden">
               <div className="relative aspect-[4/3]">
+                <span className="photo-corner photo-corner-tl" aria-hidden />
+                <span className="photo-corner photo-corner-tr" aria-hidden />
+                <span className="photo-corner photo-corner-bl" aria-hidden />
+                <span className="photo-corner photo-corner-br" aria-hidden />
                 <Image src={board.cover} alt="" fill className="media-zoom object-cover" sizes="33vw" />
-                <span className="absolute left-3 top-3 rounded-md bg-[#15161A]/65 px-2 py-0.5 text-[0.6rem] uppercase tracking-wide text-gold/90">
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0D1012]/85 via-transparent to-transparent" />
+                <span className="archive-drawer-label absolute left-3 top-3 px-2 py-0.5 text-[0.58rem] uppercase tracking-[0.12em] text-[#E5A93C]">
                   {board.privacy}
                 </span>
               </div>
-              <div className="p-4">
+              <div className="border-t border-[#A8752B]/25 bg-[#1C1E24] p-4">
                 <div className="flex items-start justify-between gap-2">
-                  <h3 className="font-display text-lg text-cream">{board.title}</h3>
-                  <button type="button" className="text-cream/35 hover:text-gold" aria-label="Board menu">
+                  <h3 className="font-display text-lg text-[#F4EBDD]">{board.title}</h3>
+                  <button type="button" className="text-[#D8C6A7]/35 hover:text-[#E5A93C]" aria-label="Board menu">
                     ···
                   </button>
                 </div>
-                <p className="mt-1 line-clamp-2 text-[0.8rem] text-cream/45">{board.description}</p>
-                <p className="mt-3 text-[0.72rem] text-cream/35">{board.itemIds.length} saved</p>
+                <p className="mt-1 line-clamp-2 text-[0.8rem] text-[#D8C6A7]/50">{board.description}</p>
+                <p className="mt-3 font-inscription text-[0.58rem] tracking-[0.12em] text-[#A8752B]">
+                  {board.itemIds.length} saved
+                </p>
               </div>
             </article>
           ))}
@@ -163,7 +171,7 @@ function BoardsPageContent() {
             role="dialog"
             aria-modal="true"
             aria-labelledby={titleId}
-            className="relative z-[1] w-full max-w-md rounded-xl border border-cream/[0.1] bg-[#12131a] p-5 shadow-2xl"
+            className="relative z-[1] w-full max-w-md border border-[#A8752B]/40 bg-[#1C1E24] p-5 shadow-2xl"
           >
             <div className="mb-4 flex items-start justify-between gap-3">
               <div>
