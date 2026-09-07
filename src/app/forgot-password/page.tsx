@@ -1,7 +1,15 @@
+"use client";
+
 import Link from "next/link";
+import { useActionState } from "react";
 import { Button, Input } from "@/components/ui/Primitives";
+import { forgotPasswordAction, type AuthActionState } from "@/lib/auth/actions";
+
+const initialState: AuthActionState = {};
 
 export default function ForgotPasswordPage() {
+  const [state, formAction, pending] = useActionState(forgotPasswordAction, initialState);
+
   return (
     <div className="relative flex min-h-screen items-center justify-center px-4 py-12">
       <div className="silk-panel relative w-full max-w-md rounded-2xl p-8">
@@ -12,10 +20,22 @@ export default function ForgotPasswordPage() {
         <p className="mt-2 text-sm text-muted">
           We will send a graceful recovery link to your email.
         </p>
-        <form className="mt-8 space-y-4" action="/login">
-          <Input label="Email" id="email" type="email" required />
-          <Button type="submit" className="w-full py-3">
-            Send reset link
+
+        {state.error ? (
+          <p className="mt-4 text-sm text-[#F38222]" role="alert">
+            {state.error}
+          </p>
+        ) : null}
+        {state.success ? (
+          <p className="mt-4 text-sm text-gold" role="status">
+            {state.success}
+          </p>
+        ) : null}
+
+        <form className="mt-8 space-y-4" action={formAction}>
+          <Input label="Email" id="email" name="email" type="email" required />
+          <Button type="submit" className="w-full py-3" disabled={pending}>
+            {pending ? "Sending…" : "Send reset link"}
           </Button>
         </form>
       </div>

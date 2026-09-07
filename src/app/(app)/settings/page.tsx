@@ -8,7 +8,7 @@ export default function SettingsPage() {
       <h2 className="font-display text-2xl text-cream">Settings</h2>
       <p className="mt-2 text-sm text-cream/50">Shape your practice space.</p>
 
-      <div className="mt-8 space-y-3">
+      <div className="mt-8 space-y-2">
         {[
           { title: "Account", desc: "Name, email, and password" },
           { title: "Privacy", desc: "Who can see your boards and albums" },
@@ -18,7 +18,7 @@ export default function SettingsPage() {
           <button
             key={row.title}
             type="button"
-            className="flex w-full items-center justify-between rounded-xl border border-gold/15 bg-[#1a1b20] px-4 py-4 text-left transition-colors hover:border-gold/35"
+            className="studio-tile flex w-full items-center justify-between px-4 py-4 text-left"
           >
             <span>
               <span className="block font-display text-cream">{row.title}</span>

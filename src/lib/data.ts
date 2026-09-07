@@ -13,8 +13,7 @@ export const CURRENT_USER: User = {
   name: "Ananya Krishnan",
   email: "ananya@aadalarchive.app",
   handle: "ananya.krishnan",
-  avatar:
-    "https://images.unsplash.com/photo-1547153760-18fc86302687?w=400&q=80",
+  avatar: "/explore/categories/expressions.jpg",
   danceForm: "Bharatanatyam",
   location: "Chennai, India",
   bio: "Bharatanatyam dancer preserving lineage through movement, memory, and light.",
@@ -49,8 +48,7 @@ export const FEED_ITEMS: FeedItem[] = [
     title: "Aramandi under temple light",
     description: "Strong base, lifted gaze — rehearsal reference for varnam.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1518611012118-696072aa579a?w=800&q=80",
+    mediaUrl: "/explore/categories/poses.jpg",
     mediaType: "image",
     aspect: "tall",
     creator: CREATORS[0],
@@ -68,8 +66,7 @@ export const FEED_ITEMS: FeedItem[] = [
     title: "Expression study — soft eyes",
     description: "Soft eyes, held breath. A study for storytelling.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1508700115892-45ecd05ae2ad?w=800&q=80",
+    mediaUrl: "/explore/categories/expressions.jpg",
     mediaType: "image",
     aspect: "portrait",
     creator: CREATORS[1],
@@ -85,10 +82,9 @@ export const FEED_ITEMS: FeedItem[] = [
   {
     id: "f3",
     title: "Silk costume study",
-    description: "Maroon silk with antique gold border for a full show.",
+    description: "Teal silk with antique gold border for a full show.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1583391733956-6c78276477e2?w=800&q=80",
+    mediaUrl: "/explore/categories/costumes.jpg",
     mediaType: "image",
     aspect: "square",
     creator: CREATORS[4],
@@ -98,15 +94,14 @@ export const FEED_ITEMS: FeedItem[] = [
       creator: "Nandini Rao",
       labels: ["personal_reference", "credit_required"],
     },
-    tags: ["costume", "silk", "maroon"],
+    tags: ["costume", "silk", "bronze"],
   },
   {
     id: "f4",
     title: "Rhythm practice clip",
     description: "Slow practice at 0.75x helps clear footwork.",
     type: "video",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1535525153412-5a0942e1d4c9?w=800&q=80",
+    mediaUrl: "/explore/categories/salangai.jpg",
     mediaType: "video",
     aspect: "landscape",
     creator: CREATORS[1],
@@ -123,8 +118,7 @@ export const FEED_ITEMS: FeedItem[] = [
     title: "Temple doorway frame",
     description: "Photoshoot concept — dancer framed by carved arch.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1566576721346-d4a3b4eaeb55?w=800&q=80",
+    mediaUrl: "/explore/categories/temples.jpg",
     mediaType: "image",
     aspect: "tall",
     creator: CREATORS[2],
@@ -141,8 +135,7 @@ export const FEED_ITEMS: FeedItem[] = [
     title: "Temple jewelry set",
     description: "Antique brass tone — maatal, oddiyanam, vanki.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?w=800&q=80",
+    mediaUrl: "/explore/categories/jewelry.jpg",
     mediaType: "image",
     aspect: "square",
     creator: CREATORS[3],
@@ -159,8 +152,7 @@ export const FEED_ITEMS: FeedItem[] = [
     title: "Stage lamp lighting mood",
     description: "Warm brass lamps for intimate recital atmosphere.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1514525253161-7a46d19cd819?w=800&q=80",
+    mediaUrl: "/landing/create-moodboard-temple.jpg",
     mediaType: "image",
     aspect: "landscape",
     creator: CREATORS[3],
@@ -177,8 +169,7 @@ export const FEED_ITEMS: FeedItem[] = [
     title: "Hand gesture study",
     description: "Gentle finger placement for storytelling.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1504609773096-104ff2c73ba4?w=800&q=80",
+    mediaUrl: "/explore/categories/hastas.jpg",
     mediaType: "image",
     aspect: "portrait",
     creator: CREATORS[0],
@@ -193,10 +184,9 @@ export const FEED_ITEMS: FeedItem[] = [
   {
     id: "f9",
     title: "Show poster idea",
-    description: "Deep maroon field with a gold border.",
+    description: "Deep teal field with a gold border.",
     type: "poster",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&q=80",
+    mediaUrl: "/explore/figma/featured.jpg",
     mediaType: "image",
     aspect: "tall",
     creator: CREATORS[4],
@@ -213,8 +203,7 @@ export const FEED_ITEMS: FeedItem[] = [
     title: "Group ending formation",
     description: "Diagonal lines opening into a circle.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1508700929628-666bc8bd84ea?w=800&q=80",
+    mediaUrl: "/explore/categories/all.jpg",
     mediaType: "image",
     aspect: "landscape",
     creator: CREATORS[3],
@@ -229,10 +218,9 @@ export const FEED_ITEMS: FeedItem[] = [
   {
     id: "f11",
     title: "Backstage — alankaram",
-    description: "Final flowers and sindoor before curtain.",
+    description: "Final flowers and jasmine before curtain.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1460723237034-039a4bfd5065?w=800&q=80",
+    mediaUrl: "/explore/categories/photography.jpg",
     mediaType: "image",
     aspect: "portrait",
     creator: CREATORS[2],
@@ -249,8 +237,7 @@ export const FEED_ITEMS: FeedItem[] = [
     title: "Outdoor temple performance",
     description: "Evening recital under carved gopuram silhouette.",
     type: "image",
-    mediaUrl:
-      "https://images.unsplash.com/photo-1524368535928-5b5e00ddc76b?w=800&q=80",
+    mediaUrl: "/landing/login-temple-doorway.jpg",
     mediaType: "image",
     aspect: "landscape",
     creator: CREATORS[0],
@@ -268,7 +255,7 @@ export const FEED_ITEMS: FeedItem[] = [
 export const BOARDS: Board[] = [
   {
     id: "b1",
-    title: "Show ideas",
+    title: "Arangetram Costume Ideas",
     description: "Looks, costumes, and stage ideas for my next performance.",
     cover: FEED_ITEMS[8].mediaUrl,
     privacy: "private",
@@ -281,7 +268,7 @@ export const BOARDS: Board[] = [
   },
   {
     id: "b2",
-    title: "Expression studies",
+    title: "Expressions for Padam",
     description: "Eyes, breath, and soft emotion studies.",
     cover: FEED_ITEMS[1].mediaUrl,
     privacy: "private",
@@ -294,7 +281,7 @@ export const BOARDS: Board[] = [
   },
   {
     id: "b3",
-    title: "Costume ideas",
+    title: "Temple Performance Mood",
     description: "Silk colors, borders, and draping ideas.",
     cover: FEED_ITEMS[2].mediaUrl,
     privacy: "public",
@@ -305,7 +292,7 @@ export const BOARDS: Board[] = [
   },
   {
     id: "b4",
-    title: "Temple photo ideas",
+    title: "Gold and Teal Palette",
     description: "Places, frames, and warm evening light.",
     cover: FEED_ITEMS[4].mediaUrl,
     privacy: "invite_only",
@@ -319,7 +306,7 @@ export const BOARDS: Board[] = [
 export const ALBUMS: Album[] = [
   {
     id: "a1",
-    name: "My first full show — 2025",
+    name: "Arangetram Night",
     date: "2025-12-14",
     venue: "Narada Gana Sabha",
     location: "Chennai",
@@ -345,7 +332,7 @@ export const ALBUMS: Album[] = [
   },
   {
     id: "a2",
-    name: "Temple festival evening",
+    name: "Temple Performance",
     date: "2025-08-22",
     venue: "Kapaleeshwarar Temple",
     location: "Mylapore, Chennai",
@@ -360,7 +347,7 @@ export const ALBUMS: Album[] = [
   },
   {
     id: "a3",
-    name: "Autumn practice days",
+    name: "Rehearsal Memories",
     date: "2025-10-01",
     venue: "Home studio",
     location: "Chennai",
@@ -372,6 +359,51 @@ export const ALBUMS: Album[] = [
     sections: ["rehearsal", "preparation"],
     itemIds: ["f4", "f1"],
     contributors: ["Guru Lakshmi Priya"],
+  },
+  {
+    id: "a4",
+    name: "First Stage Appearance",
+    date: "2024-03-18",
+    venue: "Music Academy Mini Hall",
+    location: "Chennai",
+    danceForm: "Bharatanatyam",
+    description: "The first time the lights found me.",
+    cover: FEED_ITEMS[0].mediaUrl,
+    privacy: "private",
+    category: "Debut",
+    sections: ["preparation", "on_stage", "after"],
+    itemIds: ["f1", "f2"],
+    contributors: [],
+  },
+  {
+    id: "a5",
+    name: "Margazhi Festival",
+    date: "2024-12-28",
+    venue: "Various sabhas",
+    location: "Chennai",
+    danceForm: "Bharatanatyam",
+    description: "Season of bells, lamps, and long evenings.",
+    cover: FEED_ITEMS[7].mediaUrl,
+    privacy: "unlisted",
+    category: "Festival",
+    sections: ["on_stage", "audience"],
+    itemIds: ["f7", "f5", "f12"],
+    contributors: [],
+  },
+  {
+    id: "a6",
+    name: "Guru Pooja",
+    date: "2025-02-09",
+    venue: "Guru's home",
+    location: "Chennai",
+    danceForm: "Bharatanatyam",
+    description: "Offerings, blessings, and quiet gratitude.",
+    cover: FEED_ITEMS[5].mediaUrl,
+    privacy: "private",
+    category: "Ceremony",
+    sections: ["preparation", "after"],
+    itemIds: ["f6", "f11"],
+    contributors: [],
   },
 ];
 
@@ -481,7 +513,7 @@ export const PROJECTS: StudioProject[] = [
     videoIds: ["ch1"],
     notes: [
       "Open with temple-lamp silhouette.",
-      "Costume: deep maroon with brass border.",
+      "Costume: deep teal with brass border.",
       "Abhinaya arc: longing → resolve → devotion.",
     ],
   },
@@ -535,17 +567,25 @@ export const NOTIFICATIONS: NotificationItem[] = [
 
 export const INTERESTS = [
   { id: "poses", label: "Poses" },
-  { id: "abhinaya", label: "Expressions" },
-  { id: "mudras", label: "Hand gestures" },
+  { id: "abhinaya", label: "Abhinaya" },
+  { id: "mudras", label: "Mudras" },
+  { id: "adavus", label: "Adavus / technique" },
   { id: "costumes", label: "Costumes" },
-  { id: "jewelry", label: "Jewelry" },
+  { id: "jewelry", label: "Jewellery" },
   { id: "makeup", label: "Makeup" },
-  { id: "choreography", label: "Dance steps" },
+  { id: "hair", label: "Hair & ornaments" },
+  { id: "choreography", label: "Choreography" },
   { id: "rehearsal", label: "Practice" },
   { id: "stage_design", label: "Stage design" },
-  { id: "photography", label: "Dance photos" },
+  { id: "lighting", label: "Lighting" },
+  { id: "photography", label: "Photography" },
+  { id: "music", label: "Music & rhythm" },
+  { id: "storytelling", label: "Storytelling" },
+  { id: "temple_architecture", label: "Temple architecture" },
+  { id: "textiles", label: "Textiles" },
   { id: "event_albums", label: "Event albums" },
   { id: "classical_videos", label: "Dance videos" },
+  { id: "portfolio", label: "Portfolio" },
 ] as const;
 
 export const USER_TYPES = [
@@ -568,7 +608,8 @@ export const DANCE_FORMS = [
   "Kathakali",
   "Manipuri",
   "Sattriya",
-  "Contemporary",
+  "Chhau",
+  "Indian Contemporary",
 ] as const;
 
 export const CATEGORIES = [

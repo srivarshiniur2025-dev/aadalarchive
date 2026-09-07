@@ -27,15 +27,23 @@ export type Interest =
   | "poses"
   | "abhinaya"
   | "mudras"
+  | "adavus"
   | "costumes"
   | "jewelry"
   | "makeup"
+  | "hair"
   | "choreography"
   | "rehearsal"
   | "stage_design"
+  | "lighting"
   | "photography"
+  | "music"
+  | "storytelling"
+  | "temple_architecture"
+  | "textiles"
   | "event_albums"
-  | "classical_videos";
+  | "classical_videos"
+  | "portfolio";
 
 export type AlbumSection =
   | "inspiration"

@@ -1,0 +1,30 @@
+---
+description: Aadal Archive locked color palette, typography, and UI tokens from the brand style guide
+alwaysApply: true
+---
+
+# Aadal Archive — Design System Palette (locked)
+
+Use this palette for all UI work. Do not introduce red, maroon, burgundy, crimson, vermilion, wine, or reddish-brown.
+
+## Core colors
+
+| Role | Hex | Use |
+|------|-----|-----|
+| Neutral charcoal | `#15161A` | App background |
+| Deep temple brown | `#211B15` | Sidebar, panels |
+| Dark bronze | `#30251A` | Elevated surfaces |
+| Antique gold | `#E5A93C` | Primary actions, active states |
+| Muted gold | `#A9823D` | Borders, labels, secondary gold |
+| Parchment | `#D8C7A3` | Secondary text |
+| Temple teal | `#0E627A` | Secondary accent |
+| Terracotta | `#F38222` | Sparse tertiary accent (~3%) |
+| Warm ivory | `#F4EBDD` | Primary text |
+
+## Iconography
+
+Use `HeritageIcons` from `src/components/heritage/HeritageIcons.tsx` for post-login UI — mudra, salangai, temple bell, doorway motifs. Never use emoji for actions.
+
+## Decoration
+
+Temple architecture frames content (5–10%). Prefer SVG/CSS ornaments and existing `/public/temple/clean/` assets. Content imagery first.

@@ -20,9 +20,18 @@ export default function ProfilePage() {
 
   return (
     <div className="mx-auto max-w-6xl">
-      <section className="overflow-hidden rounded-2xl border border-gold/18 bg-[#1a1b20]">
-        <div className="relative h-32 bg-gradient-to-r from-[#3A2412] via-[#5A2526]/40 to-[#15161A] sm:h-40" />
-        <div className="relative px-5 pb-6 sm:px-8">
+      <section className="studio-tile overflow-hidden">
+        <div className="relative h-32 sm:h-40">
+          <Image
+            src="/landing/login-temple-doorway.jpg"
+            alt=""
+            fill
+            className="object-cover object-[50%_35%] opacity-60"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#15161A] via-[#15161A]/50 to-transparent" />
+        </div>
+        <div className="relative px-5 pb-6 sm:px-7">
           <div className="-mt-12 flex flex-col gap-4 sm:-mt-14 sm:flex-row sm:items-end sm:justify-between">
             <div className="flex items-end gap-4">
               <Image
@@ -30,7 +39,7 @@ export default function ProfilePage() {
                 alt=""
                 width={112}
                 height={112}
-                className="h-24 w-24 rounded-full object-cover ring-2 ring-gold/40 sm:h-28 sm:w-28"
+                className="h-24 w-24 rounded-full object-cover ring-2 ring-[#A9823D]/55 sm:h-28 sm:w-28"
               />
               <div className="pb-1">
                 <h2 className="font-display text-2xl text-cream sm:text-3xl">{CURRENT_USER.name}</h2>
@@ -40,10 +49,10 @@ export default function ProfilePage() {
               </div>
             </div>
             <div className="flex gap-2">
-              <button type="button" className="rounded-full border border-gold/35 px-4 py-2 text-sm text-gold">
+              <button type="button" className="studio-btn px-4 py-2">
                 Edit profile
               </button>
-              <button type="button" className="rounded-full border border-cream/15 px-4 py-2 text-sm text-cream/60">
+              <button type="button" className="studio-btn-ghost px-4 py-2">
                 Share profile
               </button>
             </div>
@@ -51,23 +60,24 @@ export default function ProfilePage() {
           <p className="mt-4 max-w-xl text-sm leading-relaxed text-cream/50">
             Learning through rhythm, expression, and memory.
           </p>
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {[
-              { label: "Boards", value: BOARDS.length },
-              { label: "Albums", value: ALBUMS.length },
-              { label: "Choreography", value: CHOREOGRAPHY.length },
-              { label: "Practice sessions", value: 18 },
-            ].map((m) => (
-              <div key={m.label} className="rounded-xl border border-gold/12 bg-[#15161A]/60 px-3 py-3 text-center">
-                <p className="font-display text-xl text-cream">{m.value}</p>
-                <p className="mt-0.5 text-[0.7rem] text-cream/40">{m.label}</p>
-              </div>
-            ))}
+          <div className="mt-5 flex flex-wrap gap-x-6 gap-y-2 text-sm text-cream/45">
+            <span>
+              <em className="not-italic text-cream">{BOARDS.length}</em> Boards
+            </span>
+            <span>
+              <em className="not-italic text-cream">{ALBUMS.length}</em> Albums
+            </span>
+            <span>
+              <em className="not-italic text-cream">{CHOREOGRAPHY.length}</em> Choreography
+            </span>
+            <span>
+              <em className="not-italic text-cream">18</em> Practice sessions
+            </span>
           </div>
         </div>
       </section>
 
-      <div className="mt-6 flex gap-1 overflow-x-auto border-b border-gold/12">
+      <div className="mt-6 flex gap-1 overflow-x-auto border-b border-cream/[0.06]">
         {TABS.map((t) => (
           <button
             key={t}
@@ -85,27 +95,29 @@ export default function ProfilePage() {
       </div>
 
       {tab === "Overview" ? (
-        <section className="mt-8">
+        <section className="app-panel mt-8 p-6">
           <h3 className="font-display text-xl text-cream">Dance journey</h3>
-          <div className="mt-6 overflow-x-auto pb-2">
-            <ol className="relative flex min-w-[640px] items-start justify-between gap-4 px-2">
-              <div className="absolute left-4 right-4 top-3 h-px bg-gradient-to-r from-gold/20 via-gold/50 to-gold/20" />
-              {MILESTONES.map((m) => (
-                <li key={m.label} className="relative z-[1] flex w-28 flex-col items-center text-center">
-                  <span className="h-3 w-3 rounded-full border-2 border-gold bg-[#15161A] shadow-[0_0_10px_rgba(229,169,60,0.45)]" />
-                  <p className="mt-3 text-[0.7rem] text-gold/80">{m.year}</p>
-                  <p className="mt-1 text-[0.78rem] leading-snug text-cream/70">{m.label}</p>
-                </li>
-              ))}
-            </ol>
-          </div>
+          <ol className="mt-6 flex flex-wrap items-center gap-y-3">
+            {MILESTONES.map((m, i) => (
+              <li key={m.label} className="flex items-center">
+                <span className="flex w-24 flex-col items-center text-center sm:w-28">
+                  <span className="h-2.5 w-2.5 rounded-full border border-gold bg-[#15161A]" />
+                  <span className="mt-2 text-[0.68rem] text-gold/80">{m.year}</span>
+                  <span className="mt-1 text-[0.75rem] leading-snug text-cream/65">{m.label}</span>
+                </span>
+                {i < MILESTONES.length - 1 ? (
+                  <span className="mb-8 h-px w-4 bg-gold/25 sm:w-6" aria-hidden />
+                ) : null}
+              </li>
+            ))}
+          </ol>
         </section>
       ) : null}
 
       {tab === "Inspiration" ? (
         <div className="mt-8 grid grid-cols-2 gap-3 md:grid-cols-4">
           {FEED_ITEMS.slice(0, 8).map((item) => (
-            <div key={item.id} className="relative aspect-[3/4] overflow-hidden rounded-xl border border-gold/15">
+            <div key={item.id} className="studio-media relative aspect-[3/4]">
               <Image src={item.mediaUrl} alt={item.title} fill className="object-cover" sizes="25vw" />
             </div>
           ))}
@@ -113,9 +125,9 @@ export default function ProfilePage() {
       ) : null}
 
       {tab === "Albums" ? (
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
           {ALBUMS.map((a) => (
-            <div key={a.id} className="rounded-xl border border-gold/15 p-4">
+            <div key={a.id} className="studio-tile p-4">
               <p className="font-display text-cream">{a.name}</p>
               <p className="mt-1 text-sm text-cream/45">{a.date}</p>
             </div>
@@ -124,22 +136,22 @@ export default function ProfilePage() {
       ) : null}
 
       {tab === "Choreography" ? (
-        <div className="mt-8 space-y-3">
+        <div className="mt-8 space-y-2">
           {CHOREOGRAPHY.map((c) => (
-            <div key={c.id} className="rounded-xl border border-gold/15 px-4 py-3">
+            <div key={c.id} className="studio-tile px-4 py-3">
               <p className="font-display text-cream">{c.title}</p>
-              <p className="text-sm text-cream/45">{c.duration} · {c.difficulty}</p>
+              <p className="text-sm text-cream/45">
+                {c.duration} · {c.difficulty}
+              </p>
             </div>
           ))}
         </div>
       ) : null}
 
       {tab === "Practice Notes" ? (
-        <div className="mt-8 rounded-2xl border border-gold/15 bg-[#1a1b20] p-6 text-center">
+        <div className="app-panel mt-8 p-8 text-center">
           <p className="font-display text-xl text-cream">Nothing saved here yet.</p>
-          <p className="mt-2 text-sm text-cream/50">
-            Find an idea that moves you and save it to begin.
-          </p>
+          <p className="mt-2 text-sm text-cream/50">Find an idea that moves you and save it to begin.</p>
         </div>
       ) : null}
     </div>

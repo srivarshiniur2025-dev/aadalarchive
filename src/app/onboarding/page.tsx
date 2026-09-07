@@ -1,17 +1,20 @@
 "use client";
 
-import { useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useActionState, useMemo, useState } from "react";
 import { Button, Input } from "@/components/ui/Primitives";
 import { KolamRing } from "@/components/animations/Motifs";
 import { DANCE_FORMS, INTERESTS, USER_TYPES } from "@/lib/data";
 import { cn } from "@/lib/utils";
+import { completeOnboardingAction, type AuthActionState } from "@/lib/auth/actions";
 
 const steps = ["Profile", "You", "Interests", "Ready"] as const;
+const initialState: AuthActionState = {};
 
 export default function OnboardingPage() {
-  const router = useRouter();
   const [step, setStep] = useState(0);
+  const [name, setName] = useState("");
+  const [location, setLocation] = useState("");
+  const [bio, setBio] = useState("");
   const [userType, setUserType] = useState("dancer");
   const [danceForm, setDanceForm] = useState("Bharatanatyam");
   const [interests, setInterests] = useState<string[]>([
@@ -19,10 +22,10 @@ export default function OnboardingPage() {
     "abhinaya",
     "choreography",
   ]);
+  const [state, formAction, pending] = useActionState(completeOnboardingAction, initialState);
 
   const selectedLabels = useMemo(
-    () =>
-      INTERESTS.filter((i) => interests.includes(i.id)).map((i) => i.label),
+    () => INTERESTS.filter((i) => interests.includes(i.id)).map((i) => i.label),
     [interests],
   );
 
@@ -34,7 +37,6 @@ export default function OnboardingPage() {
 
   function next() {
     if (step < steps.length - 1) setStep((s) => s + 1);
-    else router.push("/home");
   }
 
   return (
@@ -59,29 +61,37 @@ export default function OnboardingPage() {
         </div>
 
         <div className="silk-panel mt-8 rounded-2xl p-6 md:p-8">
+          {state.error ? (
+            <p className="mb-4 text-sm text-[#F38222]" role="alert">
+              {state.error}
+            </p>
+          ) : null}
+
           {step === 0 ? (
             <div className="space-y-5">
-              <h1 className="font-display text-4xl text-ivory">
-                Show your dance journey
-              </h1>
-              <p className="text-sm text-sandalwood">
-                Add a photo and a short note about you.
-              </p>
-              <div className="flex items-center gap-4">
-                <div className="flex h-20 w-20 items-center justify-center rounded-full border border-gold/50 bg-temple/30 font-display text-2xl text-gold">
-                  AK
-                </div>
-                <Button variant="secondary" type="button">
-                  Upload photo
-                </Button>
-              </div>
-              <Input label="Your name" id="name" defaultValue="Ananya Krishnan" />
-              <Input label="Where you dance" id="location" placeholder="Chennai, India" />
+              <h1 className="font-display text-4xl text-ivory">Show your dance journey</h1>
+              <p className="text-sm text-sandalwood">Add a short note about you.</p>
+              <Input
+                label="Your name"
+                id="name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+              />
+              <Input
+                label="Where you dance"
+                id="location"
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+                placeholder="Chennai, India"
+              />
               <Input
                 label="About you"
                 id="bio"
                 as="textarea"
                 rows={3}
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
                 placeholder="I love classical dance and saving ideas for my next show."
               />
             </div>
@@ -90,9 +100,7 @@ export default function OnboardingPage() {
           {step === 1 ? (
             <div className="space-y-5">
               <h1 className="font-display text-4xl text-ivory">Who are you here?</h1>
-              <p className="text-sm text-sandalwood">
-                Pick the role that fits you best.
-              </p>
+              <p className="text-sm text-sandalwood">Pick the role that fits you best.</p>
               <div className="grid gap-2 sm:grid-cols-2">
                 {USER_TYPES.map((type) => (
                   <button
@@ -129,12 +137,8 @@ export default function OnboardingPage() {
 
           {step === 2 ? (
             <div className="space-y-5">
-              <h1 className="font-display text-4xl text-ivory">
-                What do you want to explore?
-              </h1>
-              <p className="text-sm text-sandalwood">
-                Find your next idea — pick a few topics.
-              </p>
+              <h1 className="font-display text-4xl text-ivory">What do you want to explore?</h1>
+              <p className="text-sm text-sandalwood">Find your next idea — pick a few topics.</p>
               <div className="flex flex-wrap gap-2">
                 {INTERESTS.map((interest) => {
                   const on = interests.includes(interest.id);
@@ -164,8 +168,7 @@ export default function OnboardingPage() {
                 <KolamRing className="absolute inset-0 h-full w-full animate-[salangai-orbit_20s_linear_infinite] text-gold/50" />
                 {selectedLabels.slice(0, 8).map((label, i) => {
                   const angle =
-                    (i / Math.max(selectedLabels.length, 1)) * Math.PI * 2 -
-                    Math.PI / 2;
+                    (i / Math.max(selectedLabels.length, 1)) * Math.PI * 2 - Math.PI / 2;
                   const x = 50 + Math.cos(angle) * 38;
                   const y = 50 + Math.sin(angle) * 38;
                   return (
@@ -187,26 +190,44 @@ export default function OnboardingPage() {
                   {danceForm}
                 </span>
               </div>
-              <h1 className="font-display mt-4 text-3xl text-ivory">
-                Your dance space is ready
-              </h1>
-              <p className="mt-2 text-sm text-sandalwood">
-                Continue to find new dance inspiration.
-              </p>
+              <h1 className="font-display mt-4 text-3xl text-ivory">Your dance space is ready</h1>
+              <p className="mt-2 text-sm text-sandalwood">Continue to find new dance inspiration.</p>
             </div>
           ) : null}
 
           <div className="mt-8 flex justify-between">
             <Button
               variant="ghost"
+              type="button"
               onClick={() => setStep((s) => Math.max(0, s - 1))}
-              disabled={step === 0}
+              disabled={step === 0 || pending}
             >
               Back
             </Button>
-            <Button onClick={next}>
-              {step === steps.length - 1 ? "Continue" : "Continue"}
-            </Button>
+
+            {step < steps.length - 1 ? (
+              <Button
+                type="button"
+                onClick={next}
+                disabled={step === 0 && name.trim().length < 2}
+              >
+                Continue
+              </Button>
+            ) : (
+              <form action={formAction}>
+                <input type="hidden" name="name" value={name} />
+                <input type="hidden" name="location" value={location} />
+                <input type="hidden" name="bio" value={bio} />
+                <input type="hidden" name="userType" value={userType} />
+                <input type="hidden" name="danceForm" value={danceForm} />
+                {interests.map((id) => (
+                  <input key={id} type="hidden" name="interests" value={id} />
+                ))}
+                <Button type="submit" disabled={pending}>
+                  {pending ? "Saving…" : "Enter archive"}
+                </Button>
+              </form>
+            )}
           </div>
         </div>
       </div>

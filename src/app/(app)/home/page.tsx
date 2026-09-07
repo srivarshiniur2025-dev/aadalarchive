@@ -2,8 +2,23 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { CURRENT_USER, BOARDS, ALBUMS, CHOREOGRAPHY, FEED_ITEMS } from "@/lib/data";
-import { Icons } from "@/components/icons/Icons";
+import { useState } from "react";
+import {
+  CURRENT_USER,
+  BOARDS,
+  ALBUMS,
+  CHOREOGRAPHY,
+  FEED_ITEMS,
+  PROJECTS,
+} from "@/lib/data";
+import { HeritageIcons } from "@/components/heritage/HeritageIcons";
+import {
+  FeaturedArchFrame,
+  HeritageButton,
+  HeritageCorners,
+  HeritageDivider,
+  Inscription,
+} from "@/components/heritage/HeritageChrome";
 import { cn } from "@/lib/utils";
 
 function greeting() {
@@ -13,216 +28,262 @@ function greeting() {
   return "Good evening";
 }
 
+const JOURNEY = ["Inspiration", "Idea", "Planning", "Practice", "Performance", "Archive"] as const;
+const WORK_TABS = ["Boards", "Events", "Choreography", "Practice"] as const;
+
 const QUICK = [
-  {
-    title: "Save inspiration",
-    desc: "Save a pose, costume, or expression",
-    href: "/discover",
-    icon: Icons.Save,
-    accent: "border-gold/30 hover:border-gold/55 hover:shadow-[0_0_28px_rgba(229,169,60,0.12)]",
-    iconColor: "text-gold",
-  },
-  {
-    title: "Create a board",
-    desc: "Arrange ideas by theme",
-    href: "/boards?create=1",
-    icon: Icons.Boards,
-    accent: "border-teal/30 hover:border-[#0E627A]/60 hover:shadow-[0_0_28px_rgba(14,98,122,0.15)]",
-    iconColor: "text-[#7ec8d8]",
-  },
-  {
-    title: "Start an album",
-    desc: "Keep memories from an event",
-    href: "/albums?create=1",
-    icon: Icons.Albums,
-    accent: "border-[#F38222]/30 hover:border-[#F38222]/55 hover:shadow-[0_0_28px_rgba(243,130,34,0.12)]",
-    iconColor: "text-[#F38222]",
-  },
-  {
-    title: "Upload choreography",
-    desc: "Store a movement for later",
-    href: "/choreography?upload=1",
-    icon: Icons.Video,
-    accent: "border-cream/20 hover:border-cream/40 hover:shadow-[0_0_28px_rgba(244,235,221,0.08)]",
-    iconColor: "text-cream/80",
-  },
+  { title: "New Board", href: "/boards?create=1", icon: HeritageIcons.Boards },
+  { title: "New Event", href: "/albums?create=1", icon: HeritageIcons.Albums },
+  { title: "Upload Choreography", href: "/choreography?upload=1", icon: HeritageIcons.Upload },
+  { title: "Capture Practice", href: "/studio?record=1", icon: HeritageIcons.Practice },
 ] as const;
 
 export default function HomePage() {
   const firstName = CURRENT_USER.name.split(" ")[0];
+  const featuredAlbum = ALBUMS[0];
   const practice = CHOREOGRAPHY[0];
+  const [workTab, setWorkTab] = useState<(typeof WORK_TABS)[number]>("Boards");
 
   return (
     <div className="mx-auto max-w-6xl space-y-10">
-      {/* Welcome hero */}
-      <section className="relative overflow-hidden rounded-2xl border border-gold/20 bg-gradient-to-br from-[#3A2412] via-[#2a1a14] to-[#15161A] px-6 py-10 sm:px-10 sm:py-12">
-        <div
-          className="pointer-events-none absolute inset-0 opacity-30"
-          style={{
-            backgroundImage:
-              "radial-gradient(ellipse 50% 60% at 85% 40%, rgba(229,169,60,0.25), transparent 60%), radial-gradient(ellipse 40% 40% at 10% 80%, rgba(14,98,122,0.15), transparent 55%)",
-          }}
-          aria-hidden
-        />
-        <div className="pointer-events-none absolute -right-8 top-4 h-48 w-48 rounded-full border border-gold/15 opacity-40" aria-hidden />
-        <div className="pointer-events-none absolute -right-2 top-12 h-36 w-36 rounded-full border border-gold/10 opacity-30" aria-hidden />
-
-        <div className="relative max-w-xl">
-          <p className="text-[0.65rem] font-medium uppercase tracking-[0.2em] text-gold/80">
-            Your practice space
-          </p>
-          <h2 className="mt-3 font-display text-[clamp(1.9rem,4vw,2.75rem)] font-medium leading-[1.1] text-cream">
-            {greeting()}, {firstName}.
-          </h2>
-          <p className="mt-4 max-w-md text-[0.95rem] leading-relaxed text-cream/55">
-            Your dance space is ready.
-            <br />
-            Find something to inspire your next movement.
-          </p>
-          <div className="mt-7 flex flex-wrap gap-3">
-            <Link
-              href="/discover"
-              className="inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-[#f0b954] to-[#c99436] px-5 py-2.5 text-sm font-semibold text-[#1a1408] transition-transform hover:scale-[1.02]"
-            >
-              Explore inspiration
-            </Link>
-            <Link
-              href="/studio"
-              className="inline-flex items-center gap-2 rounded-full border border-gold/35 px-5 py-2.5 text-sm text-gold transition-colors hover:bg-gold/10"
-            >
-              Continue practicing
-            </Link>
-          </div>
-          <p className="mt-6 text-[0.72rem] tracking-wide text-cream/35">
-            Your archive · {BOARDS.length} boards · {ALBUMS.length} albums
-          </p>
+      {/* Greeting */}
+      <section className="heritage-panel px-5 py-6 sm:px-7 sm:py-7">
+        <HeritageCorners />
+        <Inscription>
+          {greeting()}, {firstName}
+        </Inscription>
+        <h2 className="mt-2 max-w-xl font-display text-[clamp(1.5rem,3vw,2rem)] font-medium leading-tight text-cream">
+          Continue your creative journey.
+        </h2>
+        <p className="mt-2 max-w-lg text-sm leading-relaxed text-[#D8C7A3]/65">
+          Your inspirations, ideas, rehearsals and performances — preserved in one archive.
+        </p>
+        <div className="mt-5 flex flex-wrap gap-2.5">
+          <HeritageButton href="/discover">
+            <HeritageIcons.Explore className="h-4 w-4" />
+            Explore Inspiration
+          </HeritageButton>
+          <HeritageButton href="/studio" variant="secondary">
+            <HeritageIcons.Practice className="h-4 w-4" />
+            Continue Practice
+          </HeritageButton>
         </div>
       </section>
 
-      {/* Continue practicing */}
-      <section className="grid gap-6 lg:grid-cols-[1.2fr_0.8fr]">
-        <article className="overflow-hidden rounded-2xl border border-gold/18 bg-[#1a1b20]">
-          <div className="grid sm:grid-cols-[1.1fr_1fr]">
-            <div className="relative aspect-video sm:aspect-auto sm:min-h-[220px]">
-              <Image src={practice.poster} alt="" fill className="object-cover" sizes="(max-width:640px) 100vw, 40vw" />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#15161A]/80 via-transparent to-transparent" />
-              <button
-                type="button"
-                className="absolute left-1/2 top-1/2 flex h-14 w-14 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-gold/50 bg-gold/20 text-gold backdrop-blur-sm"
-                aria-label="Resume practice"
-              >
-                <span className="ml-0.5 h-0 w-0 border-y-[7px] border-l-[12px] border-y-transparent border-l-gold" />
-              </button>
-              <span className="absolute bottom-3 right-3 rounded bg-black/50 px-2 py-0.5 text-[0.7rem] text-cream/80">
-                {practice.duration}
-              </span>
-            </div>
-            <div className="flex flex-col justify-center p-5 sm:p-6">
-              <p className="text-[0.62rem] font-medium uppercase tracking-[0.16em] text-gold/75">
-                Continue your practice
+      {/* Featured project */}
+      <section>
+        <div className="mb-4">
+          <Inscription>Continue your journey</Inscription>
+          <h3 className="mt-1 font-display text-xl text-cream">Active collection</h3>
+        </div>
+        <article className="heritage-panel overflow-hidden">
+          <div className="grid lg:grid-cols-[1.15fr_1fr]">
+            <FeaturedArchFrame
+              src={featuredAlbum?.cover || PROJECTS[0].cover}
+              className="rounded-none border-0 shadow-none lg:min-h-[280px]"
+            />
+            <div className="flex flex-col justify-center p-5 sm:p-7">
+              <Inscription>Performance archive</Inscription>
+              <h4 className="mt-2 font-display text-2xl text-cream">
+                {featuredAlbum?.name || "My Arangetram"}
+              </h4>
+              <HeritageDivider className="mt-3 max-w-[12rem]" />
+              <ul className="mt-5 space-y-1.5 text-sm text-[#D8C7A3]/70">
+                <li>{FEED_ITEMS.length} inspirations</li>
+                <li>{CHOREOGRAPHY.length} choreography notes</li>
+                <li>{CHOREOGRAPHY.length} practice videos</li>
+              </ul>
+              <p className="mt-4 text-[0.7rem] uppercase tracking-[0.12em] text-[#A9823D]/80">
+                Last edited 2 hours ago
               </p>
-              <h3 className="mt-2 font-display text-xl text-cream">{practice.title}</h3>
-              <p className="mt-1 text-sm text-cream/45">Last practiced 2 days ago</p>
-              <div className="mt-4 h-1.5 overflow-hidden rounded-full bg-cream/10">
-                <div className="h-full w-[62%] rounded-full bg-gradient-to-r from-gold to-[#F38222]" />
-              </div>
-              <div className="mt-3 flex flex-wrap gap-2 text-[0.7rem] text-cream/40">
-                <span className="rounded-full border border-gold/20 px-2.5 py-1">Mirror mode</span>
-                <span className="rounded-full border border-gold/20 px-2.5 py-1">Slow playback</span>
-              </div>
-              <Link
-                href="/studio"
-                className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border border-gold/40 px-4 py-2 text-sm text-gold transition-colors hover:bg-gold/10"
-              >
-                Resume practice →
-              </Link>
+              <HeritageButton href={`/albums/${featuredAlbum?.id || "a1"}`} className="mt-5 w-fit">
+                <HeritageIcons.Archive className="h-4 w-4" />
+                Continue Creating
+              </HeritageButton>
             </div>
           </div>
         </article>
-
-        <aside className="rounded-2xl border border-gold/15 bg-[#1a1b20]/80 p-5 sm:p-6">
-          <p className="text-[0.62rem] font-medium uppercase tracking-[0.16em] text-gold/70">
-            Your dance story
-          </p>
-          <ul className="mt-4 space-y-3">
-            {[
-              { label: "Boards", value: BOARDS.length },
-              { label: "Albums", value: ALBUMS.length },
-              { label: "Choreography", value: CHOREOGRAPHY.length },
-              { label: "Saved ideas", value: FEED_ITEMS.length },
-            ].map((row) => (
-              <li key={row.label} className="flex items-center justify-between border-b border-gold/10 pb-2 text-sm">
-                <span className="text-cream/50">{row.label}</span>
-                <span className="font-display text-cream">{row.value}</span>
-              </li>
-            ))}
-          </ul>
-          <Link href="/profile" className="mt-5 inline-flex text-sm text-gold hover:underline">
-            Open your profile →
-          </Link>
-        </aside>
       </section>
 
-      {/* Quick actions */}
+      {/* Quick create */}
       <section>
-        <h3 className="font-display text-xl text-cream">Quick actions</h3>
-        <div className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-          {QUICK.map((card) => {
-            const Icon = card.icon;
+        <Inscription>Create</Inscription>
+        <h3 className="mt-1 font-display text-xl text-cream">Create something</h3>
+        <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4">
+          {QUICK.map((item) => {
+            const Icon = item.icon;
             return (
-              <Link
-                key={card.title}
-                href={card.href}
-                className={cn(
-                  "group rounded-xl border bg-[#1a1b20]/90 p-5 transition-all duration-300 hover:-translate-y-1",
-                  card.accent,
-                )}
-              >
-                <Icon className={cn("h-6 w-6 transition-transform duration-300 group-hover:rotate-6", card.iconColor)} />
-                <h4 className="mt-4 font-display text-lg text-cream">{card.title}</h4>
-                <p className="mt-1 text-[0.8rem] leading-relaxed text-cream/45">{card.desc}</p>
-                <span className="mt-4 inline-flex text-sm text-gold transition-transform group-hover:translate-x-1">
-                  →
+              <Link key={item.title} href={item.href} className="heritage-card group flex items-center gap-3 px-3.5 py-3.5">
+                <span className="flex h-9 w-9 items-center justify-center rounded-md border border-[#A9823D]/30 text-gold">
+                  <Icon className="h-4 w-4" />
                 </span>
+                <span className="text-[0.82rem] text-[#D8C7A3]/85">{item.title}</span>
               </Link>
             );
           })}
         </div>
       </section>
 
-      {/* Recent inspiration peek */}
+      {/* Your work */}
       <section>
-        <div className="flex items-end justify-between gap-4">
+        <div className="flex flex-wrap items-end justify-between gap-3">
           <div>
-            <h3 className="font-display text-xl text-cream">Saved inspiration</h3>
-            <p className="mt-1 text-sm text-cream/45">Ideas waiting for your next rehearsal.</p>
+            <Inscription>Archive</Inscription>
+            <h3 className="mt-1 font-display text-xl text-cream">Your work</h3>
           </div>
-          <Link href="/discover" className="text-sm text-gold hover:underline">
-            Discover more →
+          <div className="flex gap-1 overflow-x-auto">
+            {WORK_TABS.map((tab) => (
+              <button
+                key={tab}
+                type="button"
+                onClick={() => setWorkTab(tab)}
+                className={cn(
+                  "heritage-tab shrink-0 px-3 py-2 text-[0.78rem]",
+                  workTab === tab && "heritage-tab-active",
+                )}
+              >
+                {tab}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        <div className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          {workTab === "Boards" &&
+            BOARDS.map((board) => (
+              <Link key={board.id} href="/boards" className="heritage-card group overflow-hidden">
+                <div className="heritage-media relative aspect-[4/3] rounded-none border-0">
+                  <Image src={board.cover} alt="" fill className="hz object-cover" sizes="33vw" />
+                </div>
+                <div className="p-3.5">
+                  <h4 className="font-display text-[1.05rem] text-cream">{board.title}</h4>
+                  <p className="mt-1 text-[0.72rem] uppercase tracking-[0.1em] text-[#A9823D]/80">
+                    {board.itemIds.length} saved · collection
+                  </p>
+                </div>
+              </Link>
+            ))}
+
+          {workTab === "Events" &&
+            ALBUMS.slice(0, 6).map((album) => (
+              <Link key={album.id} href={`/albums/${album.id}`} className="heritage-card group overflow-hidden">
+                <div className="heritage-media relative aspect-[5/4] rounded-none border-0">
+                  <Image src={album.cover} alt="" fill className="hz object-cover" sizes="33vw" />
+                </div>
+                <div className="p-3.5">
+                  <h4 className="font-display text-[1.05rem] text-cream">{album.name}</h4>
+                  <p className="mt-1 text-[0.72rem] text-[#D8C7A3]/55">
+                    {album.date} · {album.venue}
+                  </p>
+                </div>
+              </Link>
+            ))}
+
+          {workTab === "Choreography" &&
+            CHOREOGRAPHY.map((video) => (
+              <Link key={video.id} href="/choreography" className="heritage-card group overflow-hidden">
+                <div className="heritage-media relative aspect-video rounded-none border-0">
+                  <Image src={video.poster} alt="" fill className="hz object-cover" sizes="33vw" />
+                  <span className="absolute left-1/2 top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-gold/40 bg-[#211B15]/55 text-gold">
+                    <HeritageIcons.Play className="h-4 w-4" />
+                  </span>
+                </div>
+                <div className="p-3.5">
+                  <h4 className="font-display text-[1.05rem] text-cream">{video.title}</h4>
+                  <p className="mt-1 text-[0.72rem] text-[#D8C7A3]/55">{video.difficulty}</p>
+                </div>
+              </Link>
+            ))}
+
+          {workTab === "Practice" && (
+            <Link href="/studio" className="heritage-card group overflow-hidden sm:col-span-2 lg:col-span-1">
+              <div className="heritage-media relative aspect-video rounded-none border-0">
+                <Image src={practice.poster} alt="" fill className="hz object-cover" sizes="33vw" />
+              </div>
+              <div className="p-3.5">
+                <h4 className="font-display text-[1.05rem] text-cream">{practice.title}</h4>
+                <p className="mt-1 text-[0.72rem] text-[#D8C7A3]/55">Resume rehearsal</p>
+              </div>
+            </Link>
+          )}
+        </div>
+      </section>
+
+      {/* Recently saved */}
+      <section>
+        <div className="flex items-end justify-between gap-3">
+          <div>
+            <Inscription>Inspiration</Inscription>
+            <h3 className="mt-1 font-display text-xl text-cream">Recently saved</h3>
+            <p className="mt-1 text-sm text-[#D8C7A3]/55">Ideas waiting for your next rehearsal.</p>
+          </div>
+          <Link href="/saved" className="inline-flex items-center gap-1.5 text-sm text-gold">
+            <HeritageIcons.Save className="h-3.5 w-3.5" />
+            View all
           </Link>
         </div>
-        <div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-4">
-          {FEED_ITEMS.slice(0, 4).map((item) => (
+        <div className="mt-5 columns-2 gap-3 sm:columns-3 lg:columns-4">
+          {FEED_ITEMS.slice(0, 8).map((item, idx) => (
             <Link
               key={item.id}
               href="/discover"
-              className="group relative aspect-[3/4] overflow-hidden rounded-xl border border-gold/15"
+              className={cn(
+                "heritage-media group mb-3 block break-inside-avoid",
+                idx % 3 === 0 ? "aspect-[3/4]" : "aspect-[4/5]",
+              )}
             >
-              <Image
-                src={item.mediaUrl}
-                alt={item.title}
-                fill
-                className="object-cover transition-transform duration-500 group-hover:scale-105"
-                sizes="25vw"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#15161A]/85 via-transparent to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-3">
-                <p className="text-[0.58rem] uppercase tracking-[0.14em] text-gold/80">{item.category}</p>
-                <p className="mt-1 line-clamp-2 font-display text-sm text-cream">{item.title}</p>
+              <div className="relative h-full min-h-[140px] w-full">
+                <Image src={item.mediaUrl} alt={item.title} fill className="hz object-cover" sizes="25vw" />
+                <div className="absolute inset-0 bg-gradient-to-t from-[#15161A]/85 via-transparent to-transparent" />
+                <button
+                  type="button"
+                  className="absolute right-2 top-2 flex h-8 w-8 items-center justify-center rounded-md bg-[#211B15]/75 text-gold opacity-0 transition-opacity group-hover:opacity-100"
+                  aria-label="Saved"
+                >
+                  <HeritageIcons.Save className="h-3.5 w-3.5" />
+                </button>
+                <div className="absolute inset-x-0 bottom-0 p-2.5">
+                  <p className="text-[0.52rem] uppercase tracking-[0.14em] text-[#A9823D]">{item.category}</p>
+                  <p className="mt-0.5 line-clamp-2 font-display text-sm text-cream">{item.title}</p>
+                </div>
               </div>
             </Link>
           ))}
         </div>
+      </section>
+
+      {/* Journey */}
+      <section className="heritage-panel px-5 py-6 sm:px-7">
+        <Inscription>Path</Inscription>
+        <h3 className="mt-1 font-display text-lg text-cream">Dance journey</h3>
+        <ol className="mt-6 flex flex-wrap items-center gap-y-3">
+          {JOURNEY.map((step, i) => (
+            <li key={step} className="flex items-center">
+              <span className="flex flex-col items-center px-1 sm:px-2">
+                <span className="h-2 w-2 rounded-full bg-gold shadow-[0_0_8px_rgba(229,169,60,0.4)]" />
+                <span className="mt-2 text-[0.65rem] tracking-wide text-[#D8C7A3]/65">{step}</span>
+              </span>
+              {i < JOURNEY.length - 1 ? (
+                <span className="mx-1 h-px w-4 bg-[#A9823D]/35 sm:w-7" aria-hidden />
+              ) : null}
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section className="flex flex-wrap gap-x-6 gap-y-2 border-t border-[#A9823D]/18 pt-6 text-sm text-[#D8C7A3]/50">
+        <span>
+          <em className="not-italic text-cream/80">{BOARDS.length}</em> Boards
+        </span>
+        <span>
+          <em className="not-italic text-cream/80">{ALBUMS.length}</em> Events
+        </span>
+        <span>
+          <em className="not-italic text-cream/80">{CHOREOGRAPHY.length}</em> Choreographies
+        </span>
+        <span>
+          <em className="not-italic text-cream/80">{FEED_ITEMS.length}</em> Saved Ideas
+        </span>
       </section>
     </div>
   );

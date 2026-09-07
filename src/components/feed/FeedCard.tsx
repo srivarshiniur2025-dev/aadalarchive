@@ -56,7 +56,7 @@ export function FeedCard({
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
               className="object-cover transition-transform duration-[400ms] ease-[var(--ease-dance)] group-hover:scale-[1.035]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-maroon/90 via-transparent to-transparent opacity-90" />
+            <div className="absolute inset-0 bg-gradient-to-t from-soft-black/90 via-transparent to-transparent opacity-90" />
             {item.mediaType === "video" ? (
               <div className="absolute left-3 top-3 flex items-center gap-1.5 border border-gold/50 bg-paper/90 px-2.5 py-1 text-[0.62rem] uppercase tracking-[0.14em] text-temple backdrop-blur-sm">
                 <Icons.Video className="h-3 w-3" />

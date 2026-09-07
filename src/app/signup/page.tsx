@@ -2,8 +2,9 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useActionState, useState } from "react";
 import { cn } from "@/lib/utils";
+import { signInDemoAction, signInWithGoogleAction, signUpAction, type AuthActionState } from "@/lib/auth/actions";
 
 function LotusDivider({ className }: { className?: string }) {
   return (
@@ -87,12 +88,14 @@ function EyeIcon({ open, className }: { open: boolean; className?: string }) {
 const fieldClass =
   "w-full rounded-lg border border-cream/12 bg-[#1c1d22] py-3.5 pl-11 pr-4 font-display text-[0.95rem] text-cream/90 placeholder:text-cream/30 outline-none transition-colors focus:border-gold/45";
 
+const initialState: AuthActionState = {};
+
 export default function SignupPage() {
   const [showPassword, setShowPassword] = useState(false);
+  const [state, formAction, pending] = useActionState(signUpAction, initialState);
 
   return (
     <div className="relative grid min-h-screen bg-[#15161A] lg:grid-cols-[0.45fr_0.55fr]">
-      {/* Left visual */}
       <aside className="relative hidden min-h-screen overflow-hidden lg:block">
         <Image
           src="/landing/login-temple-doorway.jpg"
@@ -113,12 +116,10 @@ export default function SignupPage() {
         <VerticalWords words={["Art", "Roots", "People", "Forever"]} side="left" />
       </aside>
 
-      {/* Right form — centered alignment */}
       <div className="relative flex flex-col items-center justify-center px-6 py-14 sm:px-10 lg:px-14">
         <VerticalWords words={["Dance", "Preserve", "Belong"]} side="right" />
 
         <div className="w-full max-w-[380px] text-center">
-          {/* Mobile hero strip */}
           <div className="mb-8 lg:hidden">
             <div className="relative mb-6 h-40 overflow-hidden rounded-lg">
               <Image
@@ -133,7 +134,6 @@ export default function SignupPage() {
             </div>
           </div>
 
-          {/* Brand mark */}
           <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center" aria-hidden>
             <Image
               src="/landing/create-dancer-silhouette.png"
@@ -158,8 +158,7 @@ export default function SignupPage() {
           <LotusDivider className="mt-4" />
 
           <h1 className="mt-8 font-display text-[clamp(2.4rem,4vw,3.15rem)] font-medium leading-[1.05] tracking-[-0.02em] text-cream">
-            Begin{" "}
-            <em className="italic text-gold">Here</em>
+            Begin <em className="italic text-gold">Here</em>
           </h1>
 
           <p className="mt-4 text-[0.62rem] font-medium uppercase tracking-[0.22em] text-cream/45">
@@ -169,7 +168,16 @@ export default function SignupPage() {
             Save ideas, practice videos, and every movement that matters.
           </p>
 
-          <form className="mt-9 space-y-3.5 text-left" action="/onboarding">
+          {state.error ? (
+            <p
+              className="mt-4 rounded-lg border border-[#F38222]/35 bg-[#F38222]/10 px-3 py-2 text-left text-sm text-[#F4EBDD]"
+              role="alert"
+            >
+              {state.error}
+            </p>
+          ) : null}
+
+          <form className="mt-9 space-y-3.5 text-left" action={formAction}>
             <label className="relative block" htmlFor="name">
               <span className="sr-only">Full name</span>
               <UserIcon className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-gold/70" />
@@ -223,12 +231,15 @@ export default function SignupPage() {
 
             <button
               type="submit"
-              className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#f0b954] to-[#c99436] px-6 py-3.5 text-[0.92rem] font-semibold tracking-wide text-[#1a1408] transition-transform duration-300 hover:scale-[1.015] hover:brightness-105"
+              disabled={pending}
+              className="mt-2 flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-b from-[#f0b954] to-[#c99436] px-6 py-3.5 text-[0.92rem] font-semibold tracking-wide text-[#1a1408] transition-transform duration-300 hover:scale-[1.015] hover:brightness-105 disabled:opacity-60"
             >
-              Continue
+              {pending ? "Creating…" : "Continue"}
               <span aria-hidden>→</span>
             </button>
           </form>
+
+          <DemoLoginButton />
 
           <div className="my-6 flex items-center gap-3">
             <div className="h-px flex-1 bg-gold/20" />
@@ -236,13 +247,7 @@ export default function SignupPage() {
             <div className="h-px flex-1 bg-gold/20" />
           </div>
 
-          <Link
-            href="/home"
-            className="inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-cream/18 bg-transparent px-6 py-3 text-[0.88rem] text-cream/75 transition-colors hover:border-gold/35 hover:text-cream"
-          >
-            <GoogleMark />
-            Continue with Google
-          </Link>
+          <GoogleSignInButton />
 
           <p className="mt-8 font-display text-[0.88rem] text-cream/45">
             Already have an account?{" "}
@@ -252,6 +257,62 @@ export default function SignupPage() {
           </p>
         </div>
       </div>
+    </div>
+  );
+}
+
+function DemoLoginButton() {
+  const [state, formAction, pending] = useActionState(signInDemoAction, initialState);
+
+  return (
+    <div className="mt-4 space-y-2">
+      {state.error ? (
+        <p
+          className="rounded-lg border border-[#F38222]/35 bg-[#F38222]/10 px-3 py-2 text-left text-sm text-[#F4EBDD]"
+          role="alert"
+        >
+          {state.error}
+        </p>
+      ) : null}
+      <form action={formAction}>
+        <button
+          type="submit"
+          disabled={pending}
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-gold/40 bg-[#30251A] px-6 py-3 text-[0.88rem] font-medium text-gold transition-colors hover:border-gold/70 hover:bg-[#3a2e22] disabled:opacity-60"
+        >
+          {pending ? "Entering archive…" : "Continue as demo"}
+        </button>
+      </form>
+      <p className="text-center text-[0.68rem] text-cream/35">
+        Preview the archive without Google — uses a local demo session.
+      </p>
+    </div>
+  );
+}
+
+function GoogleSignInButton() {
+  const [state, formAction, pending] = useActionState(signInWithGoogleAction, initialState);
+
+  return (
+    <div className="space-y-3">
+      {state.error ? (
+        <p
+          className="rounded-lg border border-[#F38222]/35 bg-[#F38222]/10 px-3 py-2 text-left text-sm text-[#F4EBDD]"
+          role="alert"
+        >
+          {state.error}
+        </p>
+      ) : null}
+      <form action={formAction}>
+        <button
+          type="submit"
+          disabled={pending}
+          className="inline-flex w-full items-center justify-center gap-2.5 rounded-full border border-cream/18 bg-transparent px-6 py-3 text-[0.88rem] text-cream/75 transition-colors hover:border-gold/35 hover:text-cream disabled:opacity-60"
+        >
+          <GoogleMark />
+          {pending ? "Connecting…" : "Continue with Google"}
+        </button>
+      </form>
     </div>
   );
 }

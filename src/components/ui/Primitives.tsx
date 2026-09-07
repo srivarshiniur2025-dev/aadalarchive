@@ -9,13 +9,13 @@ const buttonVariants = cva(
     variants: {
       variant: {
         primary:
-          "rounded-[var(--radius-sm)] border border-gold bg-temple px-5 py-2.5 text-xs uppercase tracking-[0.1em] text-ivory hover:border-brass hover:bg-maroon",
+          "rounded-[var(--radius-sm)] border border-gold bg-temple px-5 py-2.5 text-xs uppercase tracking-[0.1em] text-ivory hover:border-brass hover:bg-teal-deep",
         secondary:
           "rounded-[var(--radius-sm)] border border-[var(--border-gold)] bg-paper px-5 py-2.5 text-xs uppercase tracking-[0.08em] text-ink hover:border-temple hover:bg-temple/10",
         ghost:
           "rounded-[var(--radius-sm)] px-3 py-2 text-bronze tracking-[0.06em] hover:text-temple",
         vermilion:
-          "rounded-[var(--radius-sm)] border border-vermilion/45 bg-vermilion/10 px-5 py-2.5 text-temple hover:bg-vermilion/20",
+          "rounded-[var(--radius-sm)] border border-orange/45 bg-orange/10 px-5 py-2.5 text-temple hover:bg-orange/20",
         doorway: "btn-doorway",
         ivory:
           "rounded-[var(--radius-sm)] border border-brass/50 bg-ivory px-5 py-2.5 text-xs uppercase tracking-[0.08em] text-ink hover:bg-paper",
@@ -216,24 +216,31 @@ export function PrivacyBadge({ privacy }: { privacy: string }) {
 export function Input({
   label,
   id,
+  name,
   type = "text",
   placeholder,
   required,
   defaultValue,
+  value,
+  onChange,
   as = "input",
   rows = 4,
 }: {
   label: string;
   id: string;
+  name?: string;
   type?: string;
   placeholder?: string;
   required?: boolean;
   defaultValue?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => void;
   as?: "input" | "textarea";
   rows?: number;
 }) {
   const fieldClass =
     "w-full rounded-[var(--radius-sm)] border border-[var(--border-bronze)] bg-paper px-3 py-3.5 text-sm text-ink placeholder:text-bronze/70 focus:border-temple focus:outline-none";
+  const fieldName = name ?? id;
 
   return (
     <label className="block space-y-1.5" htmlFor={id}>
@@ -241,21 +248,25 @@ export function Input({
       {as === "textarea" ? (
         <textarea
           id={id}
-          name={id}
+          name={fieldName}
           rows={rows}
           placeholder={placeholder}
           required={required}
-          defaultValue={defaultValue}
+          defaultValue={value === undefined ? defaultValue : undefined}
+          value={value}
+          onChange={onChange}
           className={fieldClass}
         />
       ) : (
         <input
           id={id}
-          name={id}
+          name={fieldName}
           type={type}
           placeholder={placeholder}
           required={required}
-          defaultValue={defaultValue}
+          defaultValue={value === undefined ? defaultValue : undefined}
+          value={value}
+          onChange={onChange}
           className={fieldClass}
         />
       )}

@@ -19,7 +19,7 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
             actionButton: "bg-temple text-ivory",
             cancelButton: "bg-transparent text-bronze",
             success: "border-temple/40",
-            error: "border-vermilion/50",
+            error: "border-orange-deep/50",
           },
         }}
       />

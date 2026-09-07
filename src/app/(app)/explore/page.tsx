@@ -2,61 +2,167 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { FEED_ITEMS } from "@/lib/data";
+import { useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
 
-const ROOMS = [
-  { name: "Temples", desc: "Sacred spaces that hold rhythm and light.", image: FEED_ITEMS[4]?.mediaUrl, span: "lg:col-span-2 lg:row-span-2" },
-  { name: "Salangai", desc: "Bells that mark every step.", image: FEED_ITEMS[6]?.mediaUrl, span: "" },
-  { name: "Hastas", desc: "Hands that speak without words.", image: FEED_ITEMS[0]?.mediaUrl, span: "" },
-  { name: "Expressions", desc: "Eyes that hold the story.", image: FEED_ITEMS[1]?.mediaUrl, span: "lg:col-span-2" },
-  { name: "Costumes", desc: "Silk, border, and stage color.", image: FEED_ITEMS[2]?.mediaUrl, span: "" },
-  { name: "Jewelry", desc: "Gold that frames the face.", image: FEED_ITEMS[5]?.mediaUrl ?? FEED_ITEMS[2]?.mediaUrl, span: "" },
-  { name: "Poses", desc: "Stillness before movement.", image: FEED_ITEMS[0]?.mediaUrl, span: "" },
-  { name: "History", desc: "Lineage, memory, and archive.", image: FEED_ITEMS[8]?.mediaUrl ?? FEED_ITEMS[4]?.mediaUrl, span: "" },
-  { name: "Stage Design", desc: "Light, space, and presence.", image: FEED_ITEMS[9]?.mediaUrl ?? FEED_ITEMS[11]?.mediaUrl, span: "lg:col-span-2" },
-  { name: "Photography", desc: "Frames that keep the moment.", image: FEED_ITEMS[11]?.mediaUrl ?? FEED_ITEMS[5]?.mediaUrl, span: "" },
-] as const;
+type Room = {
+  name: string;
+  desc: string;
+  image: string;
+  q: string;
+  span: string;
+};
+
+const BASE_ROOMS: Room[] = [
+  {
+    name: "For your dance",
+    desc: "Live search tailored to your form.",
+    image: "/explore/categories/poses.jpg",
+    q: "classical dance photography",
+    span: "lg:col-span-2 lg:row-span-2",
+  },
+  {
+    name: "Costume",
+    desc: "Silhouette, silk, and stage color.",
+    image: "/explore/categories/costumes.jpg",
+    q: "classical dance costume",
+    span: "",
+  },
+  {
+    name: "Jewellery",
+    desc: "Ornaments that read from the stage.",
+    image: "/explore/categories/jewelry.jpg",
+    q: "temple jewellery Indian classical dance",
+    span: "",
+  },
+  {
+    name: "Abhinaya",
+    desc: "Mood and expression studies.",
+    image: "/explore/categories/expressions.jpg",
+    q: "classical dance abhinaya expression",
+    span: "lg:col-span-2",
+  },
+  {
+    name: "Mudras / Hastas",
+    desc: "Hand clarity for practice and photos.",
+    image: "/explore/categories/hastas.jpg",
+    q: "classical dance mudra hand gesture",
+    span: "",
+  },
+  {
+    name: "Temples",
+    desc: "Architecture as stage and frame.",
+    image: "/explore/categories/temples.jpg",
+    q: "South Indian temple architecture",
+    span: "",
+  },
+  {
+    name: "Salangai / Ghungroo",
+    desc: "Rhythm you can see.",
+    image: "/explore/categories/salangai.jpg",
+    q: "salangai ghungroo dance bells",
+    span: "",
+  },
+  {
+    name: "Stage design",
+    desc: "Light, entrance, and space.",
+    image: "/explore/categories/photography.jpg",
+    q: "classical dance stage design lighting",
+    span: "",
+  },
+  {
+    name: "Photography",
+    desc: "Portfolio and performance frames.",
+    image: "/explore/categories/photography.jpg",
+    q: "Indian classical dance photography",
+    span: "lg:col-span-2",
+  },
+  {
+    name: "Practice",
+    desc: "Rehearsal energy and studio focus.",
+    image: "/explore/categories/history.jpg",
+    q: "dance rehearsal practice studio",
+    span: "",
+  },
+];
 
 export default function ExploreAppPage() {
+  const [danceForm, setDanceForm] = useState("your dance");
+  const [rooms, setRooms] = useState(BASE_ROOMS);
+
+  useEffect(() => {
+    void fetch("/api/discover/context")
+      .then((r) => r.json())
+      .then((data) => {
+        const form = data.profile?.danceForm || "Indian classical dance";
+        setDanceForm(form);
+        setRooms(
+          BASE_ROOMS.map((room) => {
+            if (room.name === "For your dance") {
+              return {
+                ...room,
+                desc: `Prioritized for ${form}.`,
+                q: `${form} classical dance photography`,
+              };
+            }
+            if (room.name === "Costume") {
+              return { ...room, q: `${form} costume` };
+            }
+            if (room.name === "Photography") {
+              return { ...room, q: `${form} dance photography` };
+            }
+            if (room.name === "Stage design") {
+              return { ...room, q: `${form} stage design lighting` };
+            }
+            if (room.name === "Abhinaya") {
+              return { ...room, q: `${form} abhinaya expression` };
+            }
+            if (room.name === "Practice") {
+              return { ...room, q: `${form} practice rehearsal` };
+            }
+            return room;
+          }),
+        );
+      })
+      .catch(() => undefined);
+  }, []);
+
   return (
     <div className="mx-auto max-w-6xl">
       <header className="max-w-xl">
-        <h2 className="font-display text-[clamp(1.8rem,3vw,2.4rem)] text-cream">Explore</h2>
+        <h2 className="font-display text-[clamp(1.6rem,3vw,2.2rem)] text-cream">Explore</h2>
         <p className="mt-2 text-sm text-cream/50">
-          Walk through the rooms of the archive.
+          Archive rooms for <span className="text-gold/85">{danceForm}</span> — each opens a live Discover
+          search with dancer-aware query expansion.
         </p>
       </header>
 
-      <div className="mt-8 grid auto-rows-[180px] gap-4 sm:auto-rows-[200px] sm:grid-cols-2 lg:grid-cols-4">
-        {ROOMS.map((room) => (
+      <div className="mt-8 grid auto-rows-[170px] gap-3 sm:auto-rows-[190px] sm:grid-cols-2 lg:grid-cols-4">
+        {rooms.map((room) => (
           <Link
             key={room.name}
-            href={`/discover?tab=${encodeURIComponent(room.name)}`}
-            className={cn(
-              "group relative overflow-hidden rounded-2xl border border-gold/18",
-              room.span,
-            )}
+            href={`/discover?q=${encodeURIComponent(room.q)}`}
+            className={cn("studio-tile group relative overflow-hidden", room.span)}
           >
             <Image
               src={room.image}
               alt=""
               fill
-              className="object-cover transition-transform duration-700 group-hover:scale-105"
+              className="media-zoom object-cover"
               sizes="(max-width:1024px) 50vw, 25vw"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#15161A]/90 via-[#15161A]/35 to-[#15161A]/20" />
-            <div className="absolute inset-3 border border-gold/0 transition-colors group-hover:border-gold/30" />
-            <div className="absolute inset-x-0 bottom-0 p-4 sm:p-5">
-              <h3 className="font-display text-xl text-gold sm:text-2xl">{room.name}</h3>
-              <p className="mt-1 max-w-[24ch] text-[0.8rem] text-cream/55">{room.desc}</p>
-              <span className="mt-3 inline-flex text-sm text-cream/70 transition-transform group-hover:translate-x-1">
-                Explore →
-              </span>
+            <div className="absolute inset-0 bg-gradient-to-t from-[#15161A]/90 via-[#15161A]/30 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 p-4">
+              <h3 className="font-display text-xl text-cream">{room.name}</h3>
+              <p className="mt-1 max-w-[24ch] text-[0.78rem] text-cream/55">{room.desc}</p>
             </div>
           </Link>
         ))}
       </div>
+
+      <p className="mt-8 text-center text-[0.75rem] text-cream/35">
+        Covers are local archive art. Results behind each room are live Unsplash + Pexels searches.
+      </p>
     </div>
   );
 }

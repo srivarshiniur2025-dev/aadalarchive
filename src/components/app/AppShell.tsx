@@ -1,32 +1,23 @@
 "use client";
 
-import Image from "next/image";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useId, useRef, useState } from "react";
-import { CURRENT_USER } from "@/lib/data";
+import { useEffect, useId, useRef, useState, type ReactNode } from "react";
+import type { User } from "@/lib/types";
 import { cn } from "@/lib/utils";
-import { Icons } from "@/components/icons/Icons";
-import { APP_BOTTOM_NAV, APP_NAV, CREATE_ACTIONS, PAGE_META } from "./nav";
-
-function LogoMark({ className }: { className?: string }) {
-  return (
-    <svg viewBox="0 0 40 40" className={cn("h-8 w-8", className)} fill="none" aria-hidden>
-      <circle cx="20" cy="20" r="18.5" stroke="#E5A93C" strokeOpacity="0.35" strokeWidth="0.8" />
-      <path
-        d="M20 31c0-4.5 3-7.5 3-12 0 0-3 1.5-3 4.5 0-3-3-4.5-3-4.5 0 4.5 3 7.5 3 12Z"
-        fill="#E5A93C"
-        fillOpacity="0.9"
-      />
-      <path
-        d="M20 22c-3.2-1.4-6.2-1.2-9 0.4 2.8 1.4 5.8 2.6 9 2.6s6.2-1.2 9-2.6c-2.8-1.6-5.8-1.8-9-0.4Z"
-        stroke="#E5A93C"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
+import { HeritageIcons } from "@/components/heritage/HeritageIcons";
+import { PortraitFrame } from "@/components/heritage/HeritageChrome";
+import {
+  ArchiveSeal,
+  ArchivalLabel,
+  CreatePlaque,
+  OrnamentalCorner,
+  TempleArch,
+  TempleDivider,
+  TemplePillar,
+} from "@/components/heritage/TempleArchitecture";
+import { APP_BOTTOM_NAV, CREATE_ACTIONS, NAV_GROUPS, PAGE_META } from "./nav";
+import "./app-temple.css";
 
 function CreateMenu({
   open,
@@ -61,136 +52,247 @@ function CreateMenu({
     <div
       ref={ref}
       className={cn(
-        "absolute z-50 w-[280px] overflow-hidden rounded-xl border border-gold/25 bg-[#1a1b20] p-2 shadow-[0_24px_60px_rgba(0,0,0,0.55)]",
-        anchor === "top" ? "right-0 top-[calc(100%+0.5rem)]" : "bottom-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2",
+        "absolute z-50 w-[280px] overflow-hidden border border-[#A9823D]/35 bg-[#1B1916] p-2 shadow-[0_24px_50px_rgba(0,0,0,0.55)]",
+        anchor === "top" ? "left-0 top-[calc(100%+0.5rem)]" : "bottom-[calc(100%+0.5rem)] left-1/2 -translate-x-1/2",
       )}
       role="menu"
     >
-      <p className="px-3 pb-2 pt-1 text-[0.6rem] font-medium uppercase tracking-[0.16em] text-gold/70">
+      <p className="px-3 pb-2 pt-1 text-[0.58rem] font-medium uppercase tracking-[0.22em] text-[#A9823D]">
         Create
       </p>
-      {CREATE_ACTIONS.map((action) => (
-        <Link
-          key={action.id}
-          href={action.href}
-          role="menuitem"
-          onClick={onClose}
-          className="block rounded-lg px-3 py-2.5 transition-colors hover:bg-gold/10"
-        >
-          <span className="font-display text-[0.95rem] text-cream">{action.title}</span>
-          <span className="mt-0.5 block text-[0.75rem] leading-snug text-cream/45">
-            {action.description}
-          </span>
-        </Link>
-      ))}
+      {CREATE_ACTIONS.map((action) => {
+        const Icon = action.icon;
+        return (
+          <Link
+            key={action.id}
+            href={action.href}
+            role="menuitem"
+            onClick={onClose}
+            className="flex items-start gap-2.5 px-3 py-2.5 transition-colors hover:bg-[#30251A]/70"
+          >
+            <Icon className="mt-0.5 h-5 w-5 shrink-0 text-[#E5A93C]/85" />
+            <span>
+              <span className="block font-display text-[0.92rem] text-cream">{action.title}</span>
+              <span className="mt-0.5 block text-[0.72rem] leading-snug text-[#D8C7A3]/55">
+                {action.description}
+              </span>
+            </span>
+          </Link>
+        );
+      })}
     </div>
   );
 }
 
-export function AppShell({ children }: { children: React.ReactNode }) {
-  const pathname = usePathname();
-  const router = useRouter();
-  const [createOpen, setCreateOpen] = useState(false);
-  const [mobileCreateOpen, setMobileCreateOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const searchId = useId();
-
-  const metaKey = Object.keys(PAGE_META).find((k) => pathname === k || pathname.startsWith(`${k}/`));
-  const meta = (metaKey && PAGE_META[metaKey]) || { title: "AadalArchive", subtitle: "Your dance space" };
-
-  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
-
+function NavLink({
+  href,
+  label,
+  icon: Icon,
+  active,
+  onNavigate,
+}: {
+  href: string;
+  label: string;
+  icon: (p: { className?: string }) => ReactNode;
+  active: boolean;
+  onNavigate?: () => void;
+}) {
   return (
-    <div className="min-h-screen bg-[#15161A] text-cream">
-      {/* Desktop sidebar */}
-      <aside className="fixed inset-y-0 left-0 z-40 hidden w-[232px] flex-col border-r border-gold/12 bg-[#12131a] lg:flex">
-        <Link href="/home" className="flex items-center gap-3 px-5 py-5">
-          <LogoMark />
-          <span className="flex flex-col leading-none">
-            <span className="font-display text-[1.15rem] tracking-[0.02em] text-cream">AadalArchive</span>
-            <span className="mt-1.5 text-[0.5rem] font-medium tracking-[0.16em] text-cream/40">
-              Create · Practice · Preserve
+    <Link
+      href={href}
+      onClick={onNavigate}
+      className={cn(
+        "app-nav-item relative flex items-center gap-3 px-3 py-2.5 text-[0.84rem]",
+        active ? "app-nav-active" : "text-[#D8C7A3]/58",
+      )}
+    >
+      <Icon className={cn("h-5 w-5 shrink-0", active ? "text-[#E5A93C]" : "text-[#A9823D]/75")} />
+      <span className="truncate">{label}</span>
+    </Link>
+  );
+}
+
+function SidebarBody({
+  user,
+  isActive,
+  onNavigate,
+  createOpen,
+  setCreateOpen,
+}: {
+  user: User;
+  isActive: (href: string) => boolean;
+  onNavigate?: () => void;
+  createOpen: boolean;
+  setCreateOpen: (v: boolean | ((p: boolean) => boolean)) => void;
+}) {
+  return (
+    <div className="relative flex h-full flex-col">
+      <TemplePillar side="left" />
+      <TemplePillar side="right" />
+
+      <div className="relative z-[1] flex h-full flex-col px-3">
+        <div className="px-1 pt-3">
+          <TempleArch />
+        </div>
+
+        {/* Institutional seal + wordmark */}
+        <Link
+          href="/home"
+          onClick={onNavigate}
+          className="relative mx-1 mt-2 mb-1 flex items-center gap-3 border border-[#A9823D]/28 bg-[#15161A]/55 px-3 py-3"
+        >
+          <OrnamentalCorner position="tl" />
+          <OrnamentalCorner position="tr" />
+          <OrnamentalCorner position="bl" />
+          <OrnamentalCorner position="br" />
+          <ArchiveSeal className="h-10 w-10 shrink-0" />
+          <span className="min-w-0 leading-none">
+            <span className="block font-display text-[1.08rem] tracking-[0.02em] text-[#F4EBDD]">
+              AadalArchive
+            </span>
+            <span className="mt-1.5 block text-[0.52rem] font-medium uppercase tracking-[0.2em] text-[#A9823D]/85">
+              Classical Dance Archive
             </span>
           </span>
         </Link>
 
-        <nav className="mt-2 flex-1 space-y-1 overflow-y-auto px-3 pb-4" aria-label="App">
-          {APP_NAV.map((item) => {
-            const active = isActive(item.href);
-            const Icon = item.icon;
-            return (
-              <Link
-                key={item.href}
-                href={item.href}
-                className={cn(
-                  "group relative flex items-center gap-3 rounded-lg px-3 py-2.5 text-[0.84rem] transition-colors",
-                  active
-                    ? "border border-gold/35 bg-gold/15 text-gold shadow-[inset_0_0_0_1px_rgba(229,169,60,0.08)]"
-                    : "border border-transparent text-cream/55 hover:bg-cream/[0.04] hover:text-cream",
-                )}
-              >
-                {active ? (
-                  <span className="absolute left-0 top-1/2 h-5 w-0.5 -translate-y-1/2 rounded-full bg-gold shadow-[0_0_10px_rgba(229,169,60,0.7)]" />
-                ) : null}
-                <span
-                  className={cn(
-                    "relative flex h-8 w-8 items-center justify-center rounded-md",
-                    active && "bg-gold/10",
-                  )}
-                >
-                  <Icon className={cn("h-4 w-4", active ? "text-gold" : "text-cream/50")} />
-                </span>
-                {item.label}
-              </Link>
-            );
-          })}
+        {/* Ceremonial Create plaque */}
+        <div className="relative mx-1 mt-4">
+          <CreatePlaque onClick={() => setCreateOpen((v) => !v)}>
+            <HeritageIcons.Create className="h-5 w-5 text-[#E5A93C]" />
+            <span className="uppercase tracking-[0.14em]">Create</span>
+          </CreatePlaque>
+          <CreateMenu open={createOpen} onClose={() => setCreateOpen(false)} />
+        </div>
+
+        <TempleDivider className="mx-1 mt-5" />
+
+        {/* Navigation chambers */}
+        <nav className="mt-4 flex-1 space-y-5 overflow-y-auto pb-3" aria-label="App">
+          {NAV_GROUPS.map((group) => (
+            <div key={group.id} className="space-y-1.5">
+              <ArchivalLabel>{group.label}</ArchivalLabel>
+              <div className="space-y-0.5">
+                {group.items.map((item) => (
+                  <NavLink
+                    key={item.href}
+                    href={item.href}
+                    label={item.label}
+                    icon={item.icon}
+                    active={isActive(item.href)}
+                    onNavigate={onNavigate}
+                  />
+                ))}
+              </div>
+            </div>
+          ))}
         </nav>
 
-        <div className="space-y-1 border-t border-gold/10 px-3 py-4">
-          <Link
+        <TempleDivider className="mx-1 mb-3" />
+
+        {/* Utility + archival identity */}
+        <div className="space-y-0.5 pb-4">
+          <NavLink
             href="/notifications"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-[0.82rem] text-cream/50 transition-colors hover:text-gold"
-          >
-            <Icons.Notifications className="h-4 w-4" />
-            Notifications
-          </Link>
-          <Link
+            label="Notifications"
+            icon={HeritageIcons.Notifications}
+            active={isActive("/notifications")}
+            onNavigate={onNavigate}
+          />
+          <NavLink
             href="/settings"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-[0.82rem] text-cream/50 transition-colors hover:text-gold"
-          >
-            <Icons.Settings className="h-4 w-4" />
-            Settings
-          </Link>
+            label="Settings"
+            icon={HeritageIcons.Settings}
+            active={isActive("/settings")}
+            onNavigate={onNavigate}
+          />
           <Link
-            href="/#contact"
-            className="flex items-center gap-3 rounded-lg px-3 py-2 text-[0.82rem] text-cream/50 transition-colors hover:text-gold"
+            href="/profile"
+            onClick={onNavigate}
+            className="mt-3 flex items-center gap-3 border border-[#A9823D]/28 bg-[#15161A]/35 px-2.5 py-2.5 transition-colors hover:border-[#E5A93C]/40"
           >
-            <Icons.Notes className="h-4 w-4" />
-            Help
-          </Link>
-          <Link href="/profile" className="mt-2 flex items-center gap-3 rounded-lg px-2 py-2 hover:bg-cream/[0.03]">
-            <Image
-              src={CURRENT_USER.avatar}
-              alt=""
-              width={36}
-              height={36}
-              className="h-9 w-9 rounded-full object-cover ring-1 ring-gold/30"
-            />
+            <PortraitFrame src={user.avatar} size={36} />
             <span className="min-w-0">
-              <span className="block truncate text-[0.82rem] text-cream">{CURRENT_USER.name.split(" ")[0]}</span>
-              <span className="block truncate text-[0.68rem] text-cream/40">@{CURRENT_USER.handle}</span>
+              <span className="block truncate font-display text-[0.9rem] text-cream">
+                {user.name.split(" ")[0]}
+              </span>
+              <span className="mt-0.5 block text-[0.55rem] font-medium uppercase tracking-[0.18em] text-[#A9823D]">
+                Archive Member
+              </span>
             </span>
           </Link>
         </div>
+      </div>
+    </div>
+  );
+}
+
+export function AppShell({ children, user }: { children: React.ReactNode; user: User }) {
+  const pathname = usePathname();
+  const router = useRouter();
+  const [createOpen, setCreateOpen] = useState(false);
+  const [mobileCreateOpen, setMobileCreateOpen] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [query, setQuery] = useState("");
+  const searchId = useId();
+
+  const metaKey = Object.keys(PAGE_META).find((k) => pathname === k || pathname.startsWith(`${k}/`));
+  const meta = (metaKey && PAGE_META[metaKey]) || { title: "AadalArchive", subtitle: "Your dance archive" };
+  const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
+
+  useEffect(() => {
+    setDrawerOpen(false);
+  }, [pathname]);
+
+  return (
+    <div className="app-shell min-h-screen">
+      <aside className="app-sidebar fixed inset-y-0 left-0 z-40 hidden flex-col lg:flex">
+        <SidebarBody
+          user={user}
+          isActive={isActive}
+          createOpen={createOpen}
+          setCreateOpen={setCreateOpen}
+        />
       </aside>
 
-      {/* Main column */}
-      <div className="lg:pl-[232px]">
-        <header className="sticky top-0 z-30 border-b border-gold/10 bg-[#15161A]/85 backdrop-blur-md">
-          <div className="flex h-14 items-center justify-between gap-4 px-4 sm:h-16 sm:px-6 lg:px-8">
-            <div className="min-w-0">
-              <h1 className="truncate font-display text-lg text-cream sm:text-xl">{meta.title}</h1>
-              <p className="hidden truncate text-[0.72rem] text-cream/40 sm:block">{meta.subtitle}</p>
+      {drawerOpen ? (
+        <div className="fixed inset-0 z-50 lg:hidden">
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/60"
+            aria-label="Close menu"
+            onClick={() => setDrawerOpen(false)}
+          />
+          <aside className="app-sidebar !absolute inset-y-0 left-0 flex !w-[min(100%,300px)] flex-col shadow-2xl">
+            <SidebarBody
+              user={user}
+              isActive={isActive}
+              onNavigate={() => setDrawerOpen(false)}
+              createOpen={createOpen}
+              setCreateOpen={setCreateOpen}
+            />
+          </aside>
+        </div>
+      ) : null}
+
+      <div className="lg:pl-[248px]">
+        <header className="sticky top-0 z-30 border-b border-[#A9823D]/18 bg-[#15161A]/92 backdrop-blur-md">
+          <div className="flex h-14 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+            <div className="flex min-w-0 items-center gap-2">
+              <button
+                type="button"
+                className="inline-flex h-9 w-9 items-center justify-center border border-[#A9823D]/25 text-[#D8C7A3]/70 lg:hidden"
+                aria-label="Open menu"
+                onClick={() => setDrawerOpen(true)}
+              >
+                <HeritageIcons.Menu className="h-5 w-5" />
+              </button>
+              <div className="min-w-0">
+                <h1 className="truncate font-display text-lg text-cream">{meta.title}</h1>
+                <p className="hidden truncate text-[0.68rem] uppercase tracking-[0.12em] text-[#D8C7A3]/45 sm:block">
+                  {meta.subtitle}
+                </p>
+              </div>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
@@ -203,46 +305,31 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                   router.push(`/discover?q=${encodeURIComponent(query.trim())}`);
                 }}
               >
-                <Icons.Search className="pointer-events-none absolute left-3 top-1/2 h-3.5 w-3.5 -translate-y-1/2 text-cream/35" />
+                <HeritageIcons.Search className="pointer-events-none absolute left-3 top-1/2 h-[18px] w-[18px] -translate-y-1/2 text-[#A9823D]" />
                 <input
                   id={searchId}
                   type="search"
                   value={query}
                   onChange={(e) => setQuery(e.target.value)}
-                  placeholder="Search poses, costumes, expressions..."
-                  className="h-10 w-56 rounded-full border border-gold/15 bg-[#1c1d22] pl-9 pr-4 text-sm text-cream placeholder:text-cream/30 outline-none transition-all focus:w-72 focus:border-gold/35 lg:w-64 lg:focus:w-80"
+                  placeholder="Search inspiration, boards, choreography…"
+                  className="h-9 w-64 border border-[#A9823D]/28 bg-[#1B1916] pl-10 pr-3 text-sm text-cream placeholder:text-[#D8C7A3]/35 outline-none transition-colors focus:border-[#E5A93C]/45 lg:w-72"
                 />
               </form>
 
               <Link
                 href="/notifications"
-                className="hidden h-10 w-10 items-center justify-center rounded-full border border-gold/15 text-cream/55 transition-colors hover:text-gold sm:inline-flex"
+                className="hidden h-9 w-9 items-center justify-center border border-[#A9823D]/22 text-[#D8C7A3]/65 transition-colors hover:text-[#E5A93C] sm:inline-flex"
                 aria-label="Notifications"
               >
-                <Icons.Notifications className="h-4 w-4" />
+                <HeritageIcons.Notifications className="h-5 w-5" />
               </Link>
 
-              <div className="relative hidden sm:block">
-                <button
-                  type="button"
-                  onClick={() => setCreateOpen((v) => !v)}
-                  className="inline-flex h-10 items-center gap-1.5 rounded-full bg-gradient-to-b from-[#f0b954] to-[#c99436] px-4 text-sm font-semibold text-[#1a1408] transition-transform hover:scale-[1.02]"
-                >
-                  Create
-                  <Icons.Create className="h-3.5 w-3.5" />
-                </button>
-                <CreateMenu open={createOpen} onClose={() => setCreateOpen(false)} />
-              </div>
-
-              <Link href="/profile" className="inline-flex items-center gap-1.5 rounded-full border border-gold/15 p-0.5 pr-2">
-                <Image
-                  src={CURRENT_USER.avatar}
-                  alt=""
-                  width={32}
-                  height={32}
-                  className="h-8 w-8 rounded-full object-cover"
-                />
-                <span className="hidden text-cream/40 sm:inline" aria-hidden>
+              <Link
+                href="/profile"
+                className="inline-flex items-center gap-1.5 border border-[#A9823D]/25 p-0.5 pr-2"
+              >
+                <PortraitFrame src={user.avatar} size={28} />
+                <span className="hidden text-[#D8C7A3]/40 sm:inline" aria-hidden>
                   ▾
                 </span>
               </Link>
@@ -250,28 +337,29 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </div>
         </header>
 
-        <main className="min-h-[calc(100vh-4rem)] px-4 pb-24 pt-6 sm:px-6 lg:px-8 lg:pb-10">
-          {children}
+        <main className="min-h-[calc(100vh-3.5rem)] px-4 pb-24 pt-6 sm:px-6 lg:px-8 lg:pb-10">
+          <div key={pathname} className="app-fade">
+            {children}
+          </div>
         </main>
       </div>
 
-      {/* Mobile bottom nav */}
       <nav
-        className="fixed inset-x-0 bottom-0 z-40 border-t border-gold/15 bg-[#12131a]/95 px-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] pt-2 backdrop-blur-md lg:hidden"
+        className="fixed inset-x-0 bottom-0 z-40 border-t border-[#A9823D]/22 bg-[#1B1916]/96 px-2 pb-[max(0.4rem,env(safe-area-inset-bottom))] pt-1.5 backdrop-blur-md lg:hidden"
         aria-label="Mobile"
       >
         <ul className="mx-auto flex max-w-lg items-end justify-between">
           {APP_BOTTOM_NAV.map((item) => {
             if ("isCreate" in item && item.isCreate) {
               return (
-                <li key="create" className="relative -mt-5">
+                <li key="create" className="relative -mt-4">
                   <button
                     type="button"
                     onClick={() => setMobileCreateOpen((v) => !v)}
-                    className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-b from-[#f0b954] to-[#c99436] text-[#1a1408] shadow-[0_8px_24px_rgba(229,169,60,0.35)]"
+                    className="flex h-12 w-12 items-center justify-center border border-[#A9823D]/60 bg-[#30251A] text-[#E5A93C] shadow-[0_8px_20px_rgba(0,0,0,0.35)]"
                     aria-label="Create"
                   >
-                    <Icons.Create className="h-6 w-6" />
+                    <HeritageIcons.Create className="h-5 w-5" />
                   </button>
                   <CreateMenu
                     open={mobileCreateOpen}
@@ -288,8 +376,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
                 <Link
                   href={item.href}
                   className={cn(
-                    "flex w-14 flex-col items-center gap-1 py-1 text-[0.58rem]",
-                    active ? "text-gold" : "text-cream/45",
+                    "flex w-14 flex-col items-center gap-0.5 py-1 text-[0.55rem]",
+                    active ? "text-[#E5A93C]" : "text-[#D8C7A3]/45",
                   )}
                 >
                   <Icon className="h-5 w-5" />

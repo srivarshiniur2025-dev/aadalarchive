@@ -6,60 +6,70 @@
    ============================================================ */
 
 :root {
-  /* Core palette (locked) */
+  /* Core palette — heritage temple archive */
   --gold: #e5a93c;
+  --gold-soft: #f0c56a;
+  --muted-gold: #a9823d;
+  --bronze-gold: #a9823d;
   --teal: #0e627a;
+  --teal-deep: #16495a;
+  --teal-blue: #1c7b8f;
   --orange: #f38222;
+  --orange-deep: #a94d12;
   --cream: #f4ebdd;
+  --beige: #d8c7a3;
+  --parchment: #d8c7a3;
   --charcoal: #15161a;
+  --soft-black: #0d1012;
+  --temple-brown: #211b15;
+  --dark-bronze: #30251a;
+  --stone-grey: #77736d;
 
   /* Supporting */
   --cream-muted: color-mix(in srgb, var(--cream) 68%, transparent);
   --cream-soft: color-mix(in srgb, var(--cream) 42%, transparent);
-  --gold-muted: #8c5e17;
-  --gold-soft: #f0c56a;
+  --gold-muted: #a8752b;
   --gold-dim: color-mix(in srgb, var(--gold) 22%, transparent);
-  --teal-deep: #16495a;
-  --orange-deep: #a94d12;
-  --brown: #3a2412;
-  --surface: #1c1e24;
-  --surface-elevated: #24262b;
+  --brown: #211b15;
+  --surface: #211b15;
+  --surface-elevated: #30251a;
   --border-subtle: color-mix(in srgb, var(--cream) 10%, transparent);
   --border-gold: color-mix(in srgb, var(--gold) 38%, transparent);
   --border-gold-strong: color-mix(in srgb, var(--gold) 62%, transparent);
+  --border-bronze: color-mix(in srgb, var(--bronze-gold) 45%, transparent);
 
   /* Semantic */
   --background: var(--charcoal);
   --foreground: var(--cream);
-  --muted: color-mix(in srgb, var(--cream) 55%, #6b6358);
+  --muted: color-mix(in srgb, var(--cream) 55%, var(--stone-grey));
   --primary: var(--gold);
   --secondary: var(--teal);
   --accent: var(--orange);
 
-  /* Compatibility aliases (existing app) */
+  /* Compatibility aliases — red family remapped to bronze / teal / charcoal */
   --dark: var(--charcoal);
   --ivory: var(--cream);
   --sand: #efe0c4;
   --ink: var(--cream);
   --ink-dark: var(--charcoal);
   --ink-soft: var(--muted);
-  --obsidian: var(--charcoal);
+  --obsidian: var(--soft-black);
   --charcoal-elevated: var(--surface-elevated);
-  --maroon-deep: var(--brown);
+  --maroon-deep: var(--soft-black);
   --temple: var(--teal);
   --vermilion: var(--orange);
   --brass: var(--gold);
-  --brass-shadow: var(--gold-muted);
-  --sandalwood: #c9b08a;
-  --bronze: var(--gold-muted);
+  --brass-shadow: var(--bronze-gold);
+  --sandalwood: var(--beige);
+  --bronze: var(--bronze-gold);
   --forest: var(--teal-deep);
   --lotus: var(--orange);
   --ochre: var(--gold);
-  --rose: #c41e3a;
-  --alta: #c41e3a;
-  --maroon: #7a2430;
+  --rose: var(--bronze-gold);
+  --alta: var(--orange-deep);
+  --maroon: var(--teal-deep);
   --parchment: var(--cream);
-  --parchment-deep: var(--sand);
+  --parchment-deep: var(--beige);
   --paper: var(--surface);
   --curtain: var(--charcoal);
   --teal-muted: var(--teal-deep);
@@ -99,8 +109,13 @@
   --color-gold: var(--gold);
   --color-gold-soft: var(--gold-soft);
   --color-gold-muted: var(--gold-muted);
+  --color-bronze-gold: var(--bronze-gold);
+  --color-beige: var(--beige);
+  --color-soft-black: var(--soft-black);
+  --color-stone-grey: var(--stone-grey);
   --color-teal: var(--teal);
   --color-teal-deep: var(--teal-deep);
+  --color-teal-blue: var(--teal-blue);
   --color-orange: var(--orange);
   --color-orange-deep: var(--orange-deep);
   --color-cream: var(--cream);
@@ -149,16 +164,18 @@ html {
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
+  background: var(--soft-black);
+  color: var(--cream);
   font-family: var(--font-body), system-ui, sans-serif;
   min-height: 100vh;
   text-rendering: optimizeLegibility;
+  /* Palette balance: charcoal/soft-black dominant, ivory text, gold + teal accents, orange sparse */
   background-image:
-    radial-gradient(ellipse 70% 45% at 85% 10%, color-mix(in srgb, var(--teal) 14%, transparent), transparent 55%),
-    radial-gradient(ellipse 55% 40% at 10% 90%, color-mix(in srgb, var(--orange) 8%, transparent), transparent 50%),
-    radial-gradient(ellipse 50% 35% at 50% 0%, color-mix(in srgb, var(--gold) 6%, transparent), transparent 60%),
-    linear-gradient(180deg, #15161a 0%, #121318 50%, #15161a 100%);
+    radial-gradient(ellipse 55% 40% at 88% 8%, color-mix(in srgb, var(--teal) 16%, transparent), transparent 58%),
+    radial-gradient(ellipse 45% 35% at 8% 92%, color-mix(in srgb, var(--teal-deep) 14%, transparent), transparent 55%),
+    radial-gradient(ellipse 40% 30% at 50% 0%, color-mix(in srgb, var(--gold) 7%, transparent), transparent 62%),
+    radial-gradient(ellipse 30% 25% at 70% 85%, color-mix(in srgb, var(--orange) 4%, transparent), transparent 60%),
+    linear-gradient(180deg, var(--soft-black) 0%, var(--charcoal) 48%, var(--soft-black) 100%);
   background-attachment: fixed;
 }
 
