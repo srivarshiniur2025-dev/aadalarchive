@@ -127,7 +127,8 @@ export function filtersForForm(danceForm?: string | null, intent?: DanceIntent) 
     { id: "photography", label: "Photography", query: `${form} dance photography` },
     { id: "costume", label: "Costume", query: `${form} costume` },
     { id: "stage", label: "Stage", query: `${form} stage performance` },
-    { id: "jewellery", label: "Jewellery", query: `${form} jewellery` },
+    { id: "jewellery", label: "Jewellery", query: `South Indian temple jewellery ${form}` },
+    { id: "mudras", label: "Mudras", query: `${form} mudra hand gesture` },
     { id: "practice", label: "Practice", query: `${form} practice rehearsal` },
   ];
 

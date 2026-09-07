@@ -192,7 +192,7 @@ export async function searchInspirations(input: {
   page?: number;
   limit?: number;
 }): Promise<InspirationSearchResponse> {
-  const { detectIntent } = await import("@/lib/dance/intents");
+  const { detectIntent, relevanceKeywords } = await import("@/lib/dance/intents");
   const { expandDanceQuery, queryForPage } = await import("@/lib/dance/query-expansion");
 
   const page = input.page ?? 1;
@@ -213,14 +213,15 @@ export async function searchInspirations(input: {
 
   const { primary, secondary } = queryForPage(expansions, page);
   const perProvider = Math.ceil(limit / 2);
+  const keywords = relevanceKeywords(intent, input.query || input.category || primary);
 
   const providers: string[] = [];
+  // Same topic on both providers — secondary is only a close variant
   const searches = [
     searchUnsplash(primary, page, perProvider),
     searchPexels(secondary || primary, page, perProvider),
   ];
 
-  // On later pages, also pull a third variant from Unsplash if available to keep stream rich
   if (page > 1 && expansions.length > 2) {
     const third = expansions[(page + 1) % expansions.length];
     searches.push(searchUnsplash(third, page, Math.ceil(perProvider / 2)));
@@ -245,7 +246,6 @@ export async function searchInspirations(input: {
     }
   }
 
-  // Interleave provider batches
   let merged: InspirationResult[] = [];
   if (settled.length >= 2) {
     merged = interleave(settled[0].results, settled[1].results);
@@ -256,14 +256,53 @@ export async function searchInspirations(input: {
     merged = settled[0]?.results || [];
   }
 
+  const scored = merged
+    .map((item) => {
+      const hay = `${item.title} ${(item.tags || []).join(" ")}`.toLowerCase();
+      // Prefer South Indian temple context — drop obvious Taj Mahal / Mughal hits
+      if (/taj\s*mahal|\bagra\b|mughal mausoleum/.test(hay)) {
+        return { item, score: -100 };
+      }
+      // Hard rejects for clearly off-topic jewellery / mudra / costume noise
+      if (intent === "JEWELLERY" && /diamond ring|wedding ring|engagement|watch\b|bracelet fashion/.test(hay) && !/indian|temple|dance|traditional|jhumka|gold/.test(hay)) {
+        return { item, score: -50 };
+      }
+      if (intent === "MUDRAS" && /yoga pose|meditation|namaste stock|tattoo/.test(hay) && !/dance|mudra|hasta|bharata|classical|indian/.test(hay)) {
+        return { item, score: -40 };
+      }
+      if (intent === "COSTUME" && /superhero|halloween|cosplay|comic|marvel|batman|spiderman/.test(hay)) {
+        return { item, score: -80 };
+      }
+      if (intent === "TEMPLE" && /taj|mosque|church|cathedral|pagoda china|japanese shrine/.test(hay) && !/gopuram|dravidian|tamil|madurai|thanjavur|hampi|south indian/.test(hay)) {
+        return { item, score: -40 };
+      }
+      let score = 0;
+      for (const kw of keywords) {
+        if (hay.includes(kw)) score += kw.length > 5 ? 3 : 2;
+      }
+      // Prefer portrait/close subjects for mudras & jewellery
+      if ((intent === "MUDRAS" || intent === "JEWELLERY" || intent === "SALANGAI") && item.height >= item.width) score += 1;
+      // Boost explicit topic words in titles
+      if (intent === "MUDRAS" && /mudra|hasta|hand gesture|hands/.test(hay)) score += 6;
+      if (intent === "JEWELLERY" && /jewel|necklace|jhumka|ornament|earring|gold/.test(hay)) score += 6;
+      if (intent === "SALANGAI" && /ghungroo|salangai|ankle|bell|nupur|feet|foot/.test(hay)) score += 6;
+      if (intent === "TEMPLE" && /gopuram|temple|carved|pillar|dravidian/.test(hay)) score += 5;
+      if ((intent === "COSTUME" || intent === "ABHINAYA" || intent === "PERFORMANCE") && /bharatanatyam|kuchipudi|kathak|odissi|classical dance|indian dancer/.test(hay)) score += 4;
+      return { item, score };
+    })
+    .filter((row) => row.score > -50);
+
+  scored.sort((a, b) => b.score - a.score);
+
+  // Keep stronger matches first; if stock APIs are thin, still return softer matches
+  const strong = scored.filter((r) => r.score >= 2);
+  const ranked = (strong.length >= Math.min(8, limit / 2) ? strong : scored).map((r) => r.item);
+
   const seen = new Set<string>();
-  const results = merged
+  const results = ranked
     .filter((item) => {
       if (seen.has(item.id)) return false;
       seen.add(item.id);
-      // Prefer South Indian temple context — drop obvious Taj Mahal / Mughal mausoleum hits
-      const hay = `${item.title} ${(item.tags || []).join(" ")}`.toLowerCase();
-      if (/taj\s*mahal|\bagra\b|mughal mausoleum/.test(hay)) return false;
       return true;
     })
     .slice(0, limit);

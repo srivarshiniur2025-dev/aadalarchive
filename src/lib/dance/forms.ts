@@ -24,16 +24,16 @@ export type DanceFacet = {
 /** Priority discovery facets per form. Labels are creative filters, not authoritative definitions. */
 export const FORM_FACETS: Record<string, DanceFacet[]> = {
   Bharatanatyam: [
-    { id: "mudras", label: "Mudras", query: "Bharatanatyam mudra hand gesture" },
+    { id: "mudras", label: "Mudras", query: "Bharatanatyam mudra hand gesture close up" },
     { id: "adavus", label: "Adavus", query: "Bharatanatyam dance footwork practice" },
-    { id: "abhinaya", label: "Abhinaya", query: "Bharatanatyam abhinaya expression" },
+    { id: "abhinaya", label: "Abhinaya", query: "Bharatanatyam abhinaya facial expression" },
     { id: "costume", label: "Costume", query: "Bharatanatyam silk costume performance" },
-    { id: "jewellery", label: "Temple jewellery", query: "South Indian temple jewellery dance" },
-    { id: "salangai", label: "Salangai", query: "salangai ankle bells Bharatanatyam" },
+    { id: "jewellery", label: "Temple jewellery", query: "South Indian temple jewellery gold necklace jhumka" },
+    { id: "salangai", label: "Salangai", query: "salangai ankle bells Bharatanatyam close up" },
     { id: "stage", label: "Stage", query: "Bharatanatyam stage performance" },
-    { id: "photo", label: "Photography", query: "Bharatanatyam dance photography" },
+    { id: "photo", label: "Photography", query: "Bharatanatyam dance photography stage" },
     { id: "temple", label: "Temple", query: "South Indian temple gopuram carved pillars" },
-    { id: "varnam", label: "Varnam mood", query: "classical Indian dance stage composition" },
+    { id: "varnam", label: "Varnam mood", query: "Bharatanatyam classical dance stage composition" },
   ],
   Kathak: [
     { id: "tatkar", label: "Footwork", query: "Kathak dance footwork" },
@@ -124,10 +124,10 @@ export function facetsForForm(danceForm?: string | null): DanceFacet[] {
 export const INTEREST_QUERY_MAP: Record<string, string> = {
   poses: "classical dance pose photography",
   abhinaya: "classical dance abhinaya expression",
-  mudras: "classical dance mudra hand gesture",
-  costumes: "Indian classical dance costume",
-  jewelry: "temple jewellery Indian classical dance",
-  jewellery: "temple jewellery Indian classical dance",
+  mudras: "Bharatanatyam mudra hand gesture close up",
+  costumes: "Bharatanatyam silk costume performance",
+  jewelry: "South Indian temple jewellery gold necklace jhumka",
+  jewellery: "South Indian temple jewellery gold necklace jhumka",
   makeup: "classical dance stage makeup",
   choreography: "classical Indian dance choreography stage",
   rehearsal: "dance rehearsal practice studio",
