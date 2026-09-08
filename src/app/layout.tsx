@@ -29,12 +29,15 @@ const script = Great_Vibes({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "https://aadalarchive.vercel.app",
+  ),
   title: {
-    default: "AadalArchive — Where every movement becomes a memory",
+    default: "AadalArchive — Where Every Movement Becomes a Memory",
     template: "%s · AadalArchive",
   },
   description:
-    "A modern visual world for Bharatanatyam dancers — discover inspiration, save ideas, practice, and preserve every performance.",
+    "Discover, create, practice, and preserve your dance journey with AadalArchive.",
   keywords: [
     "Bharatanatyam",
     "classical dance",
@@ -43,6 +46,9 @@ export const metadata: Metadata = {
     "practice videos",
     "choreography",
   ],
+  alternates: {
+    canonical: "/",
+  },
 };
 
 export const viewport: Viewport = {

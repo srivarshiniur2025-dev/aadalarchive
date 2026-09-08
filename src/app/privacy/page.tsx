@@ -4,9 +4,14 @@ import Link from "next/link";
 import { BrandLogo } from "@/components/brand/BrandLogo";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy — AadalArchive",
+  title: {
+    absolute: "Privacy Policy — AadalArchive",
+  },
   description:
     "How AadalArchive handles account information, uploaded content, inspiration search, and third-party image providers.",
+  alternates: {
+    canonical: "/privacy",
+  },
 };
 
 const SECTIONS = [
