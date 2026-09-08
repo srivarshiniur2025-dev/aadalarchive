@@ -718,7 +718,7 @@ export function DiscoverClient({ seedQuery, initialProfile }: Props) {
               </span>
             ) : null}
             <span className="ml-2 text-[0.65rem] uppercase tracking-[0.14em] text-gold/55">
-              Unsplash · Pexels · Pinterest
+              Unsplash · Pexels · Openverse · Pixabay
             </span>
           </span>
         ) : null}

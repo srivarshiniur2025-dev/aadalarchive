@@ -99,9 +99,9 @@ export default function PrivacyPolicyPage() {
             <strong className="font-medium text-[#F4EBDD]">User-generated content</strong> is
             material you create or upload (for example practice videos, notes, boards, and albums).{" "}
             <strong className="font-medium text-[#F4EBDD]">Third-party inspiration content</strong>{" "}
-            is imagery and metadata returned from external providers such as Unsplash, Pexels, and
-            Pinterest. Those providers have their own terms and privacy practices. AadalArchive does
-            not claim ownership of third-party inspiration media.
+            is imagery and metadata returned from external providers such as Unsplash, Pexels,
+            Openverse, and Pixabay. Those providers have their own terms and privacy practices.
+            AadalArchive does not claim ownership of third-party inspiration media.
           </p>
         </aside>
 
@@ -198,8 +198,8 @@ export default function PrivacyPolicyPage() {
 
           <Section id="providers" title="Image and API providers">
             <p>
-              Inspiration results may come from external services, including Unsplash, Pexels, and
-              Pinterest when those integrations are enabled. Those results are{" "}
+              Inspiration results may come from external services, including Unsplash, Pexels,
+              Openverse, and Pixabay when those integrations are enabled. Those results are{" "}
               <em className="not-italic text-[#F4EBDD]/90">third-party inspiration content</em>.
             </p>
             <ul className="list-disc space-y-2 pl-5">
@@ -220,8 +220,8 @@ export default function PrivacyPolicyPage() {
               </li>
             </ul>
             <p>
-              Please review the privacy practices of Unsplash, Pexels, Pinterest, and any other
-              provider we surface in the product for details on how they process data.
+              Please review the privacy practices of Unsplash, Pexels, Openverse, Pixabay, and any
+              other provider we surface in the product for details on how they process data.
             </p>
           </Section>
 
@@ -307,7 +307,7 @@ export default function PrivacyPolicyPage() {
             <p>
               AadalArchive relies on third-party infrastructure and APIs, which may include
               authentication and database hosting (such as Supabase), application hosting (such as
-              Vercel), and inspiration providers (such as Unsplash, Pexels, and Pinterest). Those
+              Vercel), and inspiration providers (such as Unsplash, Pexels, Openverse, and Pixabay). Those
               services process data under their own policies.
             </p>
             <p>

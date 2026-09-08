@@ -22,20 +22,20 @@ Fill in Supabase values. Optionally add:
 
 - `UNSPLASH_ACCESS_KEY` — https://unsplash.com/oauth/applications
 - `PEXELS_API_KEY` — https://www.pexels.com/api/
-- `PINTEREST_APP_ID` / `PINTEREST_APP_SECRET` / `PINTEREST_ACCESS_TOKEN` — https://developers.pinterest.com/
+- `PIXABAY_API_KEY` (optional) — https://pixabay.com/api/docs/
 - `NEXT_PUBLIC_SITE_URL=http://localhost:3000`
 
-### Pinterest Discover source
+### Discover inspiration sources
 
-1. Create an app at https://developers.pinterest.com/
-2. Set redirect URI to `{NEXT_PUBLIC_SITE_URL}/api/pinterest/oauth/callback`
-3. Request scopes `pins:read` and `boards:read`
-4. Put `PINTEREST_APP_ID` and `PINTEREST_APP_SECRET` in `.env.local`
-5. Open `/api/pinterest/oauth` while signed into Pinterest, approve, then paste the shown tokens into `.env.local` (and Vercel)
-6. Set `PINTEREST_SEARCH_MODE=user` (default). Use `partner` only if Pinterest granted partner pin search beta access
-7. Restart the server / redeploy
+Discover searches these in parallel and interleaves results:
 
-Discover will then interleave Pinterest pins with Unsplash and Pexels. Without a token, Unsplash/Pexels continue to work alone.
+1. **Unsplash** + **Pexels** — stock photography (API keys required)
+2. **Openverse** — Creative Commons / Flickr / museum images (no key; strong for real classical dance & temple photos)
+3. **Pixabay** — popular moodboard-style stock photos (optional free API key)
+
+Classical dance query expansion and relevance scoring keep results on-topic (costumes, mudras, jewellery, temples, performances).
+
+Without Unsplash/Pexels/Pixabay keys, Openverse still returns usable archive references.
 
 ## 3. Apply the database schema
 

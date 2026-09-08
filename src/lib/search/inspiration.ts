@@ -1,6 +1,6 @@
 export type InspirationResult = {
   id: string;
-  provider: "unsplash" | "pexels" | "pinterest";
+  provider: "unsplash" | "pexels" | "openverse" | "pixabay";
   externalId: string;
   title: string;
   imageUrl: string;
@@ -17,7 +17,7 @@ export type InspirationResult = {
   /** @deprecated use creatorName */
   creator?: string;
   /** @deprecated use provider */
-  source?: "unsplash" | "pexels" | "pinterest" | "cache";
+  source?: "unsplash" | "pexels" | "openverse" | "pixabay" | "cache";
 };
 
 export type InspirationSearchResponse = {
@@ -183,29 +183,158 @@ async function searchPexels(
   return { results, totalPages };
 }
 
-async function searchPinterest(
+async function searchOpenverse(
   q: string,
+  page: number,
   limit: number,
 ): Promise<{ results: InspirationResult[]; totalPages: number }> {
-  try {
-    const { fetchPinterestPins, mapPinterestPin, isPinterestConfigured } = await import(
-      "@/lib/pinterest"
-    );
-    if (!isPinterestConfigured()) return { results: [], totalPages: 0 };
+  const url = new URL("https://api.openverse.org/v1/images/");
+  url.searchParams.set("q", q.slice(0, 200));
+  url.searchParams.set("page", String(Math.max(1, page)));
+  url.searchParams.set("page_size", String(Math.min(Math.max(limit, 3), 20)));
+  url.searchParams.set("mature", "false");
+  // Flickr + cultural institutions tend to have real performance / temple / costume photos
+  url.searchParams.set(
+    "source",
+    "flickr,wikimedia,met,smithsonian_openaccess,rijksmuseum,europeana,nypl,rawpixel",
+  );
 
-    const { pins } = await fetchPinterestPins(q, limit);
-    const results: InspirationResult[] = [];
-    for (const pin of pins) {
-      const mapped = mapPinterestPin(pin);
-      if (mapped) results.push(mapped);
-    }
+  const res = await fetch(url.toString(), {
+    headers: {
+      Accept: "application/json",
+      "User-Agent": "AadalArchive/1.0 (classical dance archive; hello@aadalarchive.com)",
+    },
+    next: { revalidate: 300 },
+  });
 
-    return { results, totalPages: results.length > 0 ? 1 : 0 };
-  } catch (err) {
-    if (err instanceof Error && err.message === "RATE_LIMITED") throw err;
-    console.error("Pinterest search", err);
+  if (!res.ok) {
+    const body = await res.text();
+    console.error("Openverse error", res.status, body);
+    if (res.status === 429) throw new Error("RATE_LIMITED");
     return { results: [], totalPages: 0 };
   }
+
+  const data = (await res.json()) as {
+    page_count?: number;
+    results?: Array<{
+      id: string;
+      title?: string | null;
+      url?: string;
+      thumbnail?: string | null;
+      foreign_landing_url?: string | null;
+      creator?: string | null;
+      creator_url?: string | null;
+      license?: string | null;
+      license_version?: string | null;
+      width?: number | null;
+      height?: number | null;
+      tags?: Array<{ name?: string } | string>;
+      source?: string | null;
+      provider?: string | null;
+    }>;
+  };
+
+  const results: InspirationResult[] = [];
+  for (const item of data.results || []) {
+    if (!item.id || !item.url) continue;
+    const tags = (item.tags || [])
+      .map((t) => (typeof t === "string" ? t : t.name || ""))
+      .filter(Boolean)
+      .slice(0, 10);
+    results.push({
+      id: `openverse:${item.id}`,
+      provider: "openverse",
+      externalId: item.id,
+      title: item.title || "Open inspiration",
+      imageUrl: item.url,
+      thumbnailUrl: item.thumbnail || item.url,
+      sourceUrl: item.foreign_landing_url || item.url,
+      creatorName: item.creator || item.source || item.provider || "Openverse",
+      creatorUrl: item.creator_url || item.foreign_landing_url || item.url,
+      creator: item.creator || undefined,
+      source: "openverse",
+      category: item.source || item.provider || "Openverse",
+      tags,
+      width: item.width || 800,
+      height: item.height || 1200,
+      attributionRequired: true,
+      license: [item.license, item.license_version].filter(Boolean).join(" ") || "Creative Commons",
+    });
+  }
+
+  return { results, totalPages: data.page_count ?? (results.length ? page + 1 : page) };
+}
+
+async function searchPixabay(
+  q: string,
+  page: number,
+  limit: number,
+): Promise<{ results: InspirationResult[]; totalPages: number }> {
+  const key = process.env.PIXABAY_API_KEY?.trim();
+  if (!key) return { results: [], totalPages: 0 };
+
+  const url = new URL("https://pixabay.com/api/");
+  url.searchParams.set("key", key);
+  url.searchParams.set("q", q.slice(0, 100));
+  url.searchParams.set("image_type", "photo");
+  url.searchParams.set("safesearch", "true");
+  url.searchParams.set("order", "popular");
+  url.searchParams.set("page", String(Math.max(1, page)));
+  url.searchParams.set("per_page", String(Math.min(Math.max(limit, 3), 40)));
+
+  const res = await fetch(url.toString(), {
+    next: { revalidate: 300 },
+  });
+
+  if (!res.ok) {
+    const body = await res.text();
+    console.error("Pixabay error", res.status, body);
+    if (res.status === 429) throw new Error("RATE_LIMITED");
+    return { results: [], totalPages: 0 };
+  }
+
+  const data = (await res.json()) as {
+    totalHits?: number;
+    hits?: Array<{
+      id: number;
+      pageURL: string;
+      largeImageURL: string;
+      webformatURL: string;
+      previewURL: string;
+      imageWidth: number;
+      imageHeight: number;
+      user: string;
+      user_id: number;
+      tags?: string;
+    }>;
+  };
+
+  const results = (data.hits || []).map((photo) => ({
+    id: `pixabay:${photo.id}`,
+    provider: "pixabay" as const,
+    externalId: String(photo.id),
+    title: (photo.tags || "Pixabay inspiration").split(",")[0]?.trim() || "Pixabay inspiration",
+    imageUrl: photo.largeImageURL || photo.webformatURL,
+    thumbnailUrl: photo.webformatURL || photo.previewURL,
+    sourceUrl: photo.pageURL,
+    creatorName: photo.user || "Pixabay",
+    creatorUrl: `https://pixabay.com/users/${encodeURIComponent(photo.user)}-${photo.user_id}/`,
+    creator: photo.user,
+    source: "pixabay" as const,
+    category: "Photography",
+    tags: (photo.tags || "")
+      .split(",")
+      .map((t) => t.trim())
+      .filter(Boolean)
+      .slice(0, 10),
+    width: photo.imageWidth || 800,
+    height: photo.imageHeight || 1200,
+    attributionRequired: true,
+    license: "Pixabay License",
+  }));
+
+  const totalPages = data.totalHits ? Math.ceil(data.totalHits / limit) : results.length >= limit ? page + 1 : page;
+  return { results, totalPages };
 }
 
 export async function searchInspirations(input: {
@@ -253,12 +382,14 @@ export async function searchInspirations(input: {
   const keywords = relevanceKeywords(intent, userQuery || primary);
 
   const providers: string[] = [];
-  const perPin = Math.max(6, Math.ceil(limit / 3));
+  const perArchive = Math.max(6, Math.ceil(limit / 3));
   const searches = [
     searchUnsplash(primary, page, perProvider, unsplashColors[0]),
     searchPexels(secondary || primary, page, perProvider),
-    // Pinterest partner/user search — page 1 primarily (bookmark pagination later)
-    page === 1 ? searchPinterest(primary, perPin) : Promise.resolve({ results: [] as InspirationResult[], totalPages: 0 }),
+    // Openverse: Flickr / museums / Wikimedia — real classical performance & temple photos
+    searchOpenverse(primary, page, perArchive),
+    // Pixabay (optional key): popular stock moodboard-style photos
+    searchPixabay(secondary || primary, page, perArchive),
   ];
 
   // Extra Unsplash pass for a second color (e.g. blue + red costumes)
@@ -270,6 +401,7 @@ export async function searchInspirations(input: {
     const third = expansions[(page + 1) % expansions.length];
     searches.push(searchUnsplash(third, page, Math.ceil(perProvider / 2)));
     searches.push(searchPexels(third, page, Math.ceil(perProvider / 2)));
+    searches.push(searchOpenverse(third, page, Math.ceil(perArchive / 2)));
   }
 
   const settled = await Promise.all(
@@ -282,14 +414,10 @@ export async function searchInspirations(input: {
   );
 
   for (const s of settled) {
-    if (s.results.some((r) => r.provider === "unsplash") && !providers.includes("unsplash")) {
-      providers.push("unsplash");
-    }
-    if (s.results.some((r) => r.provider === "pexels") && !providers.includes("pexels")) {
-      providers.push("pexels");
-    }
-    if (s.results.some((r) => r.provider === "pinterest") && !providers.includes("pinterest")) {
-      providers.push("pinterest");
+    for (const p of ["unsplash", "pexels", "openverse", "pixabay"] as const) {
+      if (s.results.some((r) => r.provider === p) && !providers.includes(p)) {
+        providers.push(p);
+      }
     }
   }
 

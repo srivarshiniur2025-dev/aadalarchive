@@ -24,21 +24,6 @@ export async function GET(request: Request) {
     );
   }
 
-  const hasUnsplash = Boolean(process.env.UNSPLASH_ACCESS_KEY?.trim());
-  const hasPexels = Boolean(process.env.PEXELS_API_KEY?.trim());
-  const hasPinterest = Boolean(process.env.PINTEREST_ACCESS_TOKEN?.trim());
-
-  if (!hasUnsplash && !hasPexels && !hasPinterest) {
-    return NextResponse.json(
-      {
-        error: "The archive is gathering new references.",
-        results: [],
-        hasMore: false,
-      },
-      { status: 503 },
-    );
-  }
-
   try {
     const profile = await getCurrentProfile();
     const boards = await listUserBoards();
